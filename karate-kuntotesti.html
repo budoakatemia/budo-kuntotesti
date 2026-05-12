@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karate-kuntotesti – Budo Akatemia ry</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  min-height: 100vh; background: #f4f1ec; color: #1a1a1a;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-size: 16px; line-height: 1.5;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 2rem 1rem 4rem;
+}
+.card {
+  width: 100%; max-width: 600px; background: #fff;
+  border: 1px solid #d8d0c4; border-radius: 12px;
+  padding: 2rem 2rem 2.4rem; box-shadow: 0 4px 24px rgba(0,0,0,.10);
+}
+.eyebrow { font-size: .7rem; letter-spacing: .28em; color: #888; text-transform: uppercase; text-align: center; margin-bottom: .3rem; font-weight: 500; }
+h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center; color: #1a1a1a; margin-bottom: .2rem; letter-spacing: -.01em; }
+.sub { font-size: .68rem; color: #999; text-align: center; letter-spacing: .14em; margin-bottom: 1.6rem; font-weight: 500; }
+.rule { width: 48px; height: 2px; background: #c8943a; margin: 0 auto 1.8rem; border-radius: 2px; }
+.lbl { font-size: .72rem; font-weight: 700; letter-spacing: .1em; color: #555; text-transform: uppercase; margin-bottom: .5rem; display: block; }
+.seg { display: flex; background: #f0ece6; border: 1px solid #d4ccc2; border-radius: 8px; overflow: hidden; margin-bottom: 1.2rem; padding: 3px; gap: 3px; }
+.seg button { flex: 1; padding: .5rem .6rem; border: none; cursor: pointer; font-family: inherit; font-size: .9rem; font-weight: 500; background: transparent; color: #777; border-radius: 6px; transition: all .15s; }
+.seg button.active { background: #fff; color: #1a1a1a; font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.btn-primary { width: 100%; padding: .85rem; background: #c8943a; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-family: inherit; font-weight: 700; cursor: pointer; letter-spacing: .02em; margin-top: .6rem; transition: background .15s, opacity .15s; }
+.btn-primary:hover { background: #b07e2e; }
+.btn-primary:disabled { opacity: .35; cursor: default; background: #c8943a; }
+.btn-ghost { background: transparent; color: #777; border: 1px solid #d0c8be; border-radius: 7px; padding: .5rem .9rem; font-family: inherit; font-size: .82rem; font-weight: 500; cursor: pointer; width: 100%; margin-bottom: .7rem; transition: color .15s, border-color .15s; }
+.btn-ghost:hover { color: #333; border-color: #aaa; }
+.number-input { width: 100%; background: #f8f6f2; border: 2px solid #d0c8be; border-radius: 8px; padding: .8rem 1rem; font-size: 2rem; font-weight: 700; color: #1a1a1a; font-family: inherit; text-align: center; outline: none; margin-bottom: .6rem; transition: border-color .2s; }
+.number-input:focus { border-color: #c8943a; background: #fff; }
+.level-selector { display: flex; flex-direction: column; gap: .35rem; margin-bottom: .6rem; }
+.level-btn { background: #f8f6f2; border: 2px solid #d0c8be; border-radius: 8px; padding: .65rem .9rem; font-family: inherit; font-size: .9rem; font-weight: 600; color: #1a1a1a; cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; transition: all .15s; }
+.level-btn:hover { border-color: #c8943a; background: #fff; }
+.level-btn.active { background: #fff7e6; border-color: #c8943a; color: #1a1a1a; }
+.level-btn .level-num { display: inline-block; width: 24px; height: 24px; border-radius: 50%; background: #e0d8ce; color: #555; font-size: .8rem; line-height: 24px; text-align: center; margin-right: .6rem; font-weight: 700; }
+.level-btn.active .level-num { background: #c8943a; color: #fff; }
+.info-box { background: #f8f6f2; border: 1px solid #e0d8ce; border-radius: 8px; padding: 1rem 1.1rem; margin-bottom: 1rem; font-size: .88rem; color: #3a3a3a; line-height: 1.75; }
+.intro-info { background: #fdf7ee; border: 1px solid #e8d8b4; border-radius: 8px; padding: 1rem 1.1rem; margin-bottom: 1.4rem; font-size: .85rem; color: #4a3a1a; line-height: 1.7; }
+.intro-info strong { color: #9a6c1a; display: block; margin-bottom: .3rem; font-size: .9rem; }
+.privacy-note { background: #ecf6f0; border: 1px solid #b8dcc0; border-radius: 8px; padding: .8rem 1rem; margin-bottom: 1.2rem; font-size: .78rem; color: #2d5a3a; line-height: 1.65; }
+.privacy-note strong { display: block; margin-bottom: .25rem; color: #1a4a2a; }
+.progress-bar-wrap { margin-bottom: 1.4rem; }
+.progress-meta { display: flex; justify-content: space-between; font-size: .75rem; font-weight: 600; color: #666; margin-bottom: .45rem; }
+.progress-track { height: 6px; background: #e8e0d4; border-radius: 6px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 6px; transition: width .35s ease; }
+.test-header { text-align: center; margin-bottom: 1.2rem; }
+.test-icon { font-size: 2.2rem; margin-bottom: .3rem; }
+.test-name { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; margin-bottom: .2rem; }
+.test-subtitle { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.level-badge { border-radius: 8px; padding: .6rem 1rem; margin-bottom: .7rem; text-align: center; font-weight: 700; font-size: 1rem; }
+.threshold-row { display: flex; justify-content: space-between; align-items: center; padding: .4rem .8rem; border-radius: 6px; margin-bottom: .25rem; }
+.threshold-lbl { font-size: .8rem; font-weight: 600; }
+.threshold-val { font-size: .8rem; font-family: 'Courier New', monospace; font-weight: 600; color: #333; }
+.overall-box { text-align: center; padding: 1.2rem; border-radius: 10px; margin-bottom: 1.4rem; }
+.overall-eyebrow { font-size: .68rem; font-weight: 700; letter-spacing: .22em; color: #666; text-transform: uppercase; margin-bottom: .3rem; }
+.overall-label { font-size: 2rem; font-weight: 700; letter-spacing: -.01em; }
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-bottom: 1.4rem; }
+.cat-pill { border-radius: 8px; padding: .75rem 1rem; display: flex; align-items: center; gap: .65rem; }
+.cat-pill-icon { font-size: 1.4rem; }
+.cat-pill-name { font-size: .62rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #555; margin-bottom: .1rem; }
+.cat-pill-label { font-size: .88rem; font-weight: 700; }
+.results-header { font-size: .7rem; font-weight: 700; letter-spacing: .14em; color: #888; text-transform: uppercase; margin-bottom: .65rem; }
+.result-row { display: flex; align-items: center; gap: .8rem; padding: .7rem .9rem; border-radius: 8px; background: #f8f6f2; border: 1px solid #e8e0d4; margin-bottom: .4rem; }
+.result-icon { font-size: 1.2rem; flex-shrink: 0; }
+.result-name { font-size: .86rem; font-weight: 600; color: #1a1a1a; }
+.result-cat { font-size: .62rem; font-weight: 600; letter-spacing: .06em; }
+.result-value { font-size: 1rem; color: #1a1a1a; font-weight: 700; text-align: right; flex-shrink: 0; }
+.result-unit { font-size: .65rem; color: #888; margin-left: .2rem; font-weight: 400; }
+.result-level { font-size: .75rem; font-weight: 700; text-align: right; }
+.dot-col { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; }
+.tips-box { background: #f8f6f2; border: 1px solid #e0d8ce; border-radius: 8px; padding: 1.1rem; margin-bottom: 1.2rem; }
+.tips-header { font-size: .7rem; font-weight: 700; letter-spacing: .14em; color: #888; text-transform: uppercase; margin-bottom: .75rem; }
+.tip-row { display: flex; gap: .65rem; margin-bottom: .6rem; font-size: .84rem; color: #3a3a3a; line-height: 1.6; }
+.intro-test-cat { margin-bottom: .9rem; }
+.intro-cat-label { display: flex; align-items: center; gap: .5rem; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .38rem; }
+.intro-test-item { display: flex; align-items: center; gap: .7rem; padding: .4rem .8rem; background: #f8f6f2; border-radius: 6px; margin-bottom: .22rem; border-left: 3px solid #e0d8ce; }
+.intro-test-item-name { font-size: .85rem; font-weight: 600; color: #1a1a1a; }
+.intro-test-item-sub { font-size: .65rem; color: #888; }
+.submit-status { text-align: center; font-size: .78rem; font-weight: 600; padding: .6rem; border-radius: 6px; margin-bottom: .8rem; }
+.submit-status.sending { background: #fff3d6; color: #8a6a1a; }
+.submit-status.success { background: #d4f0db; color: #1a5a2a; }
+.submit-status.error { background: #f9dcdc; color: #8a1a1a; }
+#app { width: 100%; display: flex; flex-direction: column; align-items: center; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ╔═════════════════════════════════════════════════════════════════════════╗
+// ║                                                                         ║
+// ║  TÄRKEÄÄ: Liitä alle Google Apps Script -palvelusi URL                  ║
+// ║  Saat sen ohjeen mukaan kun julkaiset scriptin web-sovelluksena.        ║
+// ║  Jätä tyhjäksi jos et halua lähettää tuloksia mihinkään.                ║
+// ║                                                                         ║
+// ╚═════════════════════════════════════════════════════════════════════════╝
+const SUBMIT_URL = ""; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
+
+// ─── LEVEL COLORS & LABELS ───────────────────────────────────────────────────
+const LEVEL_COLORS = ["#166534","#3a7c1a","#92600a","#b54a0a","#991b1b"];
+const LEVEL_BG     = ["#dcfce7","#f0fde4","#fef9c3","#fff0e4","#fee2e2"];
+const LEVEL_BORDER = ["#86efac","#a3e635","#fde047","#fdba74","#fca5a5"];
+const LEVEL_LABELS = ["Erinomainen","Hyvä","Tyydyttävä","Välttävä","Kehitettävä"];
+
+const BODY_LEVELS = [
+  { v:1, label:"Lantion alapuolelle", short:"Lantio" },
+  { v:2, label:"Vyötärön tasolle",    short:"Vyötärö" },
+  { v:3, label:"Rinnan tasolle",      short:"Rinta" },
+  { v:4, label:"Olkapään tasolle",    short:"Olkapää" },
+  { v:5, label:"Pään tasolle / yli",  short:"Pää" },
+];
+
+const CAT_COLORS = {
+  voima:        { text:"#9b1c1c", bg:"#fde8e8", border:"#fca5a5" },
+  keskivartalo: { text:"#1e3a8a", bg:"#dbeafe", border:"#93c5fd" },
+  jalkavoima:   { text:"#581c87", bg:"#ede9fe", border:"#c4b5fd" },
+  rajahtavyys:  { text:"#78350f", bg:"#fef3c7", border:"#fcd34d" },
+  tasapaino:    { text:"#155e75", bg:"#cffafe", border:"#67e8f9" },
+  liikkuvuus:   { text:"#065f46", bg:"#d1fae5", border:"#6ee7b7" },
+};
+
+const CATEGORIES = [
+  { id:"voima",        label:"Voima & kestävyys", icon:"💪" },
+  { id:"keskivartalo", label:"Keskivartalo",        icon:"🛡️" },
+  { id:"jalkavoima",   label:"Jalkavoima",          icon:"🦵" },
+  { id:"rajahtavyys",  label:"Räjähtävyys",         icon:"⚡" },
+  { id:"tasapaino",    label:"Tasapaino",           icon:"⚖️" },
+  { id:"liikkuvuus",   label:"Liikkuvuus",          icon:"🌀" },
+];
+
+const TESTS = [
+  { id:"punnerrukset", category:"voima", name:"Punnerrukset", subtitle:"Ylävartalon voima", icon:"🥊",
+    desc:"Mahdollisimman monta yhtäjaksoista toistoa ilman taukoa. Täysi liikerata: rinta lähelle lattiaa, käsivarret täysin suoraksi. Naiset: sama liike tai polvilta.",
+    unit:"kpl",
+    scores:{ m:{ nuori:[45,35,25,15], keski:[38,28,20,12], masters:[28,20,13,7] },
+             n:{ nuori:[30,22,14,8],  keski:[24,17,11,6],  masters:[17,11,7,3] } } },
+  { id:"riipunta", category:"voima", name:"Riipunta / leuat", subtitle:"Ylävartalon kestävyysvoima", icon:"🏋️",
+    desc:"Roiku tangosta myötäote, kädet hartianlevyisessä asennossa. Laske aika, jonka pysyt roikkumaan. Vaihtoehto: leuanvedot täydellä liikeradalla.",
+    unit:"sek", inputOptions:["sek (roiku)","kpl (leuat)"],
+    scores:{ m:{ nuori:[60,40,20,10], keski:[50,32,16,8], masters:[35,22,10,5] },
+             n:{ nuori:[40,25,12,5],  keski:[30,18,8,3],  masters:[20,12,5,2] } },
+    altScores:{ m:{ nuori:[12,8,4,2], keski:[9,6,3,1], masters:[6,4,2,1] },
+                n:{ nuori:[5,3,1,0],  keski:[4,2,1,0], masters:[2,1,0,0] } } },
+  { id:"vatsalihakset", category:"keskivartalo", name:"Vatsalihakset 60 sek", subtitle:"Vatsalihasten kestävyysvoima", icon:"🫀",
+    desc:"Makaa selällään, polvet koukussa (n. 90°), kädet ristissä rinnalla tai korvien vieressä. Nouse istumaan niin, että kyynärpäät koskettavat polvia. Laske toistot 60 sekunnissa.",
+    unit:"kpl / 60 sek",
+    scores:{ m:{ nuori:[50,42,33,24], keski:[45,37,28,20], masters:[38,30,22,14] },
+             n:{ nuori:[44,36,27,18], keski:[39,31,23,15], masters:[32,24,17,10] } } },
+  { id:"lankku", category:"keskivartalo", name:"Lankku (plank)", subtitle:"Keskivartalon stabiliteetti", icon:"🛡️",
+    desc:"Kyynärpäät lattiassa, vartalo suorassa linjasta kantapäistä niskaan. Pidä asento mahdollisimman kauan. Lantion vajoaminen tai kohoaminen lopettaa testin.",
+    unit:"sek",
+    scores:{ m:{ nuori:[120,90,60,30], keski:[100,75,50,25], masters:[75,55,35,15] },
+             n:{ nuori:[100,75,55,25], keski:[85,62,42,20],  masters:[65,45,28,12] } } },
+  { id:"shikodachi", category:"jalkavoima", name:"Shiko-dachi -pito", subtitle:"Jalkalihasten staattinen voima", icon:"🏯",
+    desc:"Asetu shiko-dachi -asentoon: jalat n. 2× hartioiden leveys, varpaat 45° ulospäin, polvet suoraan varpaiden suuntaan, reidet vaakatasossa tai alle. Kädet vyötäisillä tai ristissä rinnalla. Pidä asento niin kauan kuin mahdollista.",
+    unit:"sek",
+    scores:{ m:{ nuori:[120,90,60,30], keski:[100,72,48,24], masters:[75,55,35,15] },
+             n:{ nuori:[100,75,50,25], keski:[82,60,40,20],  masters:[60,44,28,12] } } },
+  { id:"pituushyppy", category:"rajahtavyys", name:"Vauhditon pituushyppy", subtitle:"Alaraajojen räjähtävä voima", icon:"🦘",
+    desc:"Jalat hartianlevyisessä asennossa. Kyykisty vapaasti, heilauta kädet ja hyppää mahdollisimman kauas eteenpäin. Ei vauhtia — lähtö paikaltaan. Mittaa kantapäästä lähimpään jälkeen. 2 yritystä, paras tulos.",
+    unit:"cm",
+    scores:{ m:{ nuori:[220,195,165,135], keski:[200,175,148,118], masters:[170,148,120,92] },
+             n:{ nuori:[175,155,130,105], keski:[158,138,115,90],  masters:[133,113,90,68] } } },
+  { id:"hyppykyykky", category:"rajahtavyys", name:"Hyppykyykyt 30 sek", subtitle:"Räjähtävä kestävyys", icon:"🔥",
+    desc:"Laske mahdollisimman monta hyppykyykkyä 30 sekunnissa. Täysi kyykky (reidet vaakatasoon tai alle), täysi ojennus ylös hypyllä.",
+    unit:"kpl / 30 sek",
+    scores:{ m:{ nuori:[24,18,13,8], keski:[20,15,10,6], masters:[15,11,7,4] },
+             n:{ nuori:[20,15,10,6], keski:[17,12,8,4],  masters:[12,8,5,2] } } },
+  { id:"ashiukebalance", category:"tasapaino", name:"Ashi-uke -tasapaino silmät kiinni", subtitle:"Staattinen tasapaino", icon:"⚖️",
+    desc:"Seiso paljain jaloin yhdellä jalalla, vapaa jalka ashi-uke -asennossa (polvi nostettuna, jalkapöytä koskettaa tukijalan polvea tai säärtä). Kädet vyötäisillä. Sulje silmät ja aloita ajanotto. Testi päättyy kun: jalkapöytä irtoaa tukijalasta, tukijalka liikkuu, kädet irtoavat vyötäisiltä TAI silmät avautuvat. 2 yritystä per jalka, paras tulos.",
+    unit:"sek",
+    scores:{ m:{ nuori:[30,20,12,6], keski:[22,14,9,4], masters:[15,10,6,3] },
+             n:{ nuori:[32,22,13,7], keski:[24,16,10,5], masters:[16,11,7,3] } } },
+  { id:"yokogeripito", category:"liikkuvuus", name:"Yoko-geri -pito", subtitle:"Aktiivinen lonkan abduktio", icon:"🌀",
+    desc:"Nosta jalka yoko-geri -asentoon: lonkka kierrettynä, polvi ojennettuna sivulle. Pidä asento 3 sekuntia ilman tukea. Tukijalka pysyy paikallaan, vartalon kallistus alle 20°. Arvioi kuinka korkealle jalkapohja yltää suhteessa kehoon.",
+    unit:"taso", inputType:"level", levels:BODY_LEVELS,
+    scores:{ m:{ nuori:[5,4,3,2], keski:[4,4,3,2], masters:[4,3,2,1] },
+             n:{ nuori:[5,4,3,2], keski:[5,4,3,2], masters:[4,3,3,2] } } },
+  { id:"sitandreach", category:"liikkuvuus", name:"Eteentaivutus istuen", subtitle:"Takareisien ja alaselän liikkuvuus", icon:"🤸",
+    desc:"Istu lattialla, jalat suorina edessä, kantapäät yhdessä, jalkapohjat tasaisesti seinää tai laatikkoa vasten. Pidä polvet suorina koko liikkeen ajan. Kurkota molemmilla käsillä rauhallisesti eteenpäin niin pitkälle kuin pääset. Mittaa sormenpäiden kohta suhteessa varpaisiin: positiivinen = sormet ylittävät varpaat, negatiivinen = sormet jäävät varpaiden taakse.",
+    unit:"cm", allowNegative:true,
+    scores:{ m:{ nuori:[22,15,8,0],  keski:[18,11,4,-4], masters:[12,7,2,-5] },
+             n:{ nuori:[27,20,12,4], keski:[22,15,8,0],  masters:[18,12,6,-2] } } },
+];
+
+const DEV_TIPS = {
+  voima:["Loistava ylävartalon voimataso — ylläpidä monipuolisella voimaharjoittelulla.","Hyvä pohja — lisää progressiivista ylikuormitusta punnerruksissa ja leuoissa.","Kehitä ylävartalovoimaa: leuanveto, dipit, käsipainoharjoittelu 2–3×/vko.","Priorisoi ylävartalon perusvoimaharjoittelu — aloita polvilta punnerruksista.","Aloita perusvoimaharjoittelusta: polvilta punnerrukset, riippuminen tangosta."],
+  keskivartalo:["Erinomainen stabiliteetti — lisää dynaamisia keskivartaloliikkeitä.","Hyvä taso — lisää haastetta: kohotettu lankku, sivulankku, rullaus.","Kehitä: päivittäinen 3×30s lankku + vatsalihakset 3 sarjaa.","Aloita: 3×15s lankku + 3×10 vatsarutistusta päivittäin.","Keskity peruslankku-asennon hallintaan ennen toistoja."],
+  jalkavoima:["Erinomainen staattinen jalkavoima — lisää haastetta pidemmällä pidolla.","Hyvä taso — tavoittele säännöllisillä shiko-harjoituksilla 90+ sekuntia.","Kehitä: päivittäinen shiko-dachi -pito 3 × max-aika, lisää aikaa asteittain.","Aloita matalammalla asennolla ja pidennä kestoa vähitellen.","Harjoittele asennon hallintaa ensin — laatu ennen kestoa."],
+  rajahtavyys:["Huipputaso — lisää plyometriikkaa: depth jump, reaktiohypyt.","Hyvä — lisää hyppykyykkyjen sarjoja ja pituushyppyharjoituksia 2×/vko.","Kehitä räjähtävyyttä: hyppykyykyt, askelkyykky-hypyt, box step-up.","Aloita matalasta: kyykyt + jalkakyykyt, lisää hyppy vähitellen.","Perusvoimaa ensin — räjähtävyys kehittyy kun peruspohja on kunnossa."],
+  tasapaino:["Erinomainen tasapaino — kokeile haastavampia variantteja (pyörähdys, alusta).","Hyvä tasapaino — lisää harjoitukseen pintojen vaihtelua ja silmät kiinni -versioita.","Kehitä tasapainoa: päivittäin 3 × 30s yhden jalan asento silmät auki/kiinni.","Aloita silmät auki -versiosta — silmät kiinni vasta kun perusta on vakaa.","Harjoittele tukea käyttäen — vähennä tukea asteittain."],
+  liikkuvuus:["Loistava liikkuvuus — ylläpidä päivittäisillä dynaamisilla ja staattisilla venytyksillä.","Hyvä liikkuvuus — kehitä takareiden ja lonkan liikkuvuutta säännöllisillä venytyksillä.","Kehitä: 10 min päivittäin lonkan ja takareiden venytyksiä, pidot 30 sek.","Aloita rauhallisesti — staattiset venytykset lämpimälle lihakselle, ei kylmänä.","Liikkuvuus paranee parhaiten harjoituksen jälkeen — venyttele tunnin lopussa."],
+};
+
+let state = { phase: "intro", gender: "m", ageGroup: "nuori", currentIdx: 0, results: {}, useAlt: false, showRef: false, selectedLevel: null, submitState: "idle" };
+
+function calcScore(test, rawVal, gender, age, useAlt) {
+  const t = useAlt ? (test.altScores?.[gender]?.[age]) : test.scores[gender][age];
+  if (!t) return 4;
+  const val = parseFloat(rawVal);
+  if (isNaN(val)) return null;
+  if (!test.allowNegative && val < 0) return null;
+  if (val >= t[0]) return 0;
+  if (val >= t[1]) return 1;
+  if (val >= t[2]) return 2;
+  if (val >= t[3]) return 3;
+  return 4;
+}
+
+function thresholdRows(test, gender, age, useAlt) {
+  const t = useAlt ? (test.altScores?.[gender]?.[age]) : test.scores[gender][age];
+  if (!t) return [];
+  const formatVal = (v, prefix) => {
+    if (test.inputType === "level") {
+      const lev = BODY_LEVELS.find(l => l.v === v);
+      return prefix + (lev ? lev.short : v);
+    }
+    const unit = test.inputOptions ? test.inputOptions[useAlt ? 1 : 0] : test.unit;
+    return `${prefix}${v} ${unit}`;
+  };
+  return [
+    { label:"Erinomainen", val: formatVal(t[0], "≥ ") },
+    { label:"Hyvä",        val: formatVal(t[1], "≥ ") },
+    { label:"Tyydyttävä",  val: formatVal(t[2], "≥ ") },
+    { label:"Välttävä",    val: formatVal(t[3], "≥ ") },
+    { label:"Kehitettävä", val: formatVal(t[3], "< ") },
+  ];
+}
+
+function catSummary() {
+  return CATEGORIES.map(cat => {
+    const vals = TESTS.filter(t => t.category === cat.id).map(t => state.results[t.id]?.scoreIdx).filter(v => v != null);
+    const avg = vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : null;
+    return { ...cat, avg };
+  });
+}
+
+function overallIdx() {
+  const vals = Object.values(state.results).map(r => r.scoreIdx).filter(v => v != null);
+  return vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : 2;
+}
+
+function segBtn(val, label, active, group) {
+  return `<button class="${active?'active':''}" data-group="${group}" data-val="${val}">${label}</button>`;
+}
+
+function displayValue(test, val, useAlt) {
+  if (test.inputType === "level") {
+    const lev = BODY_LEVELS.find(l => l.v === parseInt(val));
+    return lev ? lev.short : val;
+  }
+  return val;
+}
+
+function displayUnit(test, useAlt) {
+  if (test.inputType === "level") return "";
+  return test.inputOptions ? test.inputOptions[useAlt ? 1 : 0] : test.unit;
+}
+
+// ─── DATA SUBMISSION ─────────────────────────────────────────────────────────
+function submitResults() {
+  if (!SUBMIT_URL) return Promise.resolve({ ok:false, skip:true });
+  const payload = {
+    timestamp: new Date().toISOString(),
+    gender: state.gender,
+    ageGroup: state.ageGroup,
+    results: {},
+  };
+  TESTS.forEach(t => {
+    const r = state.results[t.id];
+    if (r) {
+      payload.results[t.id] = {
+        value: r.value,
+        useAlt: r.useAlt || false,
+        scoreIdx: r.scoreIdx,
+      };
+    }
+  });
+  return fetch(SUBMIT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  }).then(() => ({ ok: true })).catch(err => ({ ok: false, error: err.message }));
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  const app = document.getElementById("app");
+  if (state.phase === "intro")  app.innerHTML = renderIntro();
+  if (state.phase === "test")   app.innerHTML = renderTest();
+  if (state.phase === "result") app.innerHTML = renderResult();
+  bindEvents();
+}
+
+function renderIntro() {
+  const testList = CATEGORIES.map(cat => {
+    const cc = CAT_COLORS[cat.id];
+    const items = TESTS.filter(t => t.category === cat.id).map(t =>
+      `<div class="intro-test-item" style="border-left-color:${cc.border}">
+        <span style="font-size:1.1rem">${t.icon}</span>
+        <div>
+          <div class="intro-test-item-name">${t.name}</div>
+          <div class="intro-test-item-sub">${t.subtitle}</div>
+        </div>
+      </div>`).join("");
+    return `<div class="intro-test-cat">
+      <div class="intro-cat-label" style="color:${cc.text}">${cat.icon} ${cat.label}</div>
+      ${items}
+    </div>`;
+  }).join("");
+
+  const privacyNote = SUBMIT_URL ? `
+    <div class="privacy-note">
+      <strong>🔒 Tietojen tallennus</strong>
+      Tuloksesi tallennetaan anonyymisti seuran tilastoja varten. Kerätään vain ikäryhmä, sukupuoli ja testitulokset — ei nimeä, sähköpostia tai muita tunnistetietoja.
+    </div>` : "";
+
+  return `<div class="card">
+    <div class="eyebrow">Budo Akatemia ry · Shorin-ryu Seibukan</div>
+    <h1>Karate-kuntotesti</h1>
+    <div class="sub">VOIMA · KESKIVARTALO · JALKAVOIMA · RÄJÄHTÄVYYS · TASAPAINO · LIIKKUVUUS</div>
+    <div class="rule"></div>
+    <span class="lbl">Sukupuoli</span>
+    <div class="seg">
+      ${segBtn("m","Miehet",state.gender==="m","gender")}
+      ${segBtn("n","Naiset",state.gender==="n","gender")}
+    </div>
+    <span class="lbl">Ikäryhmä</span>
+    <div class="seg">
+      ${segBtn("nuori","16–29 v",state.ageGroup==="nuori","age")}
+      ${segBtn("keski","30–44 v",state.ageGroup==="keski","age")}
+      ${segBtn("masters","45–65 v",state.ageGroup==="masters","age")}
+    </div>
+    <div style="margin-bottom:1.4rem">${testList}</div>
+    <div class="intro-info">
+      <strong>10 testiä &nbsp;·&nbsp; n. 35–45 min</strong>
+      Tarvitset: sekuntikello ja mittanauha. Tukikohta seinästä liikkuvuustesteille.<br>
+      Tee 10 min alkulämmittely. Suorita testit järjestyksessä. Syötä tulos heti suorituksen jälkeen.
+    </div>
+    ${privacyNote}
+    <button class="btn-primary" id="startBtn">Aloita testi →</button>
+  </div>`;
+}
+
+function renderTest() {
+  const test = TESTS[state.currentIdx];
+  const cat  = CATEGORIES.find(c => c.id === test.category);
+  const cc   = CAT_COLORS[test.category];
+  const total = TESTS.length;
+  const pct = ((state.currentIdx + 1) / total * 100).toFixed(1);
+  const hasAlt = !!(test.inputOptions && test.altScores);
+  const isLevel = test.inputType === "level";
+  const unitLabel = isLevel ? "kehontaso" : (hasAlt ? test.inputOptions[state.useAlt ? 1 : 0] : test.unit);
+
+  const altToggle = hasAlt ? `
+    <div class="seg" style="margin-bottom:.9rem">
+      <button class="${!state.useAlt?'active':''}" data-group="alt" data-val="0">${test.inputOptions[0]}</button>
+      <button class="${state.useAlt?'active':''}" data-group="alt" data-val="1">${test.inputOptions[1]}</button>
+    </div>` : "";
+
+  let inputHtml = "";
+  if (isLevel) {
+    inputHtml = `<div class="level-selector">
+      ${[...BODY_LEVELS].reverse().map(lev => `
+        <button class="level-btn ${state.selectedLevel===lev.v?'active':''}" data-level="${lev.v}">
+          <span><span class="level-num">${lev.v}</span>${lev.label}</span>
+        </button>
+      `).join("")}
+    </div>`;
+  } else {
+    inputHtml = `<input id="testInput" class="number-input" type="number" inputmode="decimal" ${test.allowNegative ? "" : 'min="0"'} placeholder="0" value="">`;
+  }
+
+  const refRows = state.showRef
+    ? thresholdRows(test, state.gender, state.ageGroup, state.useAlt).map((r,i) =>
+        `<div class="threshold-row" style="background:${LEVEL_BG[i]};border:1px solid ${LEVEL_BORDER[i]}">
+          <span class="threshold-lbl" style="color:${LEVEL_COLORS[i]}">${r.label}</span>
+          <span class="threshold-val">${r.val}</span>
+        </div>`).join("") : "";
+
+  return `<div class="card">
+    <div class="progress-bar-wrap">
+      <div class="progress-meta">
+        <span>Testi ${state.currentIdx+1} / ${total}</span>
+        <span style="color:${cc.text}">${cat.icon} ${cat.label}</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${pct}%;background:${cc.text}"></div>
+      </div>
+    </div>
+    <div class="test-header">
+      <div class="test-icon">${test.icon}</div>
+      <div class="test-name">${test.name}</div>
+      <div class="test-subtitle" style="color:${cc.text}">${test.subtitle}</div>
+    </div>
+    <div class="info-box">${test.desc}</div>
+    ${altToggle}
+    <span class="lbl">Tulos — ${unitLabel}</span>
+    ${inputHtml}
+    <div id="liveBadge" style="height:2.8rem;margin-bottom:.7rem"></div>
+    <button class="btn-ghost" id="refToggle">${state.showRef ? "▴ Piilota" : "▾ Näytä"} viitearvot</button>
+    <div id="refRows" style="margin-bottom:.3rem">${refRows}</div>
+    <button class="btn-primary" id="nextBtn" disabled>
+      ${state.currentIdx + 1 < total ? "Seuraava →" : "Näytä tulokset →"}
+    </button>
+  </div>`;
+}
+
+function renderResult() {
+  const oi = overallIdx();
+  const cs = catSummary();
+  const gLabel = state.gender === "m" ? "Miehet" : "Naiset";
+  const aLabel = {nuori:"16–29 v", keski:"30–44 v", masters:"45–65 v"}[state.ageGroup];
+
+  let submitStatus = "";
+  if (SUBMIT_URL) {
+    if (state.submitState === "sending") submitStatus = `<div class="submit-status sending">Lähetetään tuloksia seuran tilastoihin…</div>`;
+    else if (state.submitState === "success") submitStatus = `<div class="submit-status success">✓ Tulokset lisätty seuran anonyymeihin tilastoihin</div>`;
+    else if (state.submitState === "error") submitStatus = `<div class="submit-status error">Tilastoihin lähetys epäonnistui (tulokset näkyvät silti sinulle)</div>`;
+  }
+
+  const catPills = cs.map(cat => {
+    const i = cat.avg ?? 2;
+    const cc = CAT_COLORS[cat.id];
+    return `<div class="cat-pill" style="background:${cc.bg};border:1px solid ${cc.border}">
+      <span class="cat-pill-icon">${cat.icon}</span>
+      <div>
+        <div class="cat-pill-name" style="color:${cc.text}">${cat.label}</div>
+        <div class="cat-pill-label" style="color:${LEVEL_COLORS[i]}">${cat.avg !== null ? LEVEL_LABELS[i] : "—"}</div>
+      </div>
+    </div>`;
+  }).join("");
+
+  const resultRows = TESTS.map(t => {
+    const res = state.results[t.id];
+    if (!res) return "";
+    const si = res.scoreIdx;
+    const cc = CAT_COLORS[t.category];
+    const cat = CATEGORIES.find(c => c.id === t.category);
+    const valStr = displayValue(t, res.value, res.useAlt);
+    const unitStr = displayUnit(t, res.useAlt);
+    const dots = [0,1,2,3,4].map(j => `<div class="dot" style="background:${j===si ? LEVEL_COLORS[si] : '#ddd'}"></div>`).join("");
+    return `<div class="result-row">
+      <span class="result-icon">${t.icon}</span>
+      <div style="flex:1;min-width:0">
+        <div class="result-name">${t.name}</div>
+        <div class="result-cat" style="color:${cc.text}">${cat.label}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="result-value">${valStr}${unitStr ? `<span class="result-unit">${unitStr}</span>` : ""}</div>
+        <div class="result-level" style="color:${LEVEL_COLORS[si]}">${LEVEL_LABELS[si]}</div>
+      </div>
+      <div class="dot-col">${dots}</div>
+    </div>`;
+  }).join("");
+
+  const tips = cs.map(cat => {
+    const i = cat.avg ?? 2;
+    return `<div class="tip-row">
+      <span style="font-size:1.1rem;flex-shrink:0">${cat.icon}</span>
+      <span>${DEV_TIPS[cat.id][Math.min(i,4)]}</span>
+    </div>`;
+  }).join("");
+
+  return `<div class="card" style="max-width:640px">
+    <div class="eyebrow">Budo Akatemia ry · Shorin-ryu Seibukan</div>
+    <h1>Kuntotestin tulokset</h1>
+    <div style="text-align:center;margin-bottom:.5rem;font-size:.78rem;color:#888;font-weight:600">
+      ${gLabel} · ${aLabel}
+    </div>
+    <div class="rule"></div>
+    ${submitStatus}
+    <div class="overall-box" style="background:${LEVEL_BG[oi]};border:2px solid ${LEVEL_BORDER[oi]}">
+      <div class="overall-eyebrow">Kokonaisarvio</div>
+      <div class="overall-label" style="color:${LEVEL_COLORS[oi]}">${LEVEL_LABELS[oi]}</div>
+    </div>
+    <div class="cat-grid">${catPills}</div>
+    <div class="results-header">Testikohtaiset tulokset</div>
+    ${resultRows}
+    <div style="margin-bottom:1.4rem"></div>
+    <div class="tips-box">
+      <div class="tips-header">Kehitysehdotukset</div>
+      ${tips}
+    </div>
+    <button class="btn-primary" id="restartBtn">↺ Tee testi uudelleen</button>
+  </div>`;
+}
+
+function bindEvents() {
+  document.querySelectorAll(".seg button[data-group]").forEach(b => {
+    b.addEventListener("click", () => {
+      const g = b.dataset.group, v = b.dataset.val;
+      if (g === "gender") state.gender = v;
+      if (g === "age")    state.ageGroup = v;
+      if (g === "alt")    state.useAlt = !!parseInt(v);
+      render();
+      if (state.phase === "test") document.getElementById("testInput")?.focus();
+    });
+  });
+
+  document.getElementById("startBtn")?.addEventListener("click", () => {
+    state.phase = "test"; state.currentIdx = 0; state.results = {};
+    state.useAlt = false; state.showRef = false; state.selectedLevel = null;
+    state.submitState = "idle";
+    render();
+    document.getElementById("testInput")?.focus();
+  });
+
+  document.getElementById("restartBtn")?.addEventListener("click", () => {
+    state.phase = "intro"; state.results = {}; state.submitState = "idle";
+    render();
+  });
+
+  document.getElementById("refToggle")?.addEventListener("click", () => {
+    state.showRef = !state.showRef;
+    const test = TESTS[state.currentIdx];
+    const btn = document.getElementById("refToggle");
+    const div = document.getElementById("refRows");
+    if (btn) btn.textContent = (state.showRef ? "▴ Piilota" : "▾ Näytä") + " viitearvot";
+    if (div) div.innerHTML = state.showRef
+      ? thresholdRows(test, state.gender, state.ageGroup, state.useAlt).map((r,i) =>
+          `<div class="threshold-row" style="background:${LEVEL_BG[i]};border:1px solid ${LEVEL_BORDER[i]}">
+            <span class="threshold-lbl" style="color:${LEVEL_COLORS[i]}">${r.label}</span>
+            <span class="threshold-val">${r.val}</span>
+          </div>`).join("") : "";
+  });
+
+  document.querySelectorAll(".level-btn[data-level]").forEach(b => {
+    b.addEventListener("click", () => {
+      const lv = parseInt(b.dataset.level);
+      state.selectedLevel = lv;
+      document.querySelectorAll(".level-btn").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      const test = TESTS[state.currentIdx];
+      const pi = calcScore(test, lv, state.gender, state.ageGroup, false);
+      const badge = document.getElementById("liveBadge");
+      if (badge && pi !== null) {
+        badge.innerHTML = `<div class="level-badge" style="background:${LEVEL_BG[pi]};border:2px solid ${LEVEL_BORDER[pi]};color:${LEVEL_COLORS[pi]}">${LEVEL_LABELS[pi]}</div>`;
+      }
+      const nb = document.getElementById("nextBtn");
+      if (nb) nb.disabled = false;
+    });
+  });
+
+  const inp = document.getElementById("testInput");
+  if (inp) {
+    inp.addEventListener("input", () => {
+      const test = TESTS[state.currentIdx];
+      const val = parseFloat(inp.value);
+      const valid = !isNaN(val) && (test.allowNegative || val >= 0);
+      const pi = valid ? calcScore(test, val, state.gender, state.ageGroup, state.useAlt) : null;
+      inp.style.borderColor = pi !== null ? LEVEL_COLORS[pi] : "#d0c8be";
+      const badge = document.getElementById("liveBadge");
+      if (badge) {
+        if (pi !== null) {
+          badge.innerHTML = `<div class="level-badge" style="background:${LEVEL_BG[pi]};border:2px solid ${LEVEL_BORDER[pi]};color:${LEVEL_COLORS[pi]}">${LEVEL_LABELS[pi]}</div>`;
+        } else { badge.innerHTML = ""; }
+      }
+      const nb = document.getElementById("nextBtn");
+      if (nb) nb.disabled = inp.value === "" || isNaN(val) || (!test.allowNegative && val < 0);
+    });
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") submitTest(); });
+  }
+
+  document.getElementById("nextBtn")?.addEventListener("click", submitTest);
+}
+
+function submitTest() {
+  const test = TESTS[state.currentIdx];
+  let val;
+  if (test.inputType === "level") {
+    if (state.selectedLevel === null) return;
+    val = state.selectedLevel;
+  } else {
+    const inp = document.getElementById("testInput");
+    if (!inp) return;
+    val = parseFloat(inp.value);
+    if (isNaN(val)) return;
+    if (!test.allowNegative && val < 0) return;
+  }
+  const si = calcScore(test, val, state.gender, state.ageGroup, state.useAlt);
+  state.results[test.id] = { value: val, useAlt: state.useAlt, scoreIdx: si };
+
+  if (state.currentIdx + 1 < TESTS.length) {
+    state.currentIdx++; state.useAlt = false; state.showRef = false; state.selectedLevel = null;
+    render();
+    document.getElementById("testInput")?.focus();
+  } else {
+    state.phase = "result";
+    if (SUBMIT_URL) {
+      state.submitState = "sending";
+      render();
+      submitResults().then(res => {
+        state.submitState = res.ok ? "success" : (res.skip ? "idle" : "error");
+        render();
+      });
+    } else {
+      render();
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+render();
+</script>
+</body>
+</html>
