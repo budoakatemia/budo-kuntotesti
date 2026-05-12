@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karate-tilastot – Budo Akatemia ry</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  min-height: 100vh; background: #f4f1ec; color: #1a1a1a;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-size: 16px; line-height: 1.5;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 2rem 1rem 4rem;
+}
+.card {
+  width: 100%; max-width: 900px; background: #fff;
+  border: 1px solid #d8d0c4; border-radius: 12px;
+  padding: 2rem; box-shadow: 0 4px 24px rgba(0,0,0,.10);
+  margin-bottom: 1.2rem;
+}
+.eyebrow { font-size: .7rem; letter-spacing: .28em; color: #888; text-transform: uppercase; text-align: center; margin-bottom: .3rem; font-weight: 500; }
+h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center; color: #1a1a1a; margin-bottom: .2rem; }
+.sub { font-size: .68rem; color: #999; text-align: center; letter-spacing: .14em; margin-bottom: 1.6rem; font-weight: 500; }
+.rule { width: 48px; height: 2px; background: #c8943a; margin: 0 auto 1.8rem; border-radius: 2px; }
+.lbl { font-size: .72rem; font-weight: 700; letter-spacing: .1em; color: #555; text-transform: uppercase; margin-bottom: .5rem; display: block; }
+.seg { display: flex; background: #f0ece6; border: 1px solid #d4ccc2; border-radius: 8px; overflow: hidden; margin-bottom: 1.2rem; padding: 3px; gap: 3px; }
+.seg button { flex: 1; padding: .5rem .6rem; border: none; cursor: pointer; font-family: inherit; font-size: .9rem; font-weight: 500; background: transparent; color: #777; border-radius: 6px; transition: all .15s; }
+.seg button.active { background: #fff; color: #1a1a1a; font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.btn-primary { padding: .65rem 1.2rem; background: #c8943a; color: #fff; border: none; border-radius: 8px; font-size: .9rem; font-family: inherit; font-weight: 700; cursor: pointer; }
+.btn-primary:hover { background: #b07e2e; }
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .8rem; margin-bottom: 1.6rem; }
+.summary-tile { background: #f8f6f2; border: 1px solid #e0d8ce; border-radius: 8px; padding: 1rem; text-align: center; }
+.summary-label { font-size: .65rem; font-weight: 700; letter-spacing: .12em; color: #888; text-transform: uppercase; margin-bottom: .35rem; }
+.summary-value { font-size: 1.8rem; font-weight: 700; color: #c8943a; }
+.summary-sub { font-size: .72rem; color: #888; margin-top: .15rem; }
+.test-stats { background: #f8f6f2; border: 1px solid #e8e0d4; border-radius: 8px; padding: 1.1rem; margin-bottom: .8rem; }
+.test-stats-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .8rem; }
+.test-stats-icon { font-size: 1.4rem; }
+.test-stats-name { font-size: 1rem; font-weight: 700; color: #1a1a1a; }
+.test-stats-cat { font-size: .65rem; font-weight: 600; letter-spacing: .08em; }
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin-bottom: .35rem; }
+.stat-cell { background: #fff; border: 1px solid #ebe2d6; border-radius: 6px; padding: .55rem .6rem; text-align: center; }
+.stat-cell-label { font-size: .6rem; font-weight: 700; color: #888; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .15rem; }
+.stat-cell-value { font-size: 1rem; font-weight: 700; color: #1a1a1a; }
+.stat-cell-unit { font-size: .65rem; color: #888; font-weight: 400; }
+.empty-state { text-align: center; padding: 3rem 1rem; color: #888; font-size: .9rem; }
+.loading { text-align: center; padding: 3rem 1rem; color: #888; font-size: .9rem; }
+.error-state { background: #fde8e8; border: 1px solid #fca5a5; border-radius: 8px; padding: 1rem; color: #991b1b; font-size: .85rem; margin-bottom: 1rem; }
+.last-update { font-size: .68rem; color: #888; text-align: center; margin-top: 1rem; }
+.bar-chart { background: #fff; border: 1px solid #ebe2d6; border-radius: 6px; padding: .8rem; margin-top: .6rem; }
+.bar-chart-title { font-size: .65rem; font-weight: 700; letter-spacing: .1em; color: #888; text-transform: uppercase; margin-bottom: .6rem; }
+.bar { display: flex; align-items: center; gap: .5rem; margin-bottom: .25rem; font-size: .75rem; }
+.bar-label { width: 90px; color: #555; flex-shrink: 0; }
+.bar-track { flex: 1; height: 14px; background: #f0ece6; border-radius: 4px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width .5s ease; }
+.bar-value { width: 30px; text-align: right; color: #1a1a1a; font-weight: 700; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ╔═════════════════════════════════════════════════════════════════════════╗
+// ║  TÄRKEÄÄ: Liitä alle sama Google Apps Script -palvelusi URL              ║
+// ║  joka asetettiin kuntotestin tiedostoon.                                ║
+// ╚═════════════════════════════════════════════════════════════════════════╝
+const FETCH_URL = ""; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
+
+const LEVEL_COLORS = ["#166534","#3a7c1a","#92600a","#b54a0a","#991b1b"];
+const LEVEL_LABELS = ["Erinomainen","Hyvä","Tyydyttävä","Välttävä","Kehitettävä"];
+
+const CAT_COLORS = {
+  voima:        { text:"#9b1c1c", bg:"#fde8e8", border:"#fca5a5" },
+  keskivartalo: { text:"#1e3a8a", bg:"#dbeafe", border:"#93c5fd" },
+  jalkavoima:   { text:"#581c87", bg:"#ede9fe", border:"#c4b5fd" },
+  rajahtavyys:  { text:"#78350f", bg:"#fef3c7", border:"#fcd34d" },
+  tasapaino:    { text:"#155e75", bg:"#cffafe", border:"#67e8f9" },
+  liikkuvuus:   { text:"#065f46", bg:"#d1fae5", border:"#6ee7b7" },
+};
+
+const TESTS_META = {
+  punnerrukset:    { name:"Punnerrukset",       icon:"🥊", category:"voima",        unit:"kpl" },
+  riipunta:        { name:"Riipunta / leuat",   icon:"🏋️", category:"voima",       unit:"sek/kpl" },
+  vatsalihakset:   { name:"Vatsalihakset 60s",  icon:"🫀", category:"keskivartalo", unit:"kpl" },
+  lankku:          { name:"Lankku",              icon:"🛡️", category:"keskivartalo", unit:"sek" },
+  shikodachi:      { name:"Shiko-dachi -pito",   icon:"🏯", category:"jalkavoima",   unit:"sek" },
+  pituushyppy:     { name:"Vauhditon pituushyppy", icon:"🦘", category:"rajahtavyys", unit:"cm" },
+  hyppykyykky:     { name:"Hyppykyykyt 30s",     icon:"🔥", category:"rajahtavyys", unit:"kpl" },
+  ashiukebalance:  { name:"Ashi-uke tasapaino",  icon:"⚖️", category:"tasapaino",   unit:"sek" },
+  yokogeripito:    { name:"Yoko-geri -pito",     icon:"🌀", category:"liikkuvuus",  unit:"taso" },
+  sitandreach:     { name:"Eteentaivutus istuen", icon:"🤸", category:"liikkuvuus",  unit:"cm" },
+};
+
+const CAT_NAMES = {
+  voima:"Voima & kestävyys", keskivartalo:"Keskivartalo", jalkavoima:"Jalkavoima",
+  rajahtavyys:"Räjähtävyys", tasapaino:"Tasapaino", liikkuvuus:"Liikkuvuus",
+};
+
+let state = {
+  filterGender: "all",   // all | m | n
+  filterAge: "all",      // all | nuori | keski | masters
+  loading: true,
+  error: null,
+  data: [],              // [{ timestamp, gender, ageGroup, results: { testId: { value, scoreIdx } } }]
+  lastUpdate: null,
+};
+
+// ─── DATA FETCH ──────────────────────────────────────────────────────────────
+function loadData() {
+  if (!FETCH_URL) {
+    state.loading = false;
+    state.error = "FETCH_URL ei ole asetettu. Liitä Apps Script -URL koodin alkuun.";
+    render();
+    return;
+  }
+  state.loading = true;
+  render();
+  fetch(FETCH_URL + "?action=fetch")
+    .then(r => r.json())
+    .then(data => {
+      state.data = Array.isArray(data) ? data : [];
+      state.loading = false;
+      state.lastUpdate = new Date().toLocaleString("fi-FI");
+      render();
+    })
+    .catch(err => {
+      state.loading = false;
+      state.error = "Tietojen haku epäonnistui: " + err.message;
+      render();
+    });
+}
+
+// ─── FILTERING & STATISTICS ──────────────────────────────────────────────────
+function filteredData() {
+  return state.data.filter(d => {
+    if (state.filterGender !== "all" && d.gender !== state.filterGender) return false;
+    if (state.filterAge !== "all" && d.ageGroup !== state.filterAge) return false;
+    return true;
+  });
+}
+
+function testStats(testId) {
+  const vals = filteredData()
+    .map(d => d.results?.[testId]?.value)
+    .filter(v => v != null && !isNaN(v))
+    .map(v => parseFloat(v));
+  if (vals.length === 0) return null;
+  const sum = vals.reduce((a,b) => a+b, 0);
+  return {
+    n: vals.length,
+    min: Math.min(...vals),
+    max: Math.max(...vals),
+    avg: sum / vals.length,
+  };
+}
+
+function levelDistribution(testId) {
+  const buckets = [0,0,0,0,0];
+  filteredData().forEach(d => {
+    const idx = d.results?.[testId]?.scoreIdx;
+    if (idx != null && idx >= 0 && idx <= 4) buckets[idx]++;
+  });
+  return buckets;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  document.getElementById("app").innerHTML = renderMain();
+  bindEvents();
+}
+
+function segBtn(val, label, active, group) {
+  return `<button class="${active?'active':''}" data-group="${group}" data-val="${val}">${label}</button>`;
+}
+
+function renderMain() {
+  const filtered = filteredData();
+  const total = filtered.length;
+
+  // Header card
+  const header = `<div class="card">
+    <div class="eyebrow">Budo Akatemia ry · Shorin-ryu Seibukan</div>
+    <h1>Seuran kuntotestin tilastot</h1>
+    <div class="sub">ANONYYMI YHTEENVETO</div>
+    <div class="rule"></div>
+    <span class="lbl">Sukupuoli</span>
+    <div class="seg">
+      ${segBtn("all","Kaikki",state.filterGender==="all","gender")}
+      ${segBtn("m","Miehet",state.filterGender==="m","gender")}
+      ${segBtn("n","Naiset",state.filterGender==="n","gender")}
+    </div>
+    <span class="lbl">Ikäryhmä</span>
+    <div class="seg">
+      ${segBtn("all","Kaikki",state.filterAge==="all","age")}
+      ${segBtn("nuori","16–29 v",state.filterAge==="nuori","age")}
+      ${segBtn("keski","30–44 v",state.filterAge==="keski","age")}
+      ${segBtn("masters","45–65 v",state.filterAge==="masters","age")}
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem">
+      <span style="font-size:.78rem;color:#666">
+        <strong style="color:#c8943a">${total}</strong> testitulosta valituilla suodattimilla
+      </span>
+      <button class="btn-primary" id="refreshBtn">↻ Päivitä</button>
+    </div>
+  </div>`;
+
+  if (state.loading) {
+    return header + `<div class="card"><div class="loading">Ladataan tietoja…</div></div>`;
+  }
+
+  if (state.error) {
+    return header + `<div class="card"><div class="error-state">${state.error}</div></div>`;
+  }
+
+  if (total === 0) {
+    return header + `<div class="card"><div class="empty-state">Ei vielä testituloksia valituilla suodattimilla.</div></div>`;
+  }
+
+  // Test stats cards
+  const testCards = Object.keys(TESTS_META).map(testId => {
+    const meta = TESTS_META[testId];
+    const stats = testStats(testId);
+    if (!stats) return "";
+    const cc = CAT_COLORS[meta.category];
+    const dist = levelDistribution(testId);
+    const maxBar = Math.max(...dist);
+
+    const bars = dist.map((count, i) => {
+      const pct = maxBar > 0 ? (count / maxBar * 100) : 0;
+      return `<div class="bar">
+        <span class="bar-label" style="color:${LEVEL_COLORS[i]}">${LEVEL_LABELS[i]}</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${pct}%;background:${LEVEL_COLORS[i]}"></div>
+        </div>
+        <span class="bar-value">${count}</span>
+      </div>`;
+    }).join("");
+
+    return `<div class="test-stats">
+      <div class="test-stats-header">
+        <span class="test-stats-icon">${meta.icon}</span>
+        <div>
+          <div class="test-stats-name">${meta.name}</div>
+          <div class="test-stats-cat" style="color:${cc.text}">${CAT_NAMES[meta.category]}</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-cell-label">Min</div>
+          <div class="stat-cell-value">${stats.min}<span class="stat-cell-unit"> ${meta.unit}</span></div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Keskiarvo</div>
+          <div class="stat-cell-value">${stats.avg.toFixed(1)}<span class="stat-cell-unit"> ${meta.unit}</span></div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">Max</div>
+          <div class="stat-cell-value">${stats.max}<span class="stat-cell-unit"> ${meta.unit}</span></div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-label">n</div>
+          <div class="stat-cell-value">${stats.n}</div>
+        </div>
+      </div>
+      <div class="bar-chart">
+        <div class="bar-chart-title">Tasojakauma</div>
+        ${bars}
+      </div>
+    </div>`;
+  }).filter(s => s).join("");
+
+  const lastUpdateLine = state.lastUpdate ? `<div class="last-update">Päivitetty: ${state.lastUpdate}</div>` : "";
+
+  return header + `<div class="card">${testCards}${lastUpdateLine}</div>`;
+}
+
+function bindEvents() {
+  document.querySelectorAll(".seg button[data-group]").forEach(b => {
+    b.addEventListener("click", () => {
+      const g = b.dataset.group, v = b.dataset.val;
+      if (g === "gender") state.filterGender = v;
+      if (g === "age")    state.filterAge = v;
+      render();
+    });
+  });
+  document.getElementById("refreshBtn")?.addEventListener("click", loadData);
+}
+
+// ─── INIT ───────────────────────────────────────────────────────────────────
+render();
+loadData();
+</script>
+</body>
+</html>
