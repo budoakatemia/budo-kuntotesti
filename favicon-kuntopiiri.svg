@@ -1,34 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Rounded gradient background -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1c6e8c"/>
+    <linearGradient id="bgOcean" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2882a0"/>
       <stop offset="100%" stop-color="#0e4a63"/>
-    </linearGradient>
-    <linearGradient id="sun" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#f4a73c"/>
-      <stop offset="100%" stop-color="#e76f51"/>
     </linearGradient>
   </defs>
 
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect width="180" height="180" rx="40" fill="url(#bgOcean)"/>
+  <rect x="11" y="11" width="158" height="158" rx="34" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="2"/>
 
-  <!-- Sun -->
-  <circle cx="256" cy="200" r="80" fill="url(#sun)"/>
-
-  <!-- Light rays -->
-  <g stroke="rgba(244, 167, 60, 0.5)" stroke-width="6" stroke-linecap="round" fill="none">
-    <line x1="256" y1="80" x2="256" y2="105"/>
-    <line x1="160" y1="200" x2="135" y2="200"/>
-    <line x1="356" y1="200" x2="381" y2="200"/>
-    <line x1="180" y1="124" x2="200" y2="142"/>
-    <line x1="332" y1="124" x2="312" y2="142"/>
-  </g>
-
-  <!-- Wave lines representing ocean/movement -->
-  <g fill="none" stroke="white" stroke-width="14" stroke-linecap="round">
-    <path d="M 80 340 Q 160 310 256 340 T 432 340"/>
-    <path d="M 80 390 Q 160 360 256 390 T 432 390" opacity="0.7"/>
-    <path d="M 80 440 Q 160 410 256 440 T 432 440" opacity="0.4"/>
-  </g>
+  <!-- 道 (Dō) kanji - the path/way -->
+  <text x="90" y="138"
+        font-family="'Noto Sans CJK JP', 'Noto Sans JP', 'Yu Gothic', sans-serif"
+        font-size="135"
+        font-weight="700"
+        fill="white"
+        text-anchor="middle"
+        style="dominant-baseline: alphabetic;">道</text>
 </svg>
