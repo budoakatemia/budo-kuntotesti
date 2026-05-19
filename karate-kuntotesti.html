@@ -100,7 +100,7 @@ h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center
 // ║  Jätä tyhjäksi jos et halua lähettää tuloksia mihinkään.                ║
 // ║                                                                         ║
 // ╚═════════════════════════════════════════════════════════════════════════╝
-const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxrvg6zjgxI21rxzxqKe_SI2D_Cw1nayDBrjhzeDbQsLSnFQOzCx6wwNI1Rr5iN0Mld/exec"; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
+const SUBMIT_URL = ""; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
 
 // ─── LEVEL COLORS & LABELS ───────────────────────────────────────────────────
 const LEVEL_COLORS = ["#166534","#3a7c1a","#92600a","#b54a0a","#991b1b"];
@@ -156,7 +156,7 @@ const TESTS = [
     desc:"Kyynärpäät lattiassa, vartalo suorassa linjasta kantapäistä niskaan. Pidä asento mahdollisimman kauan. Lantion vajoaminen tai kohoaminen lopettaa testin.",
     unit:"sek",
     scores:{ m:{ nuori:[120,90,60,30], keski:[100,75,50,25], masters:[75,55,35,15] },
-             n:{ nuori:[100,75,55,25], keski:[85,62,42,20],  masters:[65,45,28,12] } } },
+             n:{ nuori:[105,80,58,28], keski:[90,65,45,22],  masters:[70,48,30,14] } } },
   { id:"shikodachi", category:"jalkavoima", name:"Shiko-dachi -pito", subtitle:"Jalkalihasten staattinen voima", icon:"🏯",
     desc:"Asetu shiko-dachi -asentoon: jalat n. 2× hartioiden leveys, varpaat 45° ulospäin, polvet suoraan varpaiden suuntaan, reidet vaakatasossa tai alle. Kädet vyötäisillä tai ristissä rinnalla. Pidä asento niin kauan kuin mahdollista.",
     unit:"sek",
@@ -165,10 +165,10 @@ const TESTS = [
   { id:"pituushyppy", category:"rajahtavyys", name:"Vauhditon pituushyppy", subtitle:"Alaraajojen räjähtävä voima", icon:"🦘",
     desc:"Jalat hartianlevyisessä asennossa. Kyykisty vapaasti, heilauta kädet ja hyppää mahdollisimman kauas eteenpäin. Ei vauhtia — lähtö paikaltaan. Mittaa kantapäästä lähimpään jälkeen. 2 yritystä, paras tulos.",
     unit:"cm",
-    scores:{ m:{ nuori:[220,195,165,135], keski:[200,175,148,118], masters:[170,148,120,92] },
+    scores:{ m:{ nuori:[230,200,168,138], keski:[205,178,150,120], masters:[175,150,122,94] },
              n:{ nuori:[175,155,130,105], keski:[158,138,115,90],  masters:[133,113,90,68] } } },
   { id:"hyppykyykky", category:"rajahtavyys", name:"Hyppykyykyt 30 sek", subtitle:"Räjähtävä kestävyys", icon:"🔥",
-    desc:"Laske mahdollisimman monta hyppykyykkyä 30 sekunnissa. Täysi kyykky (reidet vaakatasoon tai alle), täysi ojennus ylös hypyllä.",
+    desc:"Laske mahdollisimman monta hyppykyykkyä 30 sekunnissa. Polvet noin 90° kulmaan (reidet vaakatasoa kohti, mutta ei alle — räjähtävyys säilyy), täysi ojennus räjähtävällä hypyllä ylös. Laskeudu pehmeästi kantapäille.",
     unit:"kpl / 30 sek",
     scores:{ m:{ nuori:[24,18,13,8], keski:[20,15,10,6], masters:[15,11,7,4] },
              n:{ nuori:[20,15,10,6], keski:[17,12,8,4],  masters:[12,8,5,2] } } },
