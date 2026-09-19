@@ -102,6 +102,26 @@ h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center
 .submit-status.success { background: #d4f0db; color: #1a5a2a; }
 .submit-status.error { background: #f9dcdc; color: #8a1a1a; }
 #app { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.ref-source { font-size: .74rem; color: #3a5a3a; background: #eef6ee; border-radius: 6px; padding: .45rem .7rem; margin-top: .35rem; line-height: 1.5; }
+.ref-source.expert { color: #7a4a0a; background: #fdf3e2; }
+.ref-footnote { font-size: .74rem; color: #777; margin: .5rem 0 1.4rem; line-height: 1.5; }
+.result-delta { font-size: .72rem; font-weight: 700; text-align: right; margin-top: .1rem; }
+.delta-up { color: #166534; } .delta-down { color: #991b1b; } .delta-same { color: #888; }
+.compare-box { background: #eef4fb; border: 1px solid #bcd3ee; border-radius: 8px; padding: .9rem 1.05rem; margin-bottom: 1.2rem; font-size: .85rem; color: #1e3a5f; line-height: 1.65; }
+.compare-box strong { display: block; margin-bottom: .2rem; color: #163050; }
+.history-note { background: #f8f6f2; border: 1px solid #e0d8ce; border-radius: 8px; padding: .8rem 1rem; margin-bottom: 1.2rem; font-size: .8rem; color: #555; line-height: 1.6; }
+.save-row { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-bottom: .6rem; }
+.btn-save { padding: .8rem .6rem; background: #fff; color: #9a6c1a; border: 2px solid #c8943a; border-radius: 8px; font-size: .95rem; font-family: inherit; font-weight: 700; cursor: pointer; }
+.btn-save:hover { background: #fdf7ee; }
+.save-status { text-align: center; font-size: .8rem; color: #555; min-height: 1.3em; margin-bottom: .6rem; }
+.link-btn { background: none; border: none; color: #888; font-family: inherit; font-size: .78rem; text-decoration: underline; cursor: pointer; padding: .2rem; }
+@media print {
+  body { background: #fff; padding: 0; }
+  .card { box-shadow: none; border: none; max-width: none !important; padding: 0; }
+  .no-print { display: none !important; }
+  .result-row, .cat-pill, .tips-box, .compare-box, .overall-box { break-inside: avoid; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
 </style>
 </head>
 <body>
@@ -115,7 +135,7 @@ h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center
 // ║  Jätä tyhjäksi jos et halua lähettää tuloksia mihinkään.                ║
 // ║                                                                         ║
 // ╚═════════════════════════════════════════════════════════════════════════╝
-const SUBMIT_URL = ""; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
+const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxrvg6zjgxI21rxzxqKe_SI2D_Cw1nayDBrjhzeDbQsLSnFQOzCx6wwNI1Rr5iN0Mld/exec"; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
 
 // ─── LEVEL COLORS & LABELS ───────────────────────────────────────────────────
 const LEVEL_COLORS = ["#166534","#3a7c1a","#92600a","#b54a0a","#991b1b"];
@@ -151,57 +171,61 @@ const CATEGORIES = [
 
 const TESTS = [
   { id:"punnerrukset", category:"voima", name:"Punnerrukset", subtitle:"Ylävartalon voima", icon:"🥊",
-    desc:"Mahdollisimman monta yhtäjaksoista toistoa ilman taukoa. Täysi liikerata: rinta lähelle lattiaa, käsivarret täysin suoraksi. Naiset: sama liike tai polvilta.",
-    unit:"kpl",
-    scores:{ m:{ nuori:[45,35,25,15], keski:[38,28,20,12], masters:[28,20,13,7] },
-             n:{ nuori:[30,22,14,8],  keski:[24,17,11,6],  masters:[17,11,7,3] } } },
+    desc:"Mahdollisimman monta yhtäjaksoista toistoa ilman taukoa. Täysi liikerata: rinta lähelle lattiaa, käsivarret täysin suoraksi. Miehet tekevät punnerrukset varpailta. Naiset valitsevat polvipunnerruksen, johon ACSM:n viitearvot perustuvat, tai punnerruksen varpailta.",
+    unit:"kpl", inputOptions:["kpl (polvilta)","kpl (varpailta)"], altFor:"n",
+    source:"ACSM:n viitearvot (miehet varpailta, naiset polvilta).", altSource:"Asiantuntija-arvio: naisten varpailta tehdyille punnerruksille ei ole tutkittua väestönormia.", altExpert:true,
+    scores:{ m:{ nuori:[36,29,22,17], keski:[28,20,15,11], masters:[21,14,10,7] },
+             n:{ nuori:[30,21,15,10], keski:[26,18,12,7],  masters:[21,12,8,3] } },
+    altScores:{ n:{ nuori:[22,15,10,6], keski:[18,12,8,4], masters:[14,9,6,3] } } },
   { id:"riipunta", category:"voima", name:"Riipunta / leuat", subtitle:"Ylävartalon kestävyysvoima", icon:"🏋️",
     desc:"Roiku tangosta myötäote, kädet hartianlevyisessä asennossa. Laske aika, jonka pysyt roikkumaan. Vaihtoehto: leuanvedot täydellä liikeradalla.",
-    unit:"sek", inputOptions:["sek (roiku)","kpl (leuat)"],
+    unit:"sek", inputOptions:["sek (roiku)","kpl (leuat)"], expert:true,
+    source:"Asiantuntija-arvio: riipunnalle ja leuanvedoille ei ole tutkittua aikuisten väestönormia.",
     scores:{ m:{ nuori:[60,40,20,10], keski:[50,32,16,8], masters:[35,22,10,5] },
              n:{ nuori:[40,25,12,5],  keski:[30,18,8,3],  masters:[20,12,5,2] } },
     altScores:{ m:{ nuori:[12,8,4,2], keski:[9,6,3,1], masters:[6,4,2,1] },
                 n:{ nuori:[5,3,1,0],  keski:[4,2,1,0], masters:[2,1,0,0] } } },
   { id:"vatsalihakset", category:"keskivartalo", name:"Vatsalihakset 60 sek", subtitle:"Vatsalihasten kestävyysvoima", icon:"🫀",
     desc:"Makaa selällään, polvet koukussa (n. 90°), kädet ristissä rinnalla tai korvien vieressä. Nouse istumaan niin, että kyynärpäät koskettavat polvia. Laske toistot 60 sekunnissa.",
-    unit:"kpl / 60 sek",
+    unit:"kpl / 60 sek", source:"Julkaistut 60 sekunnin istumaannousun normitaulukot.",
     scores:{ m:{ nuori:[50,42,33,24], keski:[45,37,28,20], masters:[38,30,22,14] },
              n:{ nuori:[44,36,27,18], keski:[39,31,23,15], masters:[32,24,17,10] } } },
   { id:"lankku", category:"keskivartalo", name:"Lankku (plank)", subtitle:"Keskivartalon stabiliteetti", icon:"🛡️",
     desc:"Kyynärpäät lattiassa, vartalo suorassa linjasta kantapäistä niskaan. Pidä asento mahdollisimman kauan. Lantion vajoaminen tai kohoaminen lopettaa testin.",
-    unit:"sek",
-    scores:{ m:{ nuori:[120,90,60,30], keski:[100,75,50,25], masters:[75,55,35,15] },
-             n:{ nuori:[105,80,58,28], keski:[90,65,45,22],  masters:[70,48,30,14] } } },
+    unit:"sek", source:"16–29 v: Strand ym. 2014. Vanhemmat ikäryhmät: arvio, koska väestönormeja on vähän.",
+    scores:{ m:{ nuori:[180,130,90,60], keski:[155,110,75,50], masters:[125,90,65,40] },
+             n:{ nuori:[140,100,70,45], keski:[120,85,60,40],  masters:[100,70,50,30] } } },
   { id:"shikodachi", category:"jalkavoima", name:"Shiko-dachi -pito", subtitle:"Jalkalihasten staattinen voima", icon:"🏯",
     desc:"Asetu shiko-dachi -asentoon: jalat n. 2× hartioiden leveys, varpaat 45° ulospäin, polvet suoraan varpaiden suuntaan, reidet vaakatasossa tai alle. Kädet vyötäisillä tai ristissä rinnalla. Pidä asento niin kauan kuin mahdollista.",
-    unit:"sek",
+    unit:"sek", expert:true, source:"Asiantuntija-arvio: lajikohtainen testi, tutkittua väestönormia ei ole.",
     scores:{ m:{ nuori:[120,90,60,30], keski:[100,72,48,24], masters:[75,55,35,15] },
              n:{ nuori:[100,75,50,25], keski:[82,60,40,20],  masters:[60,44,28,12] } } },
   { id:"pituushyppy", category:"rajahtavyys", name:"Vauhditon pituushyppy", subtitle:"Alaraajojen räjähtävä voima", icon:"🦘",
     desc:"Jalat hartianlevyisessä asennossa. Kyykisty vapaasti, heilauta kädet ja hyppää mahdollisimman kauas eteenpäin. Ei vauhtia — lähtö paikaltaan. Mittaa kantapäästä lähimpään jälkeen. 2 yritystä, paras tulos.",
-    unit:"cm",
+    unit:"cm", expert:true, source:"Asiantuntija-arvio, tarkistettu nuorten normiaineistoja vasten: aikuisten väestönormeja on vähän.",
     scores:{ m:{ nuori:[230,200,168,138], keski:[205,178,150,120], masters:[175,150,122,94] },
              n:{ nuori:[175,155,130,105], keski:[158,138,115,90],  masters:[133,113,90,68] } } },
   { id:"hyppykyykky", category:"rajahtavyys", name:"Hyppykyykyt 30 sek", subtitle:"Räjähtävä kestävyys", icon:"🔥",
     desc:"Laske mahdollisimman monta hyppykyykkyä 30 sekunnissa. Polvet noin 90° kulmaan (reidet vaakatasoa kohti, mutta ei alle — räjähtävyys säilyy), täysi ojennus räjähtävällä hypyllä ylös. Laskeudu pehmeästi kantapäille.",
-    unit:"kpl / 30 sek",
+    unit:"kpl / 30 sek", expert:true, source:"Asiantuntija-arvio: tutkittua väestönormia ei ole.",
     scores:{ m:{ nuori:[24,18,13,8], keski:[20,15,10,6], masters:[15,11,7,4] },
              n:{ nuori:[20,15,10,6], keski:[17,12,8,4],  masters:[12,8,5,2] } } },
   { id:"ashiukebalance", category:"tasapaino", name:"Ashi-uke -tasapaino silmät kiinni", subtitle:"Staattinen tasapaino", icon:"⚖️",
     desc:"Seiso paljain jaloin yhdellä jalalla, vapaa jalka ashi-uke -asennossa (polvi nostettuna, jalkapöytä koskettaa tukijalan polvea tai säärtä). Kädet vyötäisillä. Sulje silmät ja aloita ajanotto. Testi päättyy kun: jalkapöytä irtoaa tukijalasta, tukijalka liikkuu, kädet irtoavat vyötäisiltä TAI silmät avautuvat. 2 yritystä per jalka, paras tulos.",
-    unit:"sek",
+    unit:"sek", source:"Springer ym. 2007: tasapaino heikkenee iän myötä, sukupuolella ei ole vaikutusta.",
     scores:{ m:{ nuori:[30,20,12,6], keski:[22,14,9,4], masters:[15,10,6,3] },
-             n:{ nuori:[32,22,13,7], keski:[24,16,10,5], masters:[16,11,7,3] } } },
+             n:{ nuori:[30,20,12,6], keski:[22,14,9,4], masters:[15,10,6,3] } } },
   { id:"yokogeripito", category:"liikkuvuus", name:"Yoko-geri -pito", subtitle:"Aktiivinen lonkan abduktio", icon:"🌀",
     desc:"Nosta jalka yoko-geri -asentoon: lonkka kierrettynä, polvi ojennettuna sivulle. Pidä asento 3 sekuntia ilman tukea. Tukijalka pysyy paikallaan, vartalon kallistus alle 20°. Arvioi kuinka korkealle jalkapohja yltää suhteessa kehoon.",
-    unit:"taso", inputType:"level", levels:BODY_LEVELS,
+    unit:"taso", inputType:"level", levels:BODY_LEVELS, expert:true,
+    source:"Asiantuntija-arvio: lajikohtainen testi, tutkittua väestönormia ei ole.",
     scores:{ m:{ nuori:[5,4,3,2], keski:[4,4,3,2], masters:[4,3,2,1] },
              n:{ nuori:[5,4,3,2], keski:[5,4,3,2], masters:[4,3,3,2] } } },
   { id:"sitandreach", category:"liikkuvuus", name:"Eteentaivutus istuen", subtitle:"Takareisien ja alaselän liikkuvuus", icon:"🤸",
     desc:"Istu lattialla, jalat suorina edessä, kantapäät yhdessä, jalkapohjat tasaisesti seinää tai laatikkoa vasten. Pidä polvet suorina koko liikkeen ajan. Kurkota molemmilla käsillä rauhallisesti eteenpäin niin pitkälle kuin pääset. Mittaa sormenpäiden kohta suhteessa varpaisiin: positiivinen = sormet ylittävät varpaat, negatiivinen = sormet jäävät varpaiden taakse.",
-    unit:"cm", allowNegative:true,
-    scores:{ m:{ nuori:[22,15,8,0],  keski:[18,11,4,-4], masters:[12,7,2,-5] },
-             n:{ nuori:[27,20,12,4], keski:[22,15,8,0],  masters:[18,12,6,-2] } } },
+    unit:"cm", allowNegative:true, source:"ACSM:n (CSEP) viitearvot muunnettuna varpaiden tasolle.",
+    scores:{ m:{ nuori:[14,8,4,-1],  keski:[11,5,0,-6], masters:[9,2,-2,-10] },
+             n:{ nuori:[15,11,7,2],  keski:[14,9,5,0], masters:[12,7,4,-1] } } },
 ];
 
 const DEV_TIPS = {
@@ -213,7 +237,75 @@ const DEV_TIPS = {
   liikkuvuus:["Loistava liikkuvuus — ylläpidä päivittäisillä dynaamisilla ja staattisilla venytyksillä.","Hyvä liikkuvuus — kehitä takareiden ja lonkan liikkuvuutta säännöllisillä venytyksillä.","Kehitä: 10 min päivittäin lonkan ja takareiden venytyksiä, pidot 30 sek.","Aloita rauhallisesti — staattiset venytykset lämpimälle lihakselle, ei kylmänä.","Liikkuvuus paranee parhaiten harjoituksen jälkeen — venyttele tunnin lopussa."],
 };
 
-let state = { phase: "intro", gender: "m", ageGroup: "nuori", currentIdx: 0, results: {}, useAlt: false, showRef: false, selectedLevel: null, submitState: "idle" };
+let state = { phase: "intro", gender: "m", ageGroup: "nuori", currentIdx: 0, results: {}, useAlt: false, showRef: false, selectedLevel: null, submitState: "idle", testDate: null, prev: null, saveMsg: "", draft: "", negSign: false };
+
+// ─── KESKENERÄINEN TESTI (säilyy, jos puhelin lukittuu tai sivu latautuu uudelleen) ──
+const PROGRESS_KEY = "budoakatemia-kuntotesti-kesken";
+const PROGRESS_MAX_AGE = 12 * 3600 * 1000;
+function saveProgress() {
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ t: Date.now(), gender: state.gender, ageGroup: state.ageGroup, currentIdx: state.currentIdx, results: state.results })); } catch (e) {}
+}
+function loadProgress() {
+  try {
+    const p = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "null");
+    if (p && Date.now() - p.t < PROGRESS_MAX_AGE && p.results && Object.keys(p.results).length) return p;
+  } catch (e) {}
+  return null;
+}
+function clearProgress() { try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {} }
+
+// Hyväksyy myös desimaalipilkun (12,5).
+function parseInput(str) { return parseFloat(String(str).replace(",", ".").trim()); }
+
+// ─── OMA HISTORIA (tallentuu vain tähän selaimeen) ───────────────────────────
+const HISTORY_KEY = "budoakatemia-kuntotesti-historia";
+const HISTORY_MAX = 20;
+function loadHistory() {
+  try { const h = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); return Array.isArray(h) ? h : []; }
+  catch (e) { return []; }
+}
+function saveHistory(h) {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(-HISTORY_MAX))); return true; }
+  catch (e) { return false; }
+}
+function fmtDate(iso) { try { return new Date(iso).toLocaleDateString("fi-FI"); } catch (e) { return ""; } }
+function fmtNum(n) { return String(Math.round(n * 10) / 10).replace(".", ","); }
+
+// Muutos edelliseen testiin. Kaikissa testeissä suurempi arvo on parempi.
+function deltaFor(test) {
+  const cur = state.results[test.id], prev = state.prev?.results?.[test.id];
+  if (!cur || !prev || !!cur.useAlt !== !!prev.useAlt) return null;
+  const d = Math.round((parseFloat(cur.value) - parseFloat(prev.value)) * 10) / 10;
+  if (isNaN(d)) return null;
+  const unit = test.inputType === "level" ? " taso" : " " + (displayUnit(test, cur.useAlt).split(" ")[0]);
+  if (d === 0) return { d, cls: "delta-same", text: "± 0 edelliseen" };
+  return { d, cls: d > 0 ? "delta-up" : "delta-down", text: (d > 0 ? "▲ +" : "▼ −") + fmtNum(Math.abs(d)) + unit };
+}
+
+function resultsAsText() {
+  const gLabel = state.gender === "m" ? "Miehet" : "Naiset";
+  const aLabel = {nuori:"16–29 v", keski:"30–44 v", masters:"45–65 v"}[state.ageGroup];
+  const L = ["Budo Akatemia – karate-kuntotesti " + fmtDate(state.testDate), gName(gLabel, aLabel),
+             "Kokonaisarvio: " + LEVEL_LABELS[overallIdx()], ""];
+  TESTS.forEach(t => {
+    const r = state.results[t.id]; if (!r) return;
+    const unit = displayUnit(t, r.useAlt);
+    const dl = deltaFor(t);
+    L.push(t.name + ": " + displayValue(t, r.value, r.useAlt) + (unit ? " " + unit : "") + " – " + LEVEL_LABELS[r.scoreIdx] + (dl ? " (" + dl.text + ")" : ""));
+  });
+  const imp = improvedTests();
+  if (state.prev) { L.push(""); L.push("Parantuneet edellisestä testistä (" + fmtDate(state.prev.date) + "): " + (imp.length ? imp.join(", ") : "ei parantuneita tuloksia")); }
+  return L.join("\n");
+}
+function gName(g, a) { return g + " · " + a; }
+function improvedTests() { return TESTS.filter(t => { const dl = deltaFor(t); return dl && dl.d > 0; }).map(t => t.name); }
+
+// Suoritustavan valinta voi koskea vain toista sukupuolta (punnerrukset: naiset).
+function optionsFor(test) {
+  return test.inputOptions && (!test.altFor || test.altFor === state.gender) ? test.inputOptions : null;
+}
+function isExpert(test, useAlt) { return !!(test.expert || (useAlt && test.altExpert)); }
+function sourceFor(test, useAlt) { return useAlt && test.altSource ? test.altSource : test.source; }
 
 function calcScore(test, rawVal, gender, age, useAlt) {
   const t = useAlt ? (test.altScores?.[gender]?.[age]) : test.scores[gender][age];
@@ -236,7 +328,8 @@ function thresholdRows(test, gender, age, useAlt) {
       const lev = BODY_LEVELS.find(l => l.v === v);
       return prefix + (lev ? lev.short : v);
     }
-    const unit = test.inputOptions ? test.inputOptions[useAlt ? 1 : 0] : test.unit;
+    const opts = optionsFor(test);
+    const unit = opts ? opts[useAlt ? 1 : 0] : test.unit;
     return `${prefix}${v} ${unit}`;
   };
   return [
@@ -262,7 +355,7 @@ function overallIdx() {
 }
 
 function segBtn(val, label, active, group) {
-  return `<button class="${active?'active':''}" data-group="${group}" data-val="${val}">${label}</button>`;
+  return `<button type="button" class="${active?'active':''}" aria-pressed="${active}" data-group="${group}" data-val="${val}">${label}</button>`;
 }
 
 function displayValue(test, val, useAlt) {
@@ -275,7 +368,8 @@ function displayValue(test, val, useAlt) {
 
 function displayUnit(test, useAlt) {
   if (test.inputType === "level") return "";
-  return test.inputOptions ? test.inputOptions[useAlt ? 1 : 0] : test.unit;
+  const opts = optionsFor(test);
+  return opts ? opts[useAlt ? 1 : 0] : test.unit;
 }
 
 // ─── DATA SUBMISSION ─────────────────────────────────────────────────────────
@@ -306,13 +400,6 @@ function submitResults() {
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
-function render() {
-  const app = document.getElementById("app");
-  if (state.phase === "intro")  app.innerHTML = renderIntro();
-  if (state.phase === "test")   app.innerHTML = renderTest();
-  if (state.phase === "result") app.innerHTML = renderResult();
-  bindEvents();
-}
 
 function renderIntro() {
   const testList = CATEGORIES.map(cat => {
@@ -322,7 +409,7 @@ function renderIntro() {
         <span style="font-size:1.1rem">${t.icon}</span>
         <div>
           <div class="intro-test-item-name">${t.name}</div>
-          <div class="intro-test-item-sub">${t.subtitle}</div>
+          <div class="intro-test-item-sub">${t.subtitle}${t.expert ? " · viitearvo: asiantuntija-arvio" : ""}</div>
         </div>
       </div>`).join("");
     return `<div class="intro-test-cat">
@@ -335,6 +422,21 @@ function renderIntro() {
     <div class="privacy-note">
       <strong>🔒 Tietojen tallennus</strong>
       Tuloksesi tallennetaan anonyymisti seuran tilastoja varten. Kerätään vain ikäryhmä, sukupuoli ja testitulokset — ei nimeä, sähköpostia tai muita tunnistetietoja.
+    </div>` : "";
+
+  const progress = loadProgress();
+  const resumeHtml = progress ? `
+    <div class="intro-info">
+      <strong>Keskeneräinen testi</strong>
+      Olet tehnyt ${Object.keys(progress.results).length} / ${TESTS.length} testiä. Voit jatkaa siitä, mihin jäit.
+      <button class="btn-primary" id="resumeBtn">Jatka testiä →</button>
+    </div>` : "";
+  const hist = loadHistory();
+  const historyNote = hist.length ? `
+    <div class="history-note">
+      Tällä laitteella on tallennettuna ${hist.length} aiempi${hist.length > 1 ? "a testiä" : " testi"}, viimeisin ${fmtDate(hist[hist.length-1].date)}.
+      Tuloksiasi verrataan siihen testin lopussa.
+      <div style="margin-top:.3rem"><button class="link-btn" id="clearHistBtn">Poista tallennetut tulokset</button></div>
     </div>` : "";
 
   return `<div class="card">
@@ -360,8 +462,39 @@ function renderIntro() {
       Tee 10 min alkulämmittely. Suorita testit järjestyksessä. Syötä tulos heti suorituksen jälkeen.
     </div>
     ${privacyNote}
-    <button class="btn-primary" id="startBtn">Aloita testi →</button>
+    ${historyNote}
+    ${resumeHtml}
+    <button class="${progress ? "btn-ghost" : "btn-primary"}" id="startBtn">${progress ? "Aloita uusi testi" : "Aloita testi →"}</button>
   </div>`;
+}
+
+function refRowsHtml(test) {
+  const useAlt = test.inputType === "level" ? false : state.useAlt;
+  const src = sourceFor(test, useAlt);
+  const note = src ? `<div class="ref-source${isExpert(test, useAlt) ? " expert" : ""}">${isExpert(test, useAlt) ? "⚠ " : "📚 "}${src}</div>` : "";
+  return thresholdRows(test, state.gender, state.ageGroup, state.useAlt).map((r,i) =>
+    `<div class="threshold-row" style="background:${LEVEL_BG[i]};border:1px solid ${LEVEL_BORDER[i]}">
+      <span class="threshold-lbl" style="color:${LEVEL_COLORS[i]}">${r.label}</span>
+      <span class="threshold-val">${r.val}</span>
+    </div>`).join("") + note;
+}
+
+function badgeHtml(pi) {
+  return pi === null ? "" : `<div class="level-badge" style="background:${LEVEL_BG[pi]};border:2px solid ${LEVEL_BORDER[pi]};color:${LEVEL_COLORS[pi]}">${LEVEL_LABELS[pi]}</div>`;
+}
+
+// Nykyisen testin syötetty arvo, tai null jos syöte ei kelpaa.
+function currentValue(test) {
+  if (test.inputType === "level") return state.selectedLevel;
+  const v = parseInput(state.draft);
+  if (isNaN(v)) return null;
+  const val = test.allowNegative && state.negSign ? -Math.abs(v) : v;
+  if (!test.allowNegative && val < 0) return null;
+  return val;
+}
+function currentScore(test) {
+  const v = currentValue(test);
+  return v === null ? null : calcScore(test, v, state.gender, state.ageGroup, test.inputType === "level" ? false : state.useAlt);
 }
 
 function renderTest() {
@@ -370,35 +503,32 @@ function renderTest() {
   const cc   = CAT_COLORS[test.category];
   const total = TESTS.length;
   const pct = ((state.currentIdx + 1) / total * 100).toFixed(1);
-  const hasAlt = !!(test.inputOptions && test.altScores);
+  const opts = optionsFor(test);
+  const hasAlt = !!(opts && test.altScores?.[state.gender]);
   const isLevel = test.inputType === "level";
-  const unitLabel = isLevel ? "kehontaso" : (hasAlt ? test.inputOptions[state.useAlt ? 1 : 0] : test.unit);
+  const unitLabel = isLevel ? "kehontaso" : (hasAlt ? opts[state.useAlt ? 1 : 0] : test.unit);
+  const pi = currentScore(test);
 
-  const altToggle = hasAlt ? `
-    <div class="seg" style="margin-bottom:.9rem">
-      <button class="${!state.useAlt?'active':''}" data-group="alt" data-val="0">${test.inputOptions[0]}</button>
-      <button class="${state.useAlt?'active':''}" data-group="alt" data-val="1">${test.inputOptions[1]}</button>
+  const altToggle = hasAlt ? `<div class="seg" style="margin-bottom:.9rem">
+      ${segBtn("0", opts[0], !state.useAlt, "alt")}
+      ${segBtn("1", opts[1], state.useAlt, "alt")}
     </div>` : "";
 
-  let inputHtml = "";
-  if (isLevel) {
-    inputHtml = `<div class="level-selector">
-      ${[...BODY_LEVELS].reverse().map(lev => `
-        <button class="level-btn ${state.selectedLevel===lev.v?'active':''}" data-level="${lev.v}">
-          <span><span class="level-num">${lev.v}</span>${lev.label}</span>
-        </button>
-      `).join("")}
-    </div>`;
-  } else {
-    inputHtml = `<input id="testInput" class="number-input" type="number" inputmode="decimal" ${test.allowNegative ? "" : 'min="0"'} placeholder="0" value="">`;
-  }
+  // iPhonen numeronäppäimistössä ei ole miinusmerkkiä, joten suunta valitaan painikkeella.
+  const signToggle = test.allowNegative ? `<div class="seg" style="margin-bottom:.6rem">
+      ${segBtn("plus", "Varpaiden yli (+)", !state.negSign, "sign")}
+      ${segBtn("minus", "Varpaiden taakse (−)", state.negSign, "sign")}
+    </div>` : "";
 
-  const refRows = state.showRef
-    ? thresholdRows(test, state.gender, state.ageGroup, state.useAlt).map((r,i) =>
-        `<div class="threshold-row" style="background:${LEVEL_BG[i]};border:1px solid ${LEVEL_BORDER[i]}">
-          <span class="threshold-lbl" style="color:${LEVEL_COLORS[i]}">${r.label}</span>
-          <span class="threshold-val">${r.val}</span>
-        </div>`).join("") : "";
+  const inputHtml = isLevel
+    ? `<div class="level-selector">
+      ${[...BODY_LEVELS].reverse().map(lev => `
+        <button type="button" class="level-btn ${state.selectedLevel===lev.v?'active':''}" aria-pressed="${state.selectedLevel===lev.v}" data-level="${lev.v}">
+          <span><span class="level-num">${lev.v}</span>${lev.label}</span>
+        </button>`).join("")}
+    </div>`
+    : `${signToggle}<input id="testInput" class="number-input" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="next"
+        aria-label="Tulos, ${unitLabel}" placeholder="0" value="${String(state.draft).replace(/[&"<>]/g, c => ({"&":"&amp;","\"":"&quot;","<":"&lt;",">":"&gt;"}[c]))}" style="border-color:${pi !== null ? LEVEL_COLORS[pi] : "#d0c8be"}">`;
 
   return `<div class="card">
     <div class="progress-bar-wrap">
@@ -419,12 +549,13 @@ function renderTest() {
     ${altToggle}
     <span class="lbl">Tulos — ${unitLabel}</span>
     ${inputHtml}
-    <div id="liveBadge" style="height:2.8rem;margin-bottom:.7rem"></div>
-    <button class="btn-ghost" id="refToggle">${state.showRef ? "▴ Piilota" : "▾ Näytä"} viitearvot</button>
-    <div id="refRows" style="margin-bottom:.3rem">${refRows}</div>
-    <button class="btn-primary" id="nextBtn" disabled>
+    <div id="liveBadge" style="height:2.8rem;margin-bottom:.7rem" aria-live="polite">${badgeHtml(pi)}</div>
+    <button type="button" class="btn-ghost" id="refToggle" aria-expanded="${state.showRef}">${state.showRef ? "▴ Piilota" : "▾ Näytä"} viitearvot</button>
+    <div id="refRows" style="margin-bottom:.3rem">${state.showRef ? refRowsHtml(test) : ""}</div>
+    <button type="button" class="btn-primary" id="nextBtn" ${pi === null ? "disabled" : ""}>
       ${state.currentIdx + 1 < total ? "Seuraava →" : "Näytä tulokset →"}
     </button>
+    ${state.currentIdx > 0 ? `<button type="button" class="btn-ghost" id="backBtn" style="margin-top:.7rem">← Edellinen testi</button>` : ""}
   </div>`;
 }
 
@@ -461,6 +592,8 @@ function renderResult() {
     const cat = CATEGORIES.find(c => c.id === t.category);
     const valStr = displayValue(t, res.value, res.useAlt);
     const unitStr = displayUnit(t, res.useAlt);
+    const dl = deltaFor(t);
+    const deltaHtml = dl ? `<div class="result-delta ${dl.cls}">${dl.text}</div>` : "";
     const dots = [0,1,2,3,4].map(j => `<div class="dot" style="background:${j===si ? LEVEL_COLORS[si] : '#ddd'}"></div>`).join("");
     return `<div class="result-row">
       <span class="result-icon">${t.icon}</span>
@@ -470,11 +603,19 @@ function renderResult() {
       </div>
       <div style="text-align:right;flex-shrink:0">
         <div class="result-value">${valStr}${unitStr ? `<span class="result-unit">${unitStr}</span>` : ""}</div>
-        <div class="result-level" style="color:${LEVEL_COLORS[si]}">${LEVEL_LABELS[si]}</div>
+        <div class="result-level" style="color:${LEVEL_COLORS[si]}">${LEVEL_LABELS[si]}${isExpert(t, res.useAlt) ? " *" : ""}</div>
+        ${deltaHtml}
       </div>
       <div class="dot-col">${dots}</div>
     </div>`;
   }).join("");
+
+  const imp = improvedTests();
+  const compareBox = state.prev ? `
+    <div class="compare-box">
+      <strong>Vertailu edelliseen testiin (${fmtDate(state.prev.date)})</strong>
+      ${imp.length ? "Parantuneet: " + imp.join(", ") + "." : "Yksikään tulos ei parantunut edellisestä testistä."}
+    </div>` : "";
 
   const tips = cs.map(cat => {
     const i = cat.avg ?? 2;
@@ -488,141 +629,188 @@ function renderResult() {
     <div class="eyebrow">Budo Akatemia ry · Shorin-ryu Seibukan</div>
     <h1>Kuntotestin tulokset</h1>
     <div style="text-align:center;margin-bottom:.5rem;font-size:.78rem;color:#888;font-weight:600">
-      ${gLabel} · ${aLabel}
+      ${fmtDate(state.testDate)} · ${gLabel} · ${aLabel}
     </div>
     <div class="rule"></div>
-    ${submitStatus}
+    <div class="no-print">${submitStatus}</div>
     <div class="overall-box" style="background:${LEVEL_BG[oi]};border:2px solid ${LEVEL_BORDER[oi]}">
       <div class="overall-eyebrow">Kokonaisarvio</div>
       <div class="overall-label" style="color:${LEVEL_COLORS[oi]}">${LEVEL_LABELS[oi]}</div>
     </div>
     <div class="cat-grid">${catPills}</div>
+    ${compareBox}
     <div class="results-header">Testikohtaiset tulokset</div>
     ${resultRows}
-    <div style="margin-bottom:1.4rem"></div>
+    <div class="ref-footnote">* Asiantuntija-arvio: testille ei ole tutkittua väestönormia, joten taso on suuntaa antava. Muut tasot perustuvat julkaistuihin väestönormeihin.</div>
     <div class="tips-box">
       <div class="tips-header">Kehitysehdotukset</div>
       ${tips}
     </div>
-    <button class="btn-primary" id="restartBtn">↺ Tee testi uudelleen</button>
+    <div class="no-print">
+      <div class="save-row">
+        <button class="btn-save" id="shareBtn">↗ Jaa tulokset</button>
+        <button class="btn-save" id="printBtn">⤓ Tallenna PDF</button>
+      </div>
+      <div class="save-status" id="saveStatus" role="status">${state.saveMsg}</div>
+      <div class="history-note">
+        Tulokset on tallennettu tähän selaimeen seuraavaa vertailua varten. Tallenna ne silti myös itsellesi:
+        puhelin voi poistaa selaimeen tallennetut tiedot, jos sivulla ei käydä pitkään aikaan.
+      </div>
+      <button class="btn-primary" id="restartBtn">↺ Tee testi uudelleen</button>
+    </div>
   </div>`;
 }
 
-function bindEvents() {
-  document.querySelectorAll(".seg button[data-group]").forEach(b => {
-    b.addEventListener("click", () => {
-      const g = b.dataset.group, v = b.dataset.val;
-      if (g === "gender") state.gender = v;
-      if (g === "age")    state.ageGroup = v;
-      if (g === "alt")    state.useAlt = !!parseInt(v);
-      render();
-      if (state.phase === "test") document.getElementById("testInput")?.focus();
-    });
-  });
+function render() {
+  const app = document.getElementById("app");
+  app.innerHTML = state.phase === "intro" ? renderIntro() : state.phase === "test" ? renderTest() : renderResult();
+}
 
-  document.getElementById("startBtn")?.addEventListener("click", () => {
-    state.phase = "test"; state.currentIdx = 0; state.results = {};
-    state.useAlt = false; state.showRef = false; state.selectedLevel = null;
-    state.submitState = "idle";
-    render();
-    document.getElementById("testInput")?.focus();
-  });
+function focusInput() {
+  // Näppäimistö avataan automaattisesti vain tietokoneella; puhelimessa se peittäisi ohjeen.
+  if (window.matchMedia && matchMedia("(pointer: fine)").matches) document.getElementById("testInput")?.focus();
+}
 
-  document.getElementById("restartBtn")?.addEventListener("click", () => {
-    state.phase = "intro"; state.results = {}; state.submitState = "idle";
-    render();
-  });
+function enterTest(idx) {
+  const test = TESTS[idx], prev = state.results[test.id];
+  state.currentIdx = idx; state.showRef = false;
+  state.useAlt = prev ? !!prev.useAlt : false;
+  state.selectedLevel = test.inputType === "level" && prev ? prev.value : null;
+  state.negSign = !!(prev && prev.value < 0);
+  state.draft = prev && test.inputType !== "level" ? String(Math.abs(prev.value)).replace(".", ",") : "";
+  render();
+  window.scrollTo(0, 0);
+  focusInput();
+}
 
-  document.getElementById("refToggle")?.addEventListener("click", () => {
-    state.showRef = !state.showRef;
-    const test = TESTS[state.currentIdx];
-    const btn = document.getElementById("refToggle");
-    const div = document.getElementById("refRows");
-    if (btn) btn.textContent = (state.showRef ? "▴ Piilota" : "▾ Näytä") + " viitearvot";
-    if (div) div.innerHTML = state.showRef
-      ? thresholdRows(test, state.gender, state.ageGroup, state.useAlt).map((r,i) =>
-          `<div class="threshold-row" style="background:${LEVEL_BG[i]};border:1px solid ${LEVEL_BORDER[i]}">
-            <span class="threshold-lbl" style="color:${LEVEL_COLORS[i]}">${r.label}</span>
-            <span class="threshold-val">${r.val}</span>
-          </div>`).join("") : "";
-  });
-
-  document.querySelectorAll(".level-btn[data-level]").forEach(b => {
-    b.addEventListener("click", () => {
-      const lv = parseInt(b.dataset.level);
-      state.selectedLevel = lv;
-      document.querySelectorAll(".level-btn").forEach(x => x.classList.remove("active"));
-      b.classList.add("active");
-      const test = TESTS[state.currentIdx];
-      const pi = calcScore(test, lv, state.gender, state.ageGroup, false);
-      const badge = document.getElementById("liveBadge");
-      if (badge && pi !== null) {
-        badge.innerHTML = `<div class="level-badge" style="background:${LEVEL_BG[pi]};border:2px solid ${LEVEL_BORDER[pi]};color:${LEVEL_COLORS[pi]}">${LEVEL_LABELS[pi]}</div>`;
-      }
-      const nb = document.getElementById("nextBtn");
-      if (nb) nb.disabled = false;
-    });
-  });
-
+// Päivittää arviotason ja Seuraava-painikkeen ilman koko näkymän uudelleenpiirtoa.
+function updateLive() {
+  const test = TESTS[state.currentIdx], pi = currentScore(test);
   const inp = document.getElementById("testInput");
-  if (inp) {
-    inp.addEventListener("input", () => {
-      const test = TESTS[state.currentIdx];
-      const val = parseFloat(inp.value);
-      const valid = !isNaN(val) && (test.allowNegative || val >= 0);
-      const pi = valid ? calcScore(test, val, state.gender, state.ageGroup, state.useAlt) : null;
-      inp.style.borderColor = pi !== null ? LEVEL_COLORS[pi] : "#d0c8be";
-      const badge = document.getElementById("liveBadge");
-      if (badge) {
-        if (pi !== null) {
-          badge.innerHTML = `<div class="level-badge" style="background:${LEVEL_BG[pi]};border:2px solid ${LEVEL_BORDER[pi]};color:${LEVEL_COLORS[pi]}">${LEVEL_LABELS[pi]}</div>`;
-        } else { badge.innerHTML = ""; }
-      }
-      const nb = document.getElementById("nextBtn");
-      if (nb) nb.disabled = inp.value === "" || isNaN(val) || (!test.allowNegative && val < 0);
-    });
-    inp.addEventListener("keydown", e => { if (e.key === "Enter") submitTest(); });
-  }
+  if (inp) inp.style.borderColor = pi !== null ? LEVEL_COLORS[pi] : "#d0c8be";
+  const badge = document.getElementById("liveBadge"); if (badge) badge.innerHTML = badgeHtml(pi);
+  const nb = document.getElementById("nextBtn"); if (nb) nb.disabled = pi === null;
+}
 
-  document.getElementById("nextBtn")?.addEventListener("click", submitTest);
+function storeCurrent() {
+  const test = TESTS[state.currentIdx], val = currentValue(test);
+  if (val === null) return false;
+  const useAlt = test.inputType === "level" ? false : state.useAlt;
+  state.results[test.id] = { value: val, useAlt, scoreIdx: calcScore(test, val, state.gender, state.ageGroup, useAlt) };
+  saveProgress();
+  return true;
 }
 
 function submitTest() {
-  const test = TESTS[state.currentIdx];
-  let val;
-  if (test.inputType === "level") {
-    if (state.selectedLevel === null) return;
-    val = state.selectedLevel;
-  } else {
-    const inp = document.getElementById("testInput");
-    if (!inp) return;
-    val = parseFloat(inp.value);
-    if (isNaN(val)) return;
-    if (!test.allowNegative && val < 0) return;
-  }
-  const si = calcScore(test, val, state.gender, state.ageGroup, state.useAlt);
-  state.results[test.id] = { value: val, useAlt: state.useAlt, scoreIdx: si };
+  if (!storeCurrent()) return;
+  if (state.currentIdx + 1 < TESTS.length) { enterTest(state.currentIdx + 1); return; }
 
-  if (state.currentIdx + 1 < TESTS.length) {
-    state.currentIdx++; state.useAlt = false; state.showRef = false; state.selectedLevel = null;
-    render();
-    document.getElementById("testInput")?.focus();
-  } else {
-    state.phase = "result";
-    if (SUBMIT_URL) {
-      state.submitState = "sending";
-      render();
-      submitResults().then(res => {
-        state.submitState = res.ok ? "success" : (res.skip ? "idle" : "error");
-        render();
-      });
-    } else {
-      render();
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  clearProgress();
+  state.phase = "result";
+  state.testDate = new Date().toISOString();
+  state.saveMsg = "";
+  const hist = loadHistory();
+  // Saman päivän uusintasuoritus korvaa päivän aiemman tuloksen, jotta vertailu tehdään edelliseen testikertaan.
+  const last = hist[hist.length - 1];
+  if (last && new Date(last.date).toDateString() === new Date(state.testDate).toDateString()) hist.pop();
+  state.prev = hist.length ? hist[hist.length - 1] : null;
+  hist.push({ date: state.testDate, gender: state.gender, ageGroup: state.ageGroup, results: state.results });
+  saveHistory(hist);
+  if (SUBMIT_URL) {
+    state.submitState = "sending";
+    submitResults().then(res => {
+      state.submitState = res.ok ? "success" : (res.skip ? "idle" : "error");
+      if (state.phase === "result") render();
+    });
   }
+  render();
+  window.scrollTo(0, 0);
 }
 
+function shareResults() {
+  const text = resultsAsText();
+  const setMsg = m => { state.saveMsg = m; const el = document.getElementById("saveStatus"); if (el) el.textContent = m; };
+  const copy = () => {
+    const fail = () => setMsg("Jakaminen ei onnistunut. Käytä PDF-tallennusta.");
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(text).then(() => setMsg("Tulokset kopioitu. Liitä ne esimerkiksi muistiinpanoihin tai viestiin itsellesi."), fail);
+    else fail();
+  };
+  if (navigator.share) navigator.share({ title: "Karate-kuntotestin tulokset", text }).catch(err => { if (!err || err.name !== "AbortError") copy(); });
+  else copy();
+}
+
+// ─── TAPAHTUMAT: yksi kuuntelija koko sovellukselle ──────────────────────────
+const app = document.getElementById("app");
+
+app.addEventListener("click", e => {
+  const t = e.target.closest("button");
+  if (!t) return;
+
+  if (t.dataset.group) {
+    const g = t.dataset.group, v = t.dataset.val;
+    if (g === "gender") { state.gender = v; state.useAlt = false; }
+    if (g === "age")    state.ageGroup = v;
+    if (g === "alt")    state.useAlt = v === "1";
+    if (g === "sign")   state.negSign = v === "minus";
+    render();
+    if (state.phase === "test") focusInput();
+    return;
+  }
+  if (t.dataset.level) {
+    state.selectedLevel = parseInt(t.dataset.level, 10);
+    app.querySelectorAll(".level-btn").forEach(x => { const on = x === t; x.classList.toggle("active", on); x.setAttribute("aria-pressed", on); });
+    updateLive();
+    return;
+  }
+  switch (t.id) {
+    case "startBtn":
+      clearProgress();
+      state.phase = "test"; state.results = {}; state.submitState = "idle";
+      enterTest(0); break;
+    case "resumeBtn": {
+      const p = loadProgress(); if (!p) { render(); break; }
+      state.gender = p.gender; state.ageGroup = p.ageGroup; state.results = p.results;
+      state.phase = "test"; state.submitState = "idle";
+      const next = TESTS.findIndex(x => !state.results[x.id]);
+      enterTest(next === -1 ? TESTS.length - 1 : next); break;
+    }
+    case "nextBtn": submitTest(); break;
+    case "backBtn":
+      storeCurrent();
+      enterTest(state.currentIdx - 1); break;
+    case "refToggle": {
+      state.showRef = !state.showRef;
+      t.textContent = (state.showRef ? "▴ Piilota" : "▾ Näytä") + " viitearvot";
+      t.setAttribute("aria-expanded", state.showRef);
+      document.getElementById("refRows").innerHTML = state.showRef ? refRowsHtml(TESTS[state.currentIdx]) : "";
+      break;
+    }
+    case "restartBtn":
+      state.phase = "intro"; state.results = {}; state.submitState = "idle"; state.saveMsg = "";
+      render(); window.scrollTo(0, 0); break;
+    case "clearHistBtn":
+      if (!confirm("Poistetaanko tälle laitteelle tallennetut kuntotestitulokset?")) break;
+      try { localStorage.removeItem(HISTORY_KEY); } catch (err) {}
+      render(); break;
+    case "printBtn": window.print(); break;
+    case "shareBtn": shareResults(); break;
+  }
+});
+
+app.addEventListener("input", e => {
+  if (e.target.id !== "testInput") return;
+  state.draft = e.target.value;
+  updateLive();
+});
+
+app.addEventListener("keydown", e => {
+  if (e.target.id === "testInput" && e.key === "Enter") { e.preventDefault(); submitTest(); }
+});
+
+(function prefill() {
+  const h = loadHistory(); const last = h[h.length - 1];
+  if (last) { if (last.gender) state.gender = last.gender; if (last.ageGroup) state.ageGroup = last.ageGroup; }
+})();
 render();
 </script>
 </body>
