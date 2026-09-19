@@ -135,7 +135,9 @@ h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center
 // ║  Jätä tyhjäksi jos et halua lähettää tuloksia mihinkään.                ║
 // ║                                                                         ║
 // ╚═════════════════════════════════════════════════════════════════════════╝
-const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxrvg6zjgxI21rxzxqKe_SI2D_Cw1nayDBrjhzeDbQsLSnFQOzCx6wwNI1Rr5iN0Mld/exec"; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
+const SUBMIT_URL = "https://script.google.com/macros/s/AKfycbxrvg6zjgxI21rxzxqKe_SI2D_Cw1nayDBrjhzeDbQsLSnFQOzCx6wwNI1Rr5iN0Mld/exec";
+// Viitearvojen versio tallentuu tilastoihin, jotta eri rajoilla lasketut tasot voi erottaa.
+const NORM_VERSION = "2026-09";
 
 // ─── LEVEL COLORS & LABELS ───────────────────────────────────────────────────
 const LEVEL_COLORS = ["#166534","#3a7c1a","#92600a","#b54a0a","#991b1b"];
@@ -379,6 +381,7 @@ function submitResults() {
     timestamp: new Date().toISOString(),
     gender: state.gender,
     ageGroup: state.ageGroup,
+    normVersion: NORM_VERSION,
     results: {},
   };
   TESTS.forEach(t => {

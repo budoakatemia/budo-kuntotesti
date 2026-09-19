@@ -13,6 +13,7 @@ body {
   display: flex; flex-direction: column; align-items: center;
   padding: 2rem 1rem 4rem;
 }
+#app { width: 100%; display: flex; flex-direction: column; align-items: center; }
 .card {
   width: 100%; max-width: 900px; background: #fff;
   border: 1px solid #d8d0c4; border-radius: 12px;
@@ -29,32 +30,36 @@ h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center
 .seg button.active { background: #fff; color: #1a1a1a; font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
 .btn-primary { padding: .65rem 1.2rem; background: #c8943a; color: #fff; border: none; border-radius: 8px; font-size: .9rem; font-family: inherit; font-weight: 700; cursor: pointer; }
 .btn-primary:hover { background: #b07e2e; }
-.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .8rem; margin-bottom: 1.6rem; }
-.summary-tile { background: #f8f6f2; border: 1px solid #e0d8ce; border-radius: 8px; padding: 1rem; text-align: center; }
-.summary-label { font-size: .65rem; font-weight: 700; letter-spacing: .12em; color: #888; text-transform: uppercase; margin-bottom: .35rem; }
-.summary-value { font-size: 1.8rem; font-weight: 700; color: #c8943a; }
-.summary-sub { font-size: .72rem; color: #888; margin-top: .15rem; }
+.btn-primary:disabled { opacity: .5; cursor: default; }
 .test-stats { background: #f8f6f2; border: 1px solid #e8e0d4; border-radius: 8px; padding: 1.1rem; margin-bottom: .8rem; }
 .test-stats-header { display: flex; align-items: center; gap: .6rem; margin-bottom: .8rem; }
 .test-stats-icon { font-size: 1.4rem; }
 .test-stats-name { font-size: 1rem; font-weight: 700; color: #1a1a1a; }
 .test-stats-cat { font-size: .65rem; font-weight: 600; letter-spacing: .08em; }
+.test-stats-n { margin-left: auto; font-size: .75rem; color: #888; font-weight: 600; white-space: nowrap; }
 .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin-bottom: .35rem; }
-.stat-cell { background: #fff; border: 1px solid #ebe2d6; border-radius: 6px; padding: .55rem .6rem; text-align: center; }
+.stat-cell { background: #fff; border: 1px solid #ebe2d6; border-radius: 6px; padding: .55rem .4rem; text-align: center; }
 .stat-cell-label { font-size: .6rem; font-weight: 700; color: #888; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .15rem; }
 .stat-cell-value { font-size: 1rem; font-weight: 700; color: #1a1a1a; }
 .stat-cell-unit { font-size: .65rem; color: #888; font-weight: 400; }
-.empty-state { text-align: center; padding: 3rem 1rem; color: #888; font-size: .9rem; }
-.loading { text-align: center; padding: 3rem 1rem; color: #888; font-size: .9rem; }
-.error-state { background: #fde8e8; border: 1px solid #fca5a5; border-radius: 8px; padding: 1rem; color: #991b1b; font-size: .85rem; margin-bottom: 1rem; }
+.too-few { font-size: .82rem; color: #777; background: #fff; border: 1px dashed #d8d0c4; border-radius: 6px; padding: .7rem .8rem; }
+.empty-state, .loading { text-align: center; padding: 3rem 1rem; color: #888; font-size: .9rem; }
+.error-state { background: #fde8e8; border: 1px solid #fca5a5; border-radius: 8px; padding: 1rem; color: #991b1b; font-size: .85rem; }
+.info-note { font-size: .78rem; color: #555; background: #f8f6f2; border: 1px solid #e0d8ce; border-radius: 8px; padding: .75rem .9rem; margin-bottom: 1rem; line-height: 1.6; }
 .last-update { font-size: .68rem; color: #888; text-align: center; margin-top: 1rem; }
 .bar-chart { background: #fff; border: 1px solid #ebe2d6; border-radius: 6px; padding: .8rem; margin-top: .6rem; }
 .bar-chart-title { font-size: .65rem; font-weight: 700; letter-spacing: .1em; color: #888; text-transform: uppercase; margin-bottom: .6rem; }
 .bar { display: flex; align-items: center; gap: .5rem; margin-bottom: .25rem; font-size: .75rem; }
-.bar-label { width: 90px; color: #555; flex-shrink: 0; }
-.bar-track { flex: 1; height: 14px; background: #f0ece6; border-radius: 4px; overflow: hidden; position: relative; }
+.bar-label { width: 90px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 14px; background: #f0ece6; border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; transition: width .5s ease; }
 .bar-value { width: 30px; text-align: right; color: #1a1a1a; font-weight: 700; flex-shrink: 0; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: .8rem; flex-wrap: wrap; margin-top: .5rem; }
+@media (max-width: 480px) {
+  .card { padding: 1.3rem 1rem; }
+  .seg button { font-size: .8rem; padding: .5rem .3rem; }
+  .stat-cell-value { font-size: .92rem; }
+}
 </style>
 </head>
 <body>
@@ -62,123 +67,181 @@ h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center
 
 <script>
 // ╔═════════════════════════════════════════════════════════════════════════╗
-// ║  TÄRKEÄÄ: Liitä alle sama Google Apps Script -palvelusi URL              ║
-// ║  joka asetettiin kuntotestin tiedostoon.                                ║
+// ║  Sama Google Apps Script -URL kuin kuntotestin SUBMIT_URL               ║
 // ╚═════════════════════════════════════════════════════════════════════════╝
-const FETCH_URL = "https://script.google.com/macros/s/AKfycbxrvg6zjgxI21rxzxqKe_SI2D_Cw1nayDBrjhzeDbQsLSnFQOzCx6wwNI1Rr5iN0Mld/exec"; // esim. "https://script.google.com/macros/s/AKfycb.../exec"
+const FETCH_URL = "https://script.google.com/macros/s/AKfycbxrvg6zjgxI21rxzxqKe_SI2D_Cw1nayDBrjhzeDbQsLSnFQOzCx6wwNI1Rr5iN0Mld/exec";
+
+// Pidä samana kuin kuntotestin NORM_VERSION. Tasojakaumaan otetaan vain tällä
+// versiolla lasketut tasot, koska vanhemmat on laskettu eri viitearvoilla.
+const CURRENT_NORM = "2026-09";
+
+// Tietosuoja: ryhmän tulokset näytetään vasta, kun niitä on vähintään näin monta.
+// Pienemmästä ryhmästä min- ja max-arvo paljastaisivat yksittäisen henkilön tuloksen.
+const MIN_N = 3;
 
 const LEVEL_COLORS = ["#166534","#3a7c1a","#92600a","#b54a0a","#991b1b"];
 const LEVEL_LABELS = ["Erinomainen","Hyvä","Tyydyttävä","Välttävä","Kehitettävä"];
 
 const CAT_COLORS = {
-  voima:        { text:"#9b1c1c", bg:"#fde8e8", border:"#fca5a5" },
-  keskivartalo: { text:"#1e3a8a", bg:"#dbeafe", border:"#93c5fd" },
-  jalkavoima:   { text:"#581c87", bg:"#ede9fe", border:"#c4b5fd" },
-  rajahtavyys:  { text:"#78350f", bg:"#fef3c7", border:"#fcd34d" },
-  tasapaino:    { text:"#155e75", bg:"#cffafe", border:"#67e8f9" },
-  liikkuvuus:   { text:"#065f46", bg:"#d1fae5", border:"#6ee7b7" },
+  voima:"#9b1c1c", keskivartalo:"#1e3a8a", jalkavoima:"#581c87",
+  rajahtavyys:"#78350f", tasapaino:"#155e75", liikkuvuus:"#065f46",
 };
-
-const TESTS_META = {
-  punnerrukset:    { name:"Punnerrukset",       icon:"🥊", category:"voima",        unit:"kpl" },
-  riipunta:        { name:"Riipunta / leuat",   icon:"🏋️", category:"voima",       unit:"sek/kpl" },
-  vatsalihakset:   { name:"Vatsalihakset 60s",  icon:"🫀", category:"keskivartalo", unit:"kpl" },
-  lankku:          { name:"Lankku",              icon:"🛡️", category:"keskivartalo", unit:"sek" },
-  shikodachi:      { name:"Shiko-dachi -pito",   icon:"🏯", category:"jalkavoima",   unit:"sek" },
-  pituushyppy:     { name:"Vauhditon pituushyppy", icon:"🦘", category:"rajahtavyys", unit:"cm" },
-  hyppykyykky:     { name:"Hyppykyykyt 30s",     icon:"🔥", category:"rajahtavyys", unit:"kpl" },
-  ashiukebalance:  { name:"Ashi-uke tasapaino",  icon:"⚖️", category:"tasapaino",   unit:"sek" },
-  yokogeripito:    { name:"Yoko-geri -pito",     icon:"🌀", category:"liikkuvuus",  unit:"taso" },
-  sitandreach:     { name:"Eteentaivutus istuen", icon:"🤸", category:"liikkuvuus",  unit:"cm" },
-};
-
 const CAT_NAMES = {
   voima:"Voima & kestävyys", keskivartalo:"Keskivartalo", jalkavoima:"Jalkavoima",
   rajahtavyys:"Räjähtävyys", tasapaino:"Tasapaino", liikkuvuus:"Liikkuvuus",
 };
 
+// Jokainen rivi on oma tilastonsa. Suoritustavaltaan erilaiset tulokset
+// (sekunnit vs. toistot, polvilta vs. varpailta) pidetään erillään.
+const STAT_GROUPS = [
+  { test:"punnerrukset",   method:"varpailta", name:"Punnerrukset varpailta", icon:"🥊", category:"voima",        unit:"kpl" },
+  { test:"punnerrukset",   method:"polvilta",  name:"Punnerrukset polvilta",  icon:"🥊", category:"voima",        unit:"kpl" },
+  { test:"punnerrukset",   method:"?",         name:"Punnerrukset (tapa ei tiedossa)", icon:"🥊", category:"voima", unit:"kpl" },
+  { test:"riipunta",       method:"roiku",     name:"Riipunta",               icon:"🏋️", category:"voima",       unit:"sek" },
+  { test:"riipunta",       method:"leuat",     name:"Leuanvedot",             icon:"🏋️", category:"voima",       unit:"kpl" },
+  { test:"riipunta",       method:"?",         name:"Riipunta / leuat (tapa ei tiedossa)", icon:"🏋️", category:"voima", unit:"" },
+  { test:"vatsalihakset",  name:"Vatsalihakset 60 s",    icon:"🫀", category:"keskivartalo", unit:"kpl" },
+  { test:"lankku",         name:"Lankku",                icon:"🛡️", category:"keskivartalo", unit:"sek" },
+  { test:"shikodachi",     name:"Shiko-dachi -pito",     icon:"🏯", category:"jalkavoima",   unit:"sek" },
+  { test:"pituushyppy",    name:"Vauhditon pituushyppy", icon:"🦘", category:"rajahtavyys",  unit:"cm" },
+  { test:"hyppykyykky",    name:"Hyppykyykyt 30 s",      icon:"🔥", category:"rajahtavyys",  unit:"kpl" },
+  { test:"ashiukebalance", name:"Ashi-uke -tasapaino",   icon:"⚖️", category:"tasapaino",    unit:"sek" },
+  { test:"yokogeripito",   name:"Yoko-geri -pito",       icon:"🌀", category:"liikkuvuus",   unit:"taso" },
+  { test:"sitandreach",    name:"Eteentaivutus istuen",  icon:"🤸", category:"liikkuvuus",   unit:"cm" },
+];
+
 let state = {
-  filterGender: "all",   // all | m | n
-  filterAge: "all",      // all | nuori | keski | masters
-  loading: true,
-  error: null,
-  data: [],              // [{ timestamp, gender, ageGroup, results: { testId: { value, scoreIdx } } }]
-  lastUpdate: null,
+  filterGender: "all", filterAge: "all", filterPeriod: "12",
+  loading: true, error: null, data: [], lastUpdate: null,
 };
 
-// ─── DATA FETCH ──────────────────────────────────────────────────────────────
-function loadData() {
-  if (!FETCH_URL) {
-    state.loading = false;
-    state.error = "FETCH_URL ei ole asetettu. Liitä Apps Script -URL koodin alkuun.";
-    render();
-    return;
-  }
-  state.loading = true;
-  render();
-  fetch(FETCH_URL + "?action=fetch")
-    .then(r => r.json())
-    .then(data => {
-      state.data = Array.isArray(data) ? data : [];
-      state.loading = false;
-      state.lastUpdate = new Date().toLocaleString("fi-FI");
-      render();
-    })
-    .catch(err => {
-      state.loading = false;
-      state.error = "Tietojen haku epäonnistui: " + err.message;
-      render();
-    });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const fmt = n => (Math.round(n * 10) / 10).toString().replace(".", ",");
+
+// Suoritustapa. Vanhoissa riveissä sitä ei ole tallennettu: miehet tekivät
+// punnerrukset aina varpailta, muissa tapauksissa tapa on tuntematon.
+function methodOf(row, testId) {
+  const r = row.results[testId];
+  if (r.method) return r.method;
+  if (testId === "punnerrukset" && row.gender === "m") return "varpailta";
+  return "?";
 }
 
-// ─── FILTERING & STATISTICS ──────────────────────────────────────────────────
-function filteredData() {
+// ─── DATA ────────────────────────────────────────────────────────────────────
+function loadData() {
+  if (!FETCH_URL) { state.loading = false; state.error = "FETCH_URL ei ole asetettu."; render(); return; }
+  state.loading = true; state.error = null; render();
+  fetch(FETCH_URL)
+    .then(r => { if (!r.ok) throw new Error("palvelin vastasi " + r.status); return r.json(); })
+    .then(data => {
+      if (!Array.isArray(data)) throw new Error(data && data.error ? data.error : "odottamaton vastaus");
+      state.data = data.filter(d => d && d.results && typeof d.results === "object");
+      state.lastUpdate = new Date().toLocaleString("fi-FI");
+    })
+    .catch(err => { state.error = "Tietojen haku epäonnistui: " + err.message; })
+    .finally(() => { state.loading = false; render(); });
+}
+
+// Aikaleima on muotoa VVVV-KK (uusi palvelin) tai ISO-päiväys (vanha).
+function monthIndex(ts) {
+  const m = /^(\d{4})-(\d{2})/.exec(String(ts || ""));
+  return m ? parseInt(m[1], 10) * 12 + parseInt(m[2], 10) - 1 : null;
+}
+
+function filteredRows() {
+  const now = new Date(), nowIdx = now.getFullYear() * 12 + now.getMonth();
   return state.data.filter(d => {
     if (state.filterGender !== "all" && d.gender !== state.filterGender) return false;
     if (state.filterAge !== "all" && d.ageGroup !== state.filterAge) return false;
+    if (state.filterPeriod === "12") {
+      const mi = monthIndex(d.timestamp);
+      if (mi === null || nowIdx - mi > 11) return false;
+    }
     return true;
   });
 }
 
-function testStats(testId) {
-  const vals = filteredData()
-    .map(d => d.results?.[testId]?.value)
-    .filter(v => v != null && !isNaN(v))
-    .map(v => parseFloat(v));
-  if (vals.length === 0) return null;
-  const sum = vals.reduce((a,b) => a+b, 0);
-  return {
-    n: vals.length,
-    min: Math.min(...vals),
-    max: Math.max(...vals),
-    avg: sum / vals.length,
-  };
-}
-
-function levelDistribution(testId) {
-  const buckets = [0,0,0,0,0];
-  filteredData().forEach(d => {
-    const idx = d.results?.[testId]?.scoreIdx;
-    if (idx != null && idx >= 0 && idx <= 4) buckets[idx]++;
+// Kaikki tilastot yhdellä läpikäynnillä.
+function computeStats(rows) {
+  const acc = STAT_GROUPS.map(() => ({ vals: [], dist: [0,0,0,0,0], oldLevels: 0 }));
+  rows.forEach(row => {
+    STAT_GROUPS.forEach((g, i) => {
+      const r = row.results[g.test];
+      if (!r) return;
+      if (g.method && methodOf(row, g.test) !== g.method) return;
+      const v = parseFloat(r.value);
+      if (!isFinite(v)) return;
+      acc[i].vals.push(v);
+      const idx = r.scoreIdx;
+      if (idx === null || idx === "" || idx === undefined) return;
+      if (row.normVersion === CURRENT_NORM && idx >= 0 && idx <= 4) acc[i].dist[idx]++;
+      else acc[i].oldLevels++;
+    });
   });
-  return buckets;
+  return acc.map(a => {
+    const vals = a.vals.sort((x, y) => x - y), n = vals.length;
+    if (!n) return null;
+    const mid = Math.floor(n / 2);
+    return {
+      n, dist: a.dist, oldLevels: a.oldLevels,
+      min: vals[0], max: vals[n - 1],
+      median: n % 2 ? vals[mid] : (vals[mid - 1] + vals[mid]) / 2,
+      avg: vals.reduce((s, v) => s + v, 0) / n,
+    };
+  });
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
-function render() {
-  document.getElementById("app").innerHTML = renderMain();
-  bindEvents();
+function segBtn(val, label, active, group) {
+  return `<button type="button" class="${active ? "active" : ""}" aria-pressed="${active}" data-group="${group}" data-val="${val}">${label}</button>`;
 }
 
-function segBtn(val, label, active, group) {
-  return `<button class="${active?'active':''}" data-group="${group}" data-val="${val}">${label}</button>`;
+function cell(label, value, unit) {
+  return `<div class="stat-cell"><div class="stat-cell-label">${label}</div>
+    <div class="stat-cell-value">${value}${unit ? `<span class="stat-cell-unit"> ${unit}</span>` : ""}</div></div>`;
+}
+
+function statCard(g, s) {
+  const head = `<div class="test-stats-header">
+      <span class="test-stats-icon">${g.icon}</span>
+      <div>
+        <div class="test-stats-name">${g.name}</div>
+        <div class="test-stats-cat" style="color:${CAT_COLORS[g.category]}">${CAT_NAMES[g.category]}</div>
+      </div>
+      <span class="test-stats-n">n = ${s.n}</span>
+    </div>`;
+
+  if (s.n < MIN_N) {
+    return `<div class="test-stats">${head}
+      <div class="too-few">Tuloksia on vielä liian vähän. Tilastot näytetään, kun tuloksia on vähintään ${MIN_N}, jotta yksittäisen harrastajan tulosta ei voi tunnistaa.</div>
+    </div>`;
+  }
+
+  const levelTotal = s.dist.reduce((a, b) => a + b, 0);
+  const maxBar = Math.max(...s.dist, 1);
+  const bars = levelTotal >= MIN_N ? s.dist.map((count, i) => `<div class="bar">
+      <span class="bar-label" style="color:${LEVEL_COLORS[i]}">${LEVEL_LABELS[i]}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${count / maxBar * 100}%;background:${LEVEL_COLORS[i]}"></div></div>
+      <span class="bar-value">${count}</span>
+    </div>`).join("") : `<div class="too-few">Nykyisillä viitearvoilla laskettuja tasoja on vielä liian vähän jakauman näyttämiseen.</div>`;
+  const oldNote = s.oldLevels ? `<div style="font-size:.68rem;color:#888;margin-top:.4rem">${s.oldLevels} vanhemmilla viitearvoilla laskettua tasoa ei ole mukana jakaumassa.</div>` : "";
+
+  return `<div class="test-stats">${head}
+    <div class="stat-row">
+      ${cell("Min", fmt(s.min), g.unit)}
+      ${cell("Mediaani", fmt(s.median), g.unit)}
+      ${cell("Keskiarvo", fmt(s.avg), g.unit)}
+      ${cell("Max", fmt(s.max), g.unit)}
+    </div>
+    <div class="bar-chart">
+      <div class="bar-chart-title">Tasojakauma</div>
+      ${bars}${oldNote}
+    </div>
+  </div>`;
 }
 
 function renderMain() {
-  const filtered = filteredData();
-  const total = filtered.length;
-
-  // Header card
+  const rows = state.loading || state.error ? [] : filteredRows();
   const header = `<div class="card">
     <div class="eyebrow">Budo Akatemia ry · Shorin-ryu Seibukan</div>
     <h1>Seuran kuntotestin tilastot</h1>
@@ -197,98 +260,46 @@ function renderMain() {
       ${segBtn("keski","30–44 v",state.filterAge==="keski","age")}
       ${segBtn("masters","45–65 v",state.filterAge==="masters","age")}
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem">
-      <span style="font-size:.78rem;color:#666">
-        <strong style="color:#c8943a">${total}</strong> testitulosta valituilla suodattimilla
-      </span>
-      <button class="btn-primary" id="refreshBtn">↻ Päivitä</button>
+    <span class="lbl">Ajanjakso</span>
+    <div class="seg">
+      ${segBtn("12","Viimeiset 12 kk",state.filterPeriod==="12","period")}
+      ${segBtn("all","Kaikki",state.filterPeriod==="all","period")}
+    </div>
+    <div class="toolbar">
+      <span style="font-size:.78rem;color:#666"><strong style="color:#c8943a">${rows.length}</strong> testikertaa valituilla suodattimilla</span>
+      <button class="btn-primary" id="refreshBtn" ${state.loading ? "disabled" : ""}>↻ Päivitä</button>
     </div>
   </div>`;
 
-  if (state.loading) {
-    return header + `<div class="card"><div class="loading">Ladataan tietoja…</div></div>`;
-  }
+  if (state.loading) return header + `<div class="card"><div class="loading">Ladataan tietoja…</div></div>`;
+  if (state.error)   return header + `<div class="card"><div class="error-state">${esc(state.error)}</div></div>`;
+  if (!rows.length)  return header + `<div class="card"><div class="empty-state">Ei testituloksia valituilla suodattimilla.</div></div>`;
 
-  if (state.error) {
-    return header + `<div class="card"><div class="error-state">${state.error}</div></div>`;
-  }
-
-  if (total === 0) {
-    return header + `<div class="card"><div class="empty-state">Ei vielä testituloksia valituilla suodattimilla.</div></div>`;
-  }
-
-  // Test stats cards
-  const testCards = Object.keys(TESTS_META).map(testId => {
-    const meta = TESTS_META[testId];
-    const stats = testStats(testId);
-    if (!stats) return "";
-    const cc = CAT_COLORS[meta.category];
-    const dist = levelDistribution(testId);
-    const maxBar = Math.max(...dist);
-
-    const bars = dist.map((count, i) => {
-      const pct = maxBar > 0 ? (count / maxBar * 100) : 0;
-      return `<div class="bar">
-        <span class="bar-label" style="color:${LEVEL_COLORS[i]}">${LEVEL_LABELS[i]}</span>
-        <div class="bar-track">
-          <div class="bar-fill" style="width:${pct}%;background:${LEVEL_COLORS[i]}"></div>
-        </div>
-        <span class="bar-value">${count}</span>
-      </div>`;
-    }).join("");
-
-    return `<div class="test-stats">
-      <div class="test-stats-header">
-        <span class="test-stats-icon">${meta.icon}</span>
-        <div>
-          <div class="test-stats-name">${meta.name}</div>
-          <div class="test-stats-cat" style="color:${cc.text}">${CAT_NAMES[meta.category]}</div>
-        </div>
-      </div>
-      <div class="stat-row">
-        <div class="stat-cell">
-          <div class="stat-cell-label">Min</div>
-          <div class="stat-cell-value">${stats.min}<span class="stat-cell-unit"> ${meta.unit}</span></div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell-label">Keskiarvo</div>
-          <div class="stat-cell-value">${stats.avg.toFixed(1)}<span class="stat-cell-unit"> ${meta.unit}</span></div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell-label">Max</div>
-          <div class="stat-cell-value">${stats.max}<span class="stat-cell-unit"> ${meta.unit}</span></div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-cell-label">n</div>
-          <div class="stat-cell-value">${stats.n}</div>
-        </div>
-      </div>
-      <div class="bar-chart">
-        <div class="bar-chart-title">Tasojakauma</div>
-        ${bars}
-      </div>
-    </div>`;
-  }).filter(s => s).join("");
-
-  const lastUpdateLine = state.lastUpdate ? `<div class="last-update">Päivitetty: ${state.lastUpdate}</div>` : "";
-
-  return header + `<div class="card">${testCards}${lastUpdateLine}</div>`;
+  const stats = computeStats(rows);
+  const cards = STAT_GROUPS.map((g, i) => stats[i] ? statCard(g, stats[i]) : "").join("");
+  const note = `<div class="info-note">
+    Suoritustavaltaan erilaiset tulokset näytetään erikseen. Tasojakaumassa ovat mukana vain nykyisillä viitearvoilla (${CURRENT_NORM}) lasketut tasot.
+    Koska tasot on suhteutettu ikään ja sukupuoleen, ne ovat vertailukelpoisia myös "Kaikki"-suodattimella; mittaustulokset (min, mediaani, keskiarvo, max) kannattaa tulkita sukupuoli- ja ikäryhmittäin.
+  </div>`;
+  const updated = state.lastUpdate ? `<div class="last-update">Päivitetty: ${esc(state.lastUpdate)}</div>` : "";
+  return header + `<div class="card">${note}${cards}${updated}</div>`;
 }
 
-function bindEvents() {
-  document.querySelectorAll(".seg button[data-group]").forEach(b => {
-    b.addEventListener("click", () => {
-      const g = b.dataset.group, v = b.dataset.val;
-      if (g === "gender") state.filterGender = v;
-      if (g === "age")    state.filterAge = v;
-      render();
-    });
-  });
-  document.getElementById("refreshBtn")?.addEventListener("click", loadData);
-}
+function render() { document.getElementById("app").innerHTML = renderMain(); }
 
-// ─── INIT ───────────────────────────────────────────────────────────────────
-render();
+// Yksi kuuntelija koko sivulle
+document.getElementById("app").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  if (b.id === "refreshBtn") { loadData(); return; }
+  const g = b.dataset.group, v = b.dataset.val;
+  if (g === "gender") state.filterGender = v;
+  else if (g === "age") state.filterAge = v;
+  else if (g === "period") state.filterPeriod = v;
+  else return;
+  render();
+});
+
 loadData();
 </script>
 </body>
