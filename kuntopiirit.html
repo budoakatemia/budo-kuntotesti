@@ -42,7 +42,7 @@ button { font-family: inherit; }
 .eyebrow::before, .eyebrow::after { content: ""; display: inline-block; width: 28px; height: 1px; background: var(--ocean); vertical-align: middle; margin: 0 .8rem; opacity: .4; }
 h1 { font-family: var(--serif); font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: .6rem; line-height: 1.15; }
 .subtitle { font-size: .95rem; color: var(--ink-soft); max-width: 540px; margin: 0 auto; }
-.season-tag { display: inline-flex; gap: .5rem; margin-top: 1.4rem; padding: .45rem 1.1rem; background: var(--paper); border: 1px solid var(--sun); color: var(--coral); border-radius: 24px; font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; box-shadow: var(--shadow); }
+.subtitle + .subtitle { margin-top: .8rem; }
 
 /* Panels */
 .panel { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem 1.8rem; margin-bottom: 2.5rem; box-shadow: var(--shadow); }
@@ -159,16 +159,16 @@ h1 { font-family: var(--serif); font-size: clamp(2rem, 6vw, 3rem); font-weight: 
 <div class="container">
   <header class="header">
     <div class="eyebrow">Budo Akatemia ry · Shorin-ryu Seibukan</div>
-    <h1>Kesän kuntopiirit</h1>
-    <p class="subtitle">Kolme erilaista kuntopiiriä ulkoharjoitteluun. Sopii kaikenikäisille ja -tasoisille: jokaisella liikkeellä on kolme vaikeustasoa.</p>
-    <div class="season-tag">☀️ Kuntopiirit</div>
+    <h1>Kuntopiirit</h1>
+    <p class="subtitle">Kehity vahvemmaksi, nopeammaksi ja kestävämmäksi karatekaksi. Kuntopiirit tukevat harjoitteluasi, parantavat fyysisiä ominaisuuksiasi ja auttavat jaksamaan paremmin niin salilla, vyökokeissa kuin arjessakin.</p>
+    <p class="subtitle">Harjoittelu sopii kaikenikäisille ja kaikentasoisille. Jokaisessa liikkeessä on kolme vaikeustasoa, joten voit valita juuri sinulle sopivan vaihtoehdon. Tärkeintä ei ole täydellinen suoritus, vaan säännöllinen harjoittelu ja oman tason haastaminen.</p>
   </header>
 
   <section class="panel" aria-labelledby="h-ohje">
     <h2 id="h-ohje">Käyttöohje</h2>
-    <p>Jokaisessa piirissä on 8–9 asemaa. Tee liikettä työajan verran, lepää ja siirry seuraavalle asemalle. Kierrosten välissä on pidempi palautus ja juomatauko.</p>
-    <p><strong>Tilantarve:</strong> nurmikko tai sorakenttä, noin 10 × 10 m. Tarvitset vain puhelimen ajastimeksi ja juomapullon.</p>
-    <p>Valitse alta kierrokset, työaika ja lepoaika, ja käynnistä ajastin harjoituksen kohdalta. Ajastin kertoo vuorossa olevan aseman, vaihtaa jakson automaattisesti ja antaa äänimerkin.</p>
+    <p>Jokaisessa kuntopiirissä on 8–9 liikettä. Tee liikettä työajan verran, lepää ja siirry seuraavalle asemalle. Kierrosten välissä on pidempi palautus ja juomatauko.</p>
+    <p><strong>Tilantarve:</strong> sisällä noin 3 × 3 metrin tila, ulkona nurmikko tai sorakenttä. Sisällä vuoroloikat ja juoksuvedot tehdään paikallaan. Tarvitset vain puhelimen ajastimeksi ja juomapullon.</p>
+    <p>Valitse kierrokset ja jaksojen pituudet, käynnistä harjoitus ja anna ajastimen ohjata etenemistäsi. Ajastin kertoo vuorossa olevan aseman, vaihtaa jaksot automaattisesti ja antaa äänimerkin.</p>
     <div class="level-legend">
       <span class="level-badge level-1">Taso 1 · Alkeet</span>
       <span class="level-badge level-2">Taso 2 · Keskitaso</span>
@@ -200,7 +200,7 @@ h1 { font-family: var(--serif); font-size: clamp(2rem, 6vw, 3rem); font-weight: 
     </div>
   </section>
 
-  <footer class="footer">Budo Akatemia ry · Kuopio · Kesäkausi</footer>
+  <footer class="footer">Budo Akatemia ry · Kuopio</footer>
 </div>
 
 <noscript><p style="text-align:center;padding:1rem">Harjoitukset ja ajastin tarvitsevat JavaScriptin. Avaa sivu tavallisella selaimella.</p></noscript>
@@ -235,8 +235,8 @@ const WORKOUTS = [
     warmup: { min: 10, text: "Hölkkä paikallaan tai varjo-ottelu 2 min, käsien pyöritykset 30 s, lantion pyöritykset 30 s, polvinostot 30 s, kantapotkut 30 s, 10 hidasta gyaku-zukia per käsi ja 10 hidasta mae-geriä per jalka." },
     cooldown: { min: 5, text: "Lapaluiden venytys, rinnan venytys, alaselän rullaus ja sivulonkan venytys 30 s per jalka." },
     stations: [
-      { name: "Punnerrukset", target: "Rinta, olkapäät, ojentajat", desc: "Täysi liikerata: rinta lähelle maata, käsivarret suoriksi.", levels: ["Polvilta", "Varpailta", "Taputuspunnerrus"] },
-      { name: "Linnunlento", target: "Selän takaketju, lapaluut", desc: "Vatsamakuulla: nosta rinta ja jalat irti maasta ja levitä kädet sivuille kuin siivet.", levels: ["Vain ylävartalo", "Ylä- ja alavartalo yhtä aikaa", "Pito 3 s ylhäällä"] },
+      { name: "Punnerrukset", target: "Rinta, olkapäät, ojentajat", desc: "Täysi liikerata: rinta lähelle alustaa, käsivarret suoriksi.", levels: ["Polvilta", "Varpailta", "Taputuspunnerrus"] },
+      { name: "Linnunlento", target: "Selän takaketju, lapaluut", desc: "Vatsamakuulla: nosta rinta ja jalat irti alustasta ja levitä kädet sivuille kuin siivet.", levels: ["Vain ylävartalo", "Ylä- ja alavartalo yhtä aikaa", "Pito 3 s ylhäällä"] },
       { name: "Hidas mawashi-geri", target: "Lonkan tukilihakset, keskivartalo, tasapaino", desc: "Mahdollisimman hitaasti ja hallitusti: polven nosto, kierto, ojennus ja palautus. Tuki sallittu.", levels: ["Vyötärö, tuki", "Rinta, ilman tukea", "Pää, pito 3 s"], sides: true },
       { name: "Lankku", target: "Keskivartalo, syvät vatsalihakset", desc: "Vartalo suorana kantapäistä päähän, lantio ei vajoa.", levels: ["Polvilta", "Varpailta", "Yhdellä kädellä"] },
       { name: "Kapea punnerrus", target: "Ojentajat, olkapäät", desc: "Kädet kapeasti hartioiden alla, kyynärpäät vartalon vieressä.", levels: ["Polvilta", "Varpailta", "Timanttipunnerrus"] },
@@ -256,7 +256,7 @@ const WORKOUTS = [
       { name: "Hyppykyykyt", target: "Reidet, pakarat, räjähtävyys", desc: "Polvet noin 90° kulmaan ja räjähtävä ojennus ylös. Laskeudu pehmeästi päkiöiden kautta koko jalalle.", levels: ["Tavallinen kyykky", "Hyppykyykky", "Hyppy 180° käännöksellä"] },
       { name: "Sivuloikka", target: "Sivuttainen voima, tasapaino", desc: "Loikkaa sivulle yhdeltä jalalta toiselle ja pysäytä liike hallitusti.", levels: ["Astuen", "Pieni loikka", "Laaja loikka ja pito"] },
       { name: "Askelkyykyt", target: "Reidet, pakarat, lonkka", desc: "Vuorojaloin syvä askelkyykky. Etupolvi osoittaa varpaiden suuntaan.", levels: ["Rauhalliset", "Nopea vaihto", "Hyppyvaihto"] },
-      { name: "Polvennostojuoksu tai 20 m vedot", target: "Lonkan koukistajat, syke", desc: "Paikallaan polvet vyötärön tasolle tai 20 m juoksuvetoja reippaalla tempolla.", levels: ["Rauhallinen", "Reipas", "Maksimitempo"] },
+      { name: "Polvennostojuoksu tai 20 m vedot", target: "Lonkan koukistajat, syke", desc: "Paikallaan polvet vyötärön tasolle tai tilan salliessa 20 m juoksuvetoja reippaalla tempolla.", levels: ["Rauhallinen", "Reipas", "Maksimitempo"] },
       { name: "Vuoroloikat", target: "Räjähtävä jalkavoima", desc: "6–10 vuorojaloin tehtyä loikkaa eteenpäin. Pehmeät laskeutumiset ja tasapaino jokaisen jälkeen.", levels: ["6 lyhyttä", "8 pitkää", "10 maksimaalista"] },
       { name: "Burpee", target: "Koko keho, syke", desc: "Kyykky, punnerrusasento, punnerrus ja hyppy ylös.", levels: ["Ilman punnerrusta", "Täysi", "Taputushyppy"] },
       { name: "Räjähtävät varpaillenousut", target: "Pohkeet, alaraajojen räjähtävyys", desc: "Räjähtävä nousu varpaille, halutessasi pieni hyppy.", levels: ["Molemmat jalat", "Pieni hyppy", "Yhdellä jalalla"] },
@@ -272,13 +272,13 @@ const WORKOUTS = [
     stations: [
       { name: "Shiko-dachi-pito", target: "Reidet, pakarat", desc: "Leveä haara-asento, varpaat ulospäin, reidet kohti vaakatasoa.", levels: ["Puolikorkea", "Reidet vaakatasossa", "Pito ja käsitekniikat"] },
       { name: "Yhdellä jalalla seisominen", target: "Staattinen tasapaino", desc: "Vapaa jalka ashi-uke-asennossa.", levels: ["Silmät auki", "Silmät kiinni", "Silmät kiinni ja pään liike"], sides: true },
-      { name: "Jalan heilautukset", target: "Lonkan dynaaminen liikkuvuus", desc: "Tue kädellä puuhun tai kaveriin ja heilauta jalkaa eteen ja taakse.", levels: ["Matala", "Vyötärön tasolle", "Pään tasolle, ilman tukea"], sides: true },
+      { name: "Jalan heilautukset", target: "Lonkan dynaaminen liikkuvuus", desc: "Tue kädellä seinään, puuhun tai kaveriin ja heilauta jalkaa eteen ja taakse.", levels: ["Matala", "Vyötärön tasolle", "Pään tasolle, ilman tukea"], sides: true },
       { name: "Syvä kyykky", target: "Lonkan ja nilkan liikkuvuus", desc: "Laskeudu syvään kyykkyyn, pysähdy 3 s ja nouse. Paino kantapäillä.", levels: ["Puolikyykky", "Täysi kyykky", "Syvä kyykky ja rangan kierto"] },
       { name: "Yoko-geri-pidot", target: "Aktiivinen lonkan loitonnus", desc: "Nosta jalka sivulle, pidä 5–10 s ja laske. Tuki sallittu.", levels: ["Polvi koukussa", "Jalka ojennettuna", "Ilman tukea"], sides: true },
       { name: "Selän pyöristys ja ristikkäinen ojennus", target: "Selkärangan liikkuvuus, keskivartalo", desc: "Konttausasennossa vuoroin selän pyöristys ja notko, sitten vastakkaisen käden ja jalan ojennus.", levels: ["Vain pyöristys ja notko", "Yhdistelmä", "Kyynärpää polveen ojennusten välissä"] },
-      { name: "Eteentaivutus rullaten", target: "Takaketju, alaselkä", desc: "Seisten: rullaa alas nikama kerrallaan, pysähdy ja rullaa ylös.", levels: ["Polvet koukussa", "Polvet suorina", "Kämmenet maahan"] },
+      { name: "Eteentaivutus rullaten", target: "Takaketju, alaselkä", desc: "Seisten: rullaa alas nikama kerrallaan, pysähdy ja rullaa ylös.", levels: ["Polvet koukussa", "Polvet suorina", "Kämmenet alustaan"] },
       { name: "Haara-asennon venytys", target: "Sisäreidet, lonkka", desc: "Istuen leveässä haara-asennossa varpaat ylöspäin. Venytä eteen ja molemmille sivuille.", levels: ["Kevyt", "Syvempi, pito 5 s", "Syvä ja rangan kierto"] },
-      { name: "Lonkan koukistajan venytys", target: "Lonkan koukistajat", desc: "Pitkä askelkyykky, takapolvi maassa. Työnnä lantiota eteen.", levels: ["Ylävartalo pystyssä", "Kädet ylös", "Kädet ylös ja taivutus taakse"], sides: true }
+      { name: "Lonkan koukistajan venytys", target: "Lonkan koukistajat", desc: "Pitkä askelkyykky, takapolvi alustalla. Työnnä lantiota eteen.", levels: ["Ylävartalo pystyssä", "Kädet ylös", "Kädet ylös ja taivutus taakse"], sides: true }
     ]
   }
 ];
