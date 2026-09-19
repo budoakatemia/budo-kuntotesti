@@ -2,585 +2,144 @@
 <html lang="fi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Kesän kuntopiirit – Budo Akatemia ry</title>
-
-<!-- Selaimen välilehden ikoni -->
 <link rel="icon" type="image/svg+xml" href="favicon-kuntopiiri.svg">
-
-<!-- iPhone-kotinäyttöikoni -->
 <link rel="apple-touch-icon" href="apple-touch-icon-kuntopiiri.png">
-
-<!-- iOS-yhteensopivuus -->
 <meta name="theme-color" content="#1c6e8c">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Kuntopiirit">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --ocean:       #1c6e8c;     /* okinawan meri */
-  --ocean-deep:  #0e4a63;
-  --ocean-light: #5ba8c4;
-  --coral:       #e76f51;     /* coral-aksentti */
-  --sun:         #f4a73c;     /* aurinko */
-  --sand:        #fdf8f0;     /* hiekka — tausta */
-  --sand-warm:   #f6ecd9;
-  --ink:         #1a2733;     /* tumma teksti */
-  --ink-soft:    #4a5a6a;
-  --paper:       #ffffff;
-  --line:        #e5dcc8;
-  --shadow:      0 4px 24px rgba(28, 110, 140, 0.10);
-  --shadow-lg:   0 12px 48px rgba(28, 110, 140, 0.15);
+  --ocean: #1c6e8c; --ocean-deep: #0e4a63; --ocean-light: #5ba8c4;
+  --coral: #e76f51; --sun: #f4a73c; --sand: #fdf8f0; --sand-warm: #f6ecd9;
+  --ink: #1a2733; --ink-soft: #4a5a6a; --paper: #ffffff; --line: #e5dcc8;
+  --shadow: 0 4px 24px rgba(28,110,140,.10); --shadow-lg: 0 12px 48px rgba(28,110,140,.15);
+  --serif: 'Noto Serif JP', Georgia, serif;
+  --sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
-
+html { scroll-behavior: smooth; }
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(ellipse at top left, rgba(91, 168, 196, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom right, rgba(244, 167, 60, 0.06) 0%, transparent 50%),
-    var(--sand);
-  color: var(--ink);
-  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  font-size: 16px; line-height: 1.6;
-  padding: 2.5rem 1rem 4rem;
-  -webkit-font-smoothing: antialiased;
+  background: radial-gradient(ellipse at top left, rgba(91,168,196,.08) 0%, transparent 50%),
+              radial-gradient(ellipse at bottom right, rgba(244,167,60,.06) 0%, transparent 50%), var(--sand);
+  color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6;
+  padding: 2.5rem 1rem 4rem; -webkit-font-smoothing: antialiased;
 }
+button { font-family: inherit; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+.container { max-width: 860px; margin: 0 auto; }
+
+/* Header */
+.header { text-align: center; margin-bottom: 2.5rem; padding: 2.5rem 1rem 2rem; }
+.eyebrow { font-size: .72rem; letter-spacing: .32em; color: var(--ocean); text-transform: uppercase; margin-bottom: 1rem; font-weight: 600; }
+.eyebrow::before, .eyebrow::after { content: ""; display: inline-block; width: 28px; height: 1px; background: var(--ocean); vertical-align: middle; margin: 0 .8rem; opacity: .4; }
+h1 { font-family: var(--serif); font-size: clamp(2rem, 6vw, 3rem); font-weight: 700; letter-spacing: -.02em; margin-bottom: .6rem; line-height: 1.15; }
+.subtitle { font-size: .95rem; color: var(--ink-soft); max-width: 540px; margin: 0 auto; }
+.season-tag { display: inline-flex; gap: .5rem; margin-top: 1.4rem; padding: .45rem 1.1rem; background: var(--paper); border: 1px solid var(--sun); color: var(--coral); border-radius: 24px; font-size: .72rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; box-shadow: var(--shadow); }
+
+/* Panels */
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem 1.8rem; margin-bottom: 2.5rem; box-shadow: var(--shadow); }
+.panel h2 { font-size: .68rem; letter-spacing: .25em; color: var(--ocean); text-transform: uppercase; margin-bottom: 1rem; font-weight: 700; display: flex; align-items: center; gap: .6rem; }
+.panel h2::before { content: ""; width: 18px; height: 2px; background: var(--coral); }
+.panel p { color: var(--ink-soft); font-size: .92rem; margin-bottom: .6rem; }
+.panel strong { color: var(--ink); }
+.level-legend { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1.2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.level-badge { padding: .4rem .9rem; border-radius: 18px; font-size: .72rem; font-weight: 700; }
+.level-1, .lvl-1 { background: #e7f4ec; color: #2a6a3a; border: 1px solid #b8dec5; }
+.level-2, .lvl-2 { background: #fef4dc; color: #8a6a1a; border: 1px solid #f0d68a; }
+.level-3, .lvl-3 { background: #fde2d6; color: #a04a1a; border: 1px solid #f5b890; }
+
+/* Timer settings */
+.setting { margin-bottom: 1rem; }
+.setting-label { display: block; font-size: .78rem; font-weight: 700; color: var(--ink); margin-bottom: .4rem; }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip { min-width: 3.2rem; padding: .5rem .8rem; border: 1px solid var(--line); background: var(--sand); color: var(--ink-soft); border-radius: 20px; font-size: .88rem; font-weight: 600; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ocean); border-color: var(--ocean); color: #fff; }
+.toggle { display: flex; align-items: center; gap: .6rem; font-size: .88rem; color: var(--ink-soft); cursor: pointer; }
+.toggle input { width: 1.1rem; height: 1.1rem; accent-color: var(--ocean); }
+.settings-summary { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--ink-soft); }
+
+/* Navigation */
+.nav-title { font-size: .68rem; letter-spacing: .25em; color: var(--ocean); text-transform: uppercase; margin-bottom: 1.2rem; font-weight: 700; text-align: center; }
+.nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+.nav-card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 1.3rem 1.4rem; text-decoration: none; color: var(--ink); display: block; position: relative; overflow: hidden; box-shadow: var(--shadow); transition: box-shadow .2s, border-color .2s; }
+.nav-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--c); }
+.nav-card:hover { box-shadow: var(--shadow-lg); border-color: var(--c); }
+.nav-icon { font-size: 1.8rem; display: block; margin-bottom: .6rem; }
+.nav-label { font-size: .6rem; font-weight: 800; letter-spacing: .2em; color: var(--c); text-transform: uppercase; margin-bottom: .25rem; }
+.nav-name { font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+
+/* Workout */
+.workout { background: var(--paper); border-radius: 18px; padding: 2.2rem 2.2rem 2rem; margin-bottom: 2rem; box-shadow: var(--shadow); position: relative; overflow: hidden; border: 1px solid var(--line); scroll-margin-top: 1rem; }
+.workout::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--c), var(--cl)); }
+.workout-header { border-bottom: 2px solid var(--sand-warm); padding-bottom: 1.4rem; margin-bottom: 1.6rem; }
+.workout-number { font-size: .65rem; letter-spacing: .28em; color: var(--c); text-transform: uppercase; font-weight: 800; margin-bottom: .4rem; }
+.workout-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 700; letter-spacing: -.015em; margin-bottom: .35rem; line-height: 1.2; }
+.workout-tagline { font-size: .92rem; color: var(--ink-soft); font-style: italic; }
+.workout-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .8rem; margin-bottom: 1.4rem; }
+.meta-item { background: var(--sand); border: 1px solid var(--line); border-radius: 10px; padding: .75rem 1rem; display: flex; align-items: center; gap: .7rem; }
+.meta-icon { font-size: 1.4rem; }
+.meta-label { font-size: .58rem; font-weight: 800; letter-spacing: .15em; color: var(--ink-soft); text-transform: uppercase; }
+.meta-value { font-size: .88rem; font-weight: 700; }
+.start-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: .6rem; padding: 1rem; margin-bottom: 1.4rem; border: none; border-radius: 12px; background: var(--c); color: #fff; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+.start-btn:active { transform: scale(.99); }
+.stations-header { display: flex; align-items: center; justify-content: space-between; gap: .8rem; margin-bottom: 1.2rem; padding-bottom: .6rem; border-bottom: 1px dashed var(--line); }
+.stations-title { font-size: .68rem; letter-spacing: .22em; color: var(--ocean); text-transform: uppercase; font-weight: 800; }
+.stations-count { font-size: .75rem; color: var(--c); font-weight: 700; background: var(--sand); padding: .25rem .7rem; border-radius: 14px; border: 1px solid var(--line); text-align: right; }
+.station { border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.3rem; margin-bottom: .8rem; display: grid; grid-template-columns: auto 1fr; gap: 1.1rem; }
+.station-number { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--c), var(--cl)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.05rem; font-family: var(--serif); }
+.station-name { font-size: 1.1rem; font-weight: 700; margin-bottom: .2rem; }
+.station-target { font-size: .68rem; font-weight: 700; letter-spacing: .15em; color: var(--c); text-transform: uppercase; margin-bottom: .6rem; }
+.station-desc { font-size: .85rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: .8rem; }
+.side-note { display: inline-block; font-size: .72rem; font-weight: 700; color: var(--ocean-deep); background: #e3f0f5; border-radius: 10px; padding: .1rem .55rem; margin-left: .3rem; white-space: nowrap; }
+.station-levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.station-level { text-align: center; padding: .55rem .5rem; border-radius: 8px; }
+.station-level-tag { font-size: .55rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .25rem; }
+.station-level-value { font-size: .82rem; font-weight: 700; color: var(--ink); }
+.bookend { background: linear-gradient(135deg, var(--ocean), var(--ocean-deep)); color: var(--sand); border-radius: 12px; padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
+.bookend-title { font-size: .68rem; letter-spacing: .22em; color: var(--sun); text-transform: uppercase; font-weight: 800; margin-bottom: .6rem; }
+.bookend-content { font-size: .9rem; color: rgba(253,248,240,.92); line-height: 1.7; }
+
+/* Kata */
+.kata-section { background: var(--paper); border-radius: 18px; padding: 2.2rem; margin-top: 3rem; box-shadow: var(--shadow); position: relative; overflow: hidden; border: 1px solid var(--line); }
+.kata-section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, var(--coral), var(--sun)); }
+.kata-section::after { content: "型"; position: absolute; top: 1.5rem; right: 1.8rem; font-family: var(--serif); font-size: 4rem; color: rgba(231,111,81,.08); line-height: 1; pointer-events: none; }
+.kata-eyebrow { font-size: .65rem; letter-spacing: .28em; color: var(--coral); text-transform: uppercase; font-weight: 800; margin-bottom: .4rem; }
+.kata-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; margin-bottom: .4rem; }
+.kata-intro { font-size: .92rem; color: var(--ink-soft); margin-bottom: 1.4rem; font-style: italic; }
+.kata-box { background: var(--sand-warm); border-radius: 8px; padding: 1.2rem 1.4rem; font-size: .88rem; color: var(--ink-soft); line-height: 1.75; }
+.kata-box p + p { margin-top: .8rem; }
+.footer { text-align: center; margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--line); font-size: .72rem; color: var(--ink-soft); letter-spacing: .12em; }
+
+/* ─── AJASTIN ─────────────────────────────────────────────────────────── */
+.timer { position: fixed; inset: 0; z-index: 100; display: none; flex-direction: column; color: #fff; background: var(--phase-bg, var(--ocean-deep)); transition: background-color .35s ease; padding: max(1rem, env(safe-area-inset-top)) 1.2rem max(1rem, env(safe-area-inset-bottom)); }
+.timer.open { display: flex; }
+.timer-top { display: flex; justify-content: space-between; align-items: center; font-size: .85rem; font-weight: 600; opacity: .9; gap: .8rem; }
+.timer-close { background: rgba(255,255,255,.18); border: none; color: #fff; border-radius: 20px; padding: .45rem .9rem; font-size: .85rem; font-weight: 700; cursor: pointer; }
+.timer-progress { height: 5px; background: rgba(255,255,255,.22); border-radius: 3px; margin: .8rem 0 0; overflow: hidden; }
+.timer-progress i { display: block; height: 100%; width: 0; background: #fff; }
+.timer-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: .4rem; min-height: 0; }
+.timer-phase { font-size: clamp(1rem, 4.5vw, 1.4rem); font-weight: 800; letter-spacing: .3em; text-transform: uppercase; }
+.timer-count { font-family: var(--serif); font-weight: 700; font-size: clamp(7rem, 38vw, 15rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.timer-station { font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 800; line-height: 1.2; max-width: 22ch; }
+.timer-levels { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; margin-top: .4rem; font-size: .82rem; }
+.timer-levels span { background: rgba(255,255,255,.16); border-radius: 14px; padding: .25rem .7rem; }
+.timer-levels b { font-weight: 800; margin-right: .3rem; opacity: .8; }
+.timer-switch { min-height: 2.2rem; font-size: 1.2rem; font-weight: 800; color: var(--sun); }
+.timer-next { font-size: .95rem; opacity: .85; min-height: 1.5rem; }
+.timer-controls { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: .6rem; }
+.timer-controls button { border: none; border-radius: 14px; padding: 1rem .5rem; font-size: 1rem; font-weight: 800; cursor: pointer; background: rgba(255,255,255,.18); color: #fff; }
+.timer-controls .primary { background: #fff; color: var(--ink); }
+.timer.paused .timer-count { opacity: .45; }
+@media (max-height: 560px) { .timer-count { font-size: clamp(4rem, 22vh, 8rem); } .timer-levels { display: none; } }
 
-.container { max-width: 860px; margin: 0 auto; position: relative; }
-
-/* ─── HEADER ────────────────────────────────────────────────────────────── */
-.header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  padding: 2.5rem 1rem 2rem;
-  position: relative;
-}
-
-.header::before {
-  content: none;
-}
-
-.header > * { position: relative; z-index: 1; }
-
-.eyebrow {
-  font-size: .72rem;
-  letter-spacing: .32em;
-  color: var(--ocean);
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.eyebrow::before, .eyebrow::after {
-  content: "";
-  display: inline-block;
-  width: 28px; height: 1px;
-  background: var(--ocean);
-  vertical-align: middle;
-  margin: 0 .8rem;
-  opacity: 0.4;
-}
-
-h1 {
-  font-family: 'Noto Serif JP', 'Inter', serif;
-  font-size: clamp(2rem, 6vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -.02em;
-  color: var(--ink);
-  margin-bottom: .6rem;
-  line-height: 1.15;
-}
-
-.subtitle {
-  font-size: .95rem;
-  color: var(--ink-soft);
-  max-width: 540px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-.season-tag {
-  display: inline-flex; align-items: center; gap: .5rem;
-  margin-top: 1.4rem;
-  padding: .45rem 1.1rem;
-  background: var(--paper);
-  border: 1px solid var(--sun);
-  color: var(--coral);
-  border-radius: 24px;
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  box-shadow: var(--shadow);
-}
-
-/* ─── NAVIGATION ────────────────────────────────────────────────────────── */
-.nav-section {
-  margin-bottom: 2.5rem;
-}
-
-.nav-title {
-  font-size: .68rem;
-  letter-spacing: .25em;
-  color: var(--ocean);
-  text-transform: uppercase;
-  margin-bottom: 1.2rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-.nav-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-}
-
-.nav-card {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 1.3rem 1.4rem;
-  text-decoration: none;
-  color: var(--ink);
-  display: block;
-  transition: all .25s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-
-.nav-card::before {
-  content: ""; position: absolute;
-  top: 0; left: 0;
-  width: 4px; height: 100%;
-  background: var(--nav-color, var(--ocean));
-  transition: width .25s ease;
-}
-
-.nav-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--nav-color, var(--ocean));
-}
-
-.nav-card:hover::before {
-  width: 6px;
-}
-
-.nav-icon {
-  font-size: 1.8rem;
-  display: block;
-  margin-bottom: .6rem;
-}
-
-.nav-label {
-  font-size: .6rem;
-  font-weight: 800;
-  letter-spacing: .2em;
-  color: var(--nav-color, var(--ocean));
-  text-transform: uppercase;
-  margin-bottom: .25rem;
-}
-
-.nav-name {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-
-/* ─── INFO BOX ──────────────────────────────────────────────────────────── */
-.info-section {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 1.6rem 1.8rem;
-  margin-bottom: 2.5rem;
-  box-shadow: var(--shadow);
-}
-
-.info-section h2 {
-  font-size: .68rem;
-  letter-spacing: .25em;
-  color: var(--ocean);
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  display: flex; align-items: center; gap: .6rem;
-}
-
-.info-section h2::before {
-  content: "";
-  display: inline-block;
-  width: 18px; height: 2px;
-  background: var(--coral);
-}
-
-.info-section p {
-  color: var(--ink-soft);
-  font-size: .92rem;
-  margin-bottom: .6rem;
-}
-
-.info-section p:last-of-type { margin-bottom: 0; }
-
-.info-section strong { color: var(--ink); font-weight: 700; }
-
-/* ─── LEVEL LEGEND ──────────────────────────────────────────────────────── */
-.level-legend {
-  display: flex; gap: .6rem; flex-wrap: wrap;
-  margin-top: 1.2rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--line);
-}
-
-.level-badge {
-  display: inline-flex; align-items: center; gap: .4rem;
-  padding: .4rem .9rem;
-  border-radius: 18px;
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .04em;
-}
-
-.level-1 { background: #e7f4ec; color: #2a6a3a; border: 1px solid #b8dec5; }
-.level-2 { background: #fef4dc; color: #8a6a1a; border: 1px solid #f0d68a; }
-.level-3 { background: #fde2d6; color: #a04a1a; border: 1px solid #f5b890; }
-
-/* ─── WORKOUT CARD ──────────────────────────────────────────────────────── */
-.workout {
-  background: var(--paper);
-  color: var(--ink);
-  border-radius: 18px;
-  padding: 2.2rem 2.2rem 2rem;
-  margin-bottom: 2rem;
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  scroll-margin-top: 2rem;
-}
-
-.workout::before {
-  content: ""; position: absolute;
-  top: 0; left: 0; right: 0; height: 6px;
-  background: linear-gradient(90deg, var(--workout-color, var(--ocean)) 0%, var(--workout-color-light, var(--ocean-light)) 100%);
-}
-
-.workout-header {
-  border-bottom: 2px solid var(--sand-warm);
-  padding-bottom: 1.4rem;
-  margin-bottom: 1.6rem;
-}
-
-.workout-number {
-  font-size: .65rem;
-  letter-spacing: .28em;
-  color: var(--workout-color, var(--ocean));
-  text-transform: uppercase;
-  font-weight: 800;
-  margin-bottom: .4rem;
-  display: inline-flex; align-items: center; gap: .5rem;
-}
-
-.workout-number::before {
-  content: "";
-  display: inline-block;
-  width: 8px; height: 8px;
-  background: var(--workout-color, var(--ocean));
-  border-radius: 50%;
-}
-
-.workout-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: -.015em;
-  margin-bottom: .35rem;
-  color: var(--ink);
-  line-height: 1.2;
-}
-
-.workout-tagline {
-  font-size: .92rem;
-  color: var(--ink-soft);
-  font-style: italic;
-  line-height: 1.5;
-}
-
-.workout-meta {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: .8rem;
-  margin-bottom: 1.8rem;
-}
-
-.meta-item {
-  background: var(--sand);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: .75rem 1rem;
-  display: flex; align-items: center; gap: .7rem;
-}
-
-.meta-icon { font-size: 1.4rem; flex-shrink: 0; }
-
-.meta-content { min-width: 0; }
-
-.meta-label {
-  font-size: .58rem;
-  font-weight: 800;
-  letter-spacing: .15em;
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  margin-bottom: .1rem;
-}
-
-.meta-value {
-  font-size: .88rem;
-  color: var(--ink);
-  font-weight: 700;
-}
-
-/* ─── STATIONS ──────────────────────────────────────────────────────────── */
-.stations-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.2rem;
-  padding-bottom: .6rem;
-  border-bottom: 1px dashed var(--line);
-}
-
-.stations-title {
-  font-size: .68rem;
-  letter-spacing: .22em;
-  color: var(--ocean);
-  text-transform: uppercase;
-  font-weight: 800;
-}
-
-.stations-count {
-  font-size: .75rem;
-  color: var(--workout-color, var(--coral));
-  font-weight: 700;
-  background: var(--sand);
-  padding: .25rem .7rem;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-}
-
-.station {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 1.1rem 1.3rem;
-  margin-bottom: .8rem;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1.1rem;
-  align-items: start;
-  transition: all .15s ease;
-}
-
-.station:hover {
-  border-color: var(--workout-color, var(--ocean));
-  background: linear-gradient(180deg, var(--paper) 0%, var(--sand) 100%);
-}
-
-.station-number {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--workout-color, var(--ocean)) 0%, var(--workout-color-light, var(--ocean-light)) 100%);
-  color: var(--paper);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 1.05rem;
-  font-family: 'Noto Serif JP', serif;
-  flex-shrink: 0;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-}
-
-.station-body { min-width: 0; }
-
-.station-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: .2rem;
-  color: var(--ink);
-  letter-spacing: -.01em;
-}
-
-.station-target {
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .15em;
-  color: var(--workout-color, var(--ocean));
-  text-transform: uppercase;
-  margin-bottom: .6rem;
-}
-
-.station-desc {
-  font-size: .85rem;
-  color: var(--ink-soft);
-  line-height: 1.65;
-  margin-bottom: .8rem;
-}
-
-.station-levels {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: .5rem;
-}
-
-.station-level {
-  text-align: center;
-  padding: .55rem .5rem;
-  border-radius: 8px;
-  border: 1px solid;
-}
-
-.station-level-tag {
-  font-size: .55rem;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  margin-bottom: .25rem;
-}
-
-.station-level-value {
-  font-size: .82rem;
-  font-weight: 700;
-  color: var(--ink);
-}
-
-.lvl-1 { background: #e7f4ec; border-color: #b8dec5; }
-.lvl-1 .station-level-tag { color: #2a6a3a; }
-.lvl-2 { background: #fef4dc; border-color: #f0d68a; }
-.lvl-2 .station-level-tag { color: #8a6a1a; }
-.lvl-3 { background: #fde2d6; border-color: #f5b890; }
-.lvl-3 .station-level-tag { color: #a04a1a; }
-
-/* ─── BOOKENDS (warmup/cooldown) ────────────────────────────────────────── */
-.bookend {
-  background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-deep) 100%);
-  color: var(--sand);
-  border-radius: 12px;
-  padding: 1.2rem 1.4rem;
-  margin: 1.2rem 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.bookend::after {
-  content: "";
-  position: absolute;
-  top: -20px; right: -20px;
-  width: 120px; height: 120px;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-  border-radius: 50%;
-}
-
-.bookend-title {
-  font-size: .68rem;
-  letter-spacing: .22em;
-  color: var(--sun);
-  text-transform: uppercase;
-  font-weight: 800;
-  margin-bottom: .6rem;
-  display: flex; align-items: center; gap: .5rem;
-  position: relative;
-  z-index: 1;
-}
-
-.bookend-content {
-  font-size: .9rem;
-  color: rgba(253, 248, 240, 0.92);
-  line-height: 1.7;
-  position: relative;
-  z-index: 1;
-}
-
-/* ─── KATA SECTION ──────────────────────────────────────────────────────── */
-.kata-section {
-  background: var(--paper);
-  color: var(--ink);
-  border-radius: 18px;
-  padding: 2.2rem;
-  margin-top: 3rem;
-  box-shadow: var(--shadow);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--line);
-}
-
-.kata-section::before {
-  content: ""; position: absolute;
-  top: 0; left: 0; right: 0; height: 6px;
-  background: linear-gradient(90deg, var(--coral) 0%, var(--sun) 100%);
-}
-
-.kata-section::after {
-  content: "型";
-  position: absolute;
-  top: 1.5rem; right: 1.8rem;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 4rem;
-  font-weight: 400;
-  color: rgba(231, 111, 81, 0.08);
-  line-height: 1;
-  pointer-events: none;
-}
-
-.kata-eyebrow {
-  font-size: .65rem;
-  letter-spacing: .28em;
-  color: var(--coral);
-  text-transform: uppercase;
-  font-weight: 800;
-  margin-bottom: .4rem;
-}
-
-.kata-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: -.015em;
-  margin-bottom: .4rem;
-  color: var(--ink);
-}
-
-.kata-intro {
-  font-size: .92rem;
-  color: var(--ink-soft);
-  margin-bottom: 1.4rem;
-  font-style: italic;
-}
-
-/* ─── FOOTER ────────────────────────────────────────────────────────────── */
-.footer {
-  text-align: center;
-  margin-top: 3.5rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--line);
-  font-size: .72rem;
-  color: var(--ink-soft);
-  letter-spacing: .12em;
-}
-
-.footer::before {
-  content: "♦";
-  display: block;
-  color: var(--coral);
-  font-size: .8rem;
-  margin-bottom: .6rem;
-  opacity: 0.6;
-}
-
-/* ─── RESPONSIVE ────────────────────────────────────────────────────────── */
 @media (max-width: 560px) {
   body { padding: 1.5rem 1rem 3rem; }
   .station { padding: 1rem 1.1rem; gap: .9rem; }
@@ -589,610 +148,422 @@ h1 {
   .station-level { display: flex; justify-content: space-between; align-items: center; padding: .55rem .8rem; }
   .station-level-tag { margin-bottom: 0; }
   .workout, .kata-section { padding: 1.6rem 1.4rem; }
-  .header { padding: 1.5rem 0 1.5rem; }
+  .panel { padding: 1.4rem 1.2rem; }
+  .header { padding: 1.5rem 0; }
   .eyebrow::before, .eyebrow::after { width: 18px; margin: 0 .5rem; }
 }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 </style>
 </head>
 <body>
 <div class="container">
-
-  <!-- HEADER -->
-  <div class="header">
+  <header class="header">
     <div class="eyebrow">Budo Akatemia ry · Shorin-ryu Seibukan</div>
     <h1>Kesän kuntopiirit</h1>
-    <div class="subtitle">
-      Kolme erilaista kuntopiiriharjoitusta ulkokäyttöön. Sopii kaikenikäisille
-      ja -tasoisille — jokainen liike kolmessa vaikeusasteessa.
-    </div>
+    <p class="subtitle">Kolme erilaista kuntopiiriä ulkoharjoitteluun. Sopii kaikenikäisille ja -tasoisille: jokaisella liikkeellä on kolme vaikeustasoa.</p>
     <div class="season-tag">☀️ Kesäkausi</div>
-  </div>
+  </header>
 
-  <!-- KÄYTTÖOHJE -->
-  <div class="info-section">
-    <h2>Käyttöohje</h2>
-    <p>Pisteiden määrä: <strong>8 asemaa</strong> per piiri. Tee liikettä annetun ajan, sen jälkeen lepo ja siirtyminen seuraavalle asemalle.</p>
-    <p><strong>Asetus:</strong> 30 sek työtä / 30 sek lepoa. Tee 2–3 kierrosta tason mukaan. Kierrosten välissä 2 min palautus + juomatauko.</p>
-    <p><strong>Tilantarve:</strong> Nurmialue tai sora, n. 10×10 m. Ei välineitä paitsi sekuntikello (puhelin) ja juomapullo.</p>
-
+  <section class="panel" aria-labelledby="h-ohje">
+    <h2 id="h-ohje">Käyttöohje</h2>
+    <p>Jokaisessa piirissä on 8–9 asemaa. Tee liikettä työajan verran, lepää ja siirry seuraavalle asemalle. Kierrosten välissä on pidempi palautus ja juomatauko.</p>
+    <p><strong>Tilantarve:</strong> nurmikko tai sorakenttä, noin 10 × 10 m. Tarvitset vain puhelimen ajastimeksi ja juomapullon.</p>
+    <p>Valitse alta kierrokset, työaika ja lepoaika, ja käynnistä ajastin harjoituksen kohdalta. Ajastin kertoo vuorossa olevan aseman, vaihtaa jakson automaattisesti ja antaa äänimerkin.</p>
     <div class="level-legend">
-      <span class="level-badge level-1">Taso 1 — Alkeet</span>
-      <span class="level-badge level-2">Taso 2 — Keskitaso</span>
-      <span class="level-badge level-3">Taso 3 — Edistynyt</span>
+      <span class="level-badge level-1">Taso 1 · Alkeet</span>
+      <span class="level-badge level-2">Taso 2 · Keskitaso</span>
+      <span class="level-badge level-3">Taso 3 · Edistynyt</span>
     </div>
-  </div>
+  </section>
 
-  <!-- ─── NAVIGAATIO ─── -->
-  <div class="nav-section">
+  <section class="panel" aria-labelledby="h-ajastin">
+    <h2 id="h-ajastin">Ajastimen asetukset</h2>
+    <div id="settings"></div>
+    <label class="toggle"><input type="checkbox" id="soundToggle" checked> Äänimerkit (viimeiset 3 sekuntia ja jakson vaihto)</label>
+    <div class="settings-summary" id="settingsSummary"></div>
+  </section>
+
+  <nav aria-label="Harjoitukset">
     <div class="nav-title">Valitse harjoitus</div>
-    <div class="nav-grid">
-      <a href="#harjoitus1" class="nav-card" style="--nav-color:#1c6e8c">
-        <span class="nav-icon">💪</span>
-        <div class="nav-label">Harjoitus 1</div>
-        <div class="nav-name">Voima &amp; stabiliteetti</div>
-      </a>
-      <a href="#harjoitus2" class="nav-card" style="--nav-color:#e76f51">
-        <span class="nav-icon">⚡</span>
-        <div class="nav-label">Harjoitus 2</div>
-        <div class="nav-name">Räjähtävyys &amp; nopeus</div>
-      </a>
-      <a href="#harjoitus3" class="nav-card" style="--nav-color:#2a8a5a">
-        <span class="nav-icon">⚖️</span>
-        <div class="nav-label">Harjoitus 3</div>
-        <div class="nav-name">Liikkuvuus &amp; tasapaino</div>
-      </a>
-    </div>
-  </div>
+    <div class="nav-grid" id="nav"></div>
+  </nav>
 
-  <!-- ═══════════════════ HARJOITUS 1: VOIMA & STABILITEETTI ═══════════════════ -->
-  <div class="workout" id="harjoitus1" style="--workout-color:#1c6e8c; --workout-color-light:#5ba8c4">
-    <div class="workout-header">
-      <div class="workout-number">Harjoitus 1</div>
-      <div class="workout-title">Voima &amp; stabiliteetti</div>
-      <div class="workout-tagline">Ylävartalon ja keskivartalon perusta — pohja kaikille tekniikoille.</div>
-    </div>
+  <main id="workouts"></main>
 
-    <div class="workout-meta">
-      <div class="meta-item">
-        <span class="meta-icon">⏱️</span>
-        <div class="meta-content">
-          <div class="meta-label">Kesto</div>
-          <div class="meta-value">35–50 min</div>
-        </div>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">🔄</span>
-        <div class="meta-content">
-          <div class="meta-label">Kierroksia</div>
-          <div class="meta-value">2–3</div>
-        </div>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">💪</span>
-        <div class="meta-content">
-          <div class="meta-label">Painopiste</div>
-          <div class="meta-value">Voima · keskivartalo</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bookend">
-      <div class="bookend-title">▸ Alkulämmittely · 10 min</div>
-      <div class="bookend-content">
-        Hölkkä paikallaan tai varjo-ottelu 2 min · käsien pyöritykset 30 s · lantion pyöritykset 30 s ·
-        polvinostot 30 s · kantapotkut 30 s · 10 hidasta gyaku-zukia per käsi ·
-        10 hidasta mae geriä per jalka.
-      </div>
-    </div>
-
-    <div class="stations-header">
-      <div class="stations-title">Asemat</div>
-      <div class="stations-count">9 × 30 sek / 30 sek lepoa</div>
-    </div>
-
-    <!-- Stations 1-9 -->
-    <div class="station">
-      <div class="station-number">1</div>
-      <div class="station-body">
-        <div class="station-name">Punnerrukset</div>
-        <div class="station-target">Rinta · olkapäät · ojentajat</div>
-        <div class="station-desc">Täysi liikerata, rinta lähelle maata, käsivarret suoraksi.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Polvilta</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Vakio</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Taputus</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">2</div>
-      <div class="station-body">
-        <div class="station-name">Selälläsoutu / linnunlento</div>
-        <div class="station-target">Selän takaketju · lapaluut</div>
-        <div class="station-desc">Vatsallaan: nosta rinta ja jalat, levitä kädet sivuille kuten lintu.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Vain ylävartalo</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Yhtäaikaa</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Pidot 3 s</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">3</div>
-      <div class="station-body">
-        <div class="station-name">Hidas mawashi-geri</div>
-        <div class="station-target">Lonkan stabilaattorit · keskivartalo · tasapaino</div>
-        <div class="station-desc">Suorita mawashi-geri mahdollisimman hitaasti ja hallitusti — polven nosto, kierto, ojennus, palautus. Vaihda jalkaa 15 s kohdalla. Tuki sallittu.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Vyötaso · tuki</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Rinta · ilman tukea</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Pää · pito 3 s</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">4</div>
-      <div class="station-body">
-        <div class="station-name">Lankku</div>
-        <div class="station-target">Keskivartalo · syvät vatsalihakset</div>
-        <div class="station-desc">Vartalo suorassa kantapäistä päähän, lantio ei vaju.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Polvilta 30 s</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Vakio 30 s</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Yhdellä kädellä</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">5</div>
-      <div class="station-body">
-        <div class="station-name">Trisepsipunnerrus</div>
-        <div class="station-target">Ojentajat · olkapäät</div>
-        <div class="station-desc">Kädet kapeammin (timantti) tai penkkiä vasten dippinä.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Polvilta</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Penkkidippi</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Timanttipunn.</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">6</div>
-      <div class="station-body">
-        <div class="station-name">Vatsalihakset</div>
-        <div class="station-target">Suorat vatsalihakset</div>
-        <div class="station-desc">Polvet koukussa, kädet rinnalla. Kyynärpäät polviin asti.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Puolikkaat</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Täydet</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">V-istuminen</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">7</div>
-      <div class="station-body">
-        <div class="station-name">Sivulankku</div>
-        <div class="station-target">Vinot vatsalihakset · keskivartalo</div>
-        <div class="station-desc">Vaihda puolta 15 s kohdalla. Vartalo suorassa.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Polvelta</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Vakio</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Lantion lasku/nosto</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">8</div>
-      <div class="station-body">
-        <div class="station-name">Lantion nosto</div>
-        <div class="station-target">Pakarat · alaselkä</div>
-        <div class="station-desc">Selällään, polvet koukussa: nosta lantio ylös, purista pakaroita.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Molemmat jalat</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">3 s pito</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Yhdellä jalalla</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">9</div>
-      <div class="station-body">
-        <div class="station-name">Vuoristokiipeilijä</div>
-        <div class="station-target">Keskivartalo · syke · loppukiri</div>
-        <div class="station-desc">Punnerrusasennossa vuorojaloin polvi rintaan, tempo nopea. Anna kaikki — loppufinaali!</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Rauhallinen</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Reipas</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Räjähtävä</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bookend">
-      <div class="bookend-title">▸ Loppuvenyttely · 5 min</div>
-      <div class="bookend-content">
-        Lapaluiden venytys · rinnan venytys · alaselän rullaus · sivulonkan venytys per jalka 30 s.
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════ HARJOITUS 2: RÄJÄHTÄVYYS & NOPEUS ═══════════════════ -->
-  <div class="workout" id="harjoitus2" style="--workout-color:#e76f51; --workout-color-light:#f4a73c">
-    <div class="workout-header">
-      <div class="workout-number">Harjoitus 2</div>
-      <div class="workout-title">Räjähtävyys &amp; nopeus</div>
-      <div class="workout-tagline">Jalkojen voima ja nopea liikkuminen — potkujen ja siirtymien moottori.</div>
-    </div>
-
-    <div class="workout-meta">
-      <div class="meta-item">
-        <span class="meta-icon">⏱️</span>
-        <div class="meta-content">
-          <div class="meta-label">Kesto</div>
-          <div class="meta-value">35–50 min</div>
-        </div>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">🔄</span>
-        <div class="meta-content">
-          <div class="meta-label">Kierroksia</div>
-          <div class="meta-value">2–3</div>
-        </div>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">⚡</span>
-        <div class="meta-content">
-          <div class="meta-label">Painopiste</div>
-          <div class="meta-value">Plyometriikka · nopeus</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bookend">
-      <div class="bookend-title">▸ Alkulämmittely · 10 min</div>
-      <div class="bookend-content">
-        Reipas kävely / hölkkä 3 min · kantapotkut 30 s · polvinostot 30 s ·
-        sivuaskelluksia 30 s · 10 dynaamista mae geriä per jalka ·
-        10 kyykkyä rauhallisesti.
-      </div>
-    </div>
-
-    <div class="stations-header">
-      <div class="stations-title">Asemat</div>
-      <div class="stations-count">8 × 30 sek / 30 sek lepoa</div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">1</div>
-      <div class="station-body">
-        <div class="station-name">Hyppykyykyt</div>
-        <div class="station-target">Reidet · pakarat · räjähtävyys</div>
-        <div class="station-desc">Polvet noin 90° kulmaan, räjähtävä ojennus ylös. Laskeudu pehmeästi kantapäille. Älä mene syvempään — räjähtävyys häviää.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Tavallinen kyykky</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Hyppykyykky</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">180° käännös</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">2</div>
-      <div class="station-body">
-        <div class="station-name">Sivuaskellus (skater)</div>
-        <div class="station-target">Lateraalinen voima · tasapaino</div>
-        <div class="station-desc">Hyppää sivulle yhdellä jalalla, laskeudu toiselle. Pidä tasapaino.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Astuminen</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Pieni hyppy</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Laaja hyppy + pito</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">3</div>
-      <div class="station-body">
-        <div class="station-name">Askelkyykky-vaihdot</div>
-        <div class="station-target">Reidet · pakarat · lonkka</div>
-        <div class="station-desc">Vuorojaloin syvä askelkyykky. Polvi ei kärjen edelle.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Rauhalliset</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Nopea vaihto</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Hyppyvaihto</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">4</div>
-      <div class="station-body">
-        <div class="station-name">Polvennostohölkkä tai 20 m vedot</div>
-        <div class="station-target">Lonkan koukistajat · syke</div>
-        <div class="station-desc">Paikallaan polvet vyötärön tasolle, TAI vaihtoehtoisesti 20 m juoksuvedot reippaalla tempolla.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Rauhallinen</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Reipas</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Maks. tempolla</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">5</div>
-      <div class="station-body">
-        <div class="station-name">Vuoroloikat</div>
-        <div class="station-target">Räjähtävä jalkavoima</div>
-        <div class="station-desc">6–16 vuorojaloin tehtyä loikkaa eteenpäin. Pehmeät laskeutumiset, tasapaino jokaisen jälkeen.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Lyhyet 6 kpl</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Pitkät 8 kpl</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Maks. 10 kpl</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">6</div>
-      <div class="station-body">
-        <div class="station-name">Burpee</div>
-        <div class="station-target">Kokonaisvaltainen · syke</div>
-        <div class="station-desc">Kyykky → punnerrusasento → punnerrus → hyppy ylös.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Ilman punn.</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Täysi</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Taputushyppy</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">7</div>
-      <div class="station-body">
-        <div class="station-name">Pohjenousut räjähtävästi</div>
-        <div class="station-target">Pohkeet · alaraajojen räjähtävyys</div>
-        <div class="station-desc">Seiso varpailla, räjähtävä nousu. Voi myös pieni hyppy.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Molemmat jalat</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Pieni hyppy</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Yhdellä jalalla</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">8</div>
-      <div class="station-body">
-        <div class="station-name">Varjo-ottelu</div>
-        <div class="station-target">Liikkeen taloudellisuus · syke</div>
-        <div class="station-desc">Vapaata ottelua, liikettä, väistöjä, lyöntejä, torjuntoja ja potkuja sekä niiden yhdistelmiä monipuolisesti.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Yksinkertaista</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Kombinaatioita</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Räjähtävät vaihdot</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bookend">
-      <div class="bookend-title">▸ Loppuvenyttely · 5 min</div>
-      <div class="bookend-content">
-        Takareiden venytys · etureiden venytys · pohkeen venytys · lonkan avaava
-        kyykkyvenytys · syvä hengitys 1 min.
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════ HARJOITUS 3: LIIKKUVUUS & TASAPAINO ═══════════════════ -->
-  <div class="workout" id="harjoitus3" style="--workout-color:#2a8a5a; --workout-color-light:#6fc28a">
-    <div class="workout-header">
-      <div class="workout-number">Harjoitus 3</div>
-      <div class="workout-title">Liikkuvuus &amp; tasapaino</div>
-      <div class="workout-tagline">Kevyempi, tekninen päivä — säilytä liikerata ja kehonhallinta.</div>
-    </div>
-
-    <div class="workout-meta">
-      <div class="meta-item">
-        <span class="meta-icon">⏱️</span>
-        <div class="meta-content">
-          <div class="meta-label">Kesto</div>
-          <div class="meta-value">30–45 min</div>
-        </div>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">🔄</span>
-        <div class="meta-content">
-          <div class="meta-label">Kierroksia</div>
-          <div class="meta-value">2–3</div>
-        </div>
-      </div>
-      <div class="meta-item">
-        <span class="meta-icon">⚖️</span>
-        <div class="meta-content">
-          <div class="meta-label">Painopiste</div>
-          <div class="meta-value">Hallinta · liikerata</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bookend">
-      <div class="bookend-title">▸ Alkulämmittely · 8 min</div>
-      <div class="bookend-content">
-        Kevyt hölkkä 2 min · lantion pyöritykset 30 s · selän pyöristys–ojennus 6 toistoa ·
-        dynaamiset jalan heilautukset eteen ja sivulle 8 per jalka ·
-        rauhalliset shiko-dachi -kyykyt (leveä haara-asento, varpaat ulospäin) 5 toistoa.
-      </div>
-    </div>
-
-    <div class="stations-header">
-      <div class="stations-title">Asemat</div>
-      <div class="stations-count">9 × 30 sek / 30 sek lepoa</div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">1</div>
-      <div class="station-body">
-        <div class="station-name">Shiko-dachi -pito</div>
-        <div class="station-target">Reidet · pakarat (staattinen)</div>
-        <div class="station-desc">Leveä haara-asento, varpaat ulospäin, reidet vaakatasoon.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Puolikorkea</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Vakio</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">+ käsiliike</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">2</div>
-      <div class="station-body">
-        <div class="station-name">Yhdellä jalalla seisominen</div>
-        <div class="station-target">Staattinen tasapaino</div>
-        <div class="station-desc">Vaihda jalkaa 15 s kohdalla. Vapaa jalka ashi-uke -asennossa.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Silmät auki</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Silmät kiinni</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">+ pään liike</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">3</div>
-      <div class="station-body">
-        <div class="station-name">Jalan heilautukset</div>
-        <div class="station-target">Dynaaminen lonkka</div>
-        <div class="station-desc">Tuki seinästä/partnerista. Heilauta jalka eteen ja taakse. Vaihda 15 s kohdalla.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Matala</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Vyötärö</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Pää · ilman tukea</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">4</div>
-      <div class="station-body">
-        <div class="station-name">Kyykky-laskeutuminen</div>
-        <div class="station-target">Lonkan liikkuvuus · nilkat</div>
-        <div class="station-desc">Pyri syvään kyykkyyn, pysähdy alas 3 s, nouse. Painot kantapäissä.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Puolikyykky</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Täysi</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Ase. + kierto</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">5</div>
-      <div class="station-body">
-        <div class="station-name">Yoko-geri -pidot</div>
-        <div class="station-target">Aktiivinen lonkan abduktio</div>
-        <div class="station-desc">Nosta jalka sivulle, pidä 5–10 s, laske. Vaihda 15 s kohdalla. Tuki sallittu.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Polvi koukussa</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Ojennettu</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Ilman tukea</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">6</div>
-      <div class="station-body">
-        <div class="station-name">Selän pyöristys–ojennus + ristikkäinen ojennus</div>
-        <div class="station-target">Selkärangan liikkuvuus · keskivartalo</div>
-        <div class="station-desc">Konttausasennossa: vuoroin selän pyöristys ja notko, sitten vastakkaisen käden ja jalan ojennus konttausasennossa.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Vain kaaret</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Yhdistelmä</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">+ kyynärpäätaitto</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">7</div>
-      <div class="station-body">
-        <div class="station-name">Eteentaivutus rullaten</div>
-        <div class="station-target">Takaketju · alaselkä</div>
-        <div class="station-desc">Seisten: rullaa alas selkänikamia myöten, pysähdy, rullaa ylös.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Polvet koukussa</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Suoraksi</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">+ kämmenet maahan</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">8</div>
-      <div class="station-body">
-        <div class="station-name">Venytys leveässä haara-asennossa</div>
-        <div class="station-target">Sisäreidet · lonkka</div>
-        <div class="station-desc">Leveä haara-asento istuen, varpaat eteen. Venytys eteenpäin ja molemmille sivuille.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Pieni vajoaminen</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Syvempi pito 5 s</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">Syvä + kierto</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="station">
-      <div class="station-number">9</div>
-      <div class="station-body">
-        <div class="station-name">Lonkan koukistajan venytys</div>
-        <div class="station-target">Lonkan koukistajat · psoas</div>
-        <div class="station-desc">Pitkä askelkyykky, takimmainen polvi maassa. Työnnä lantiota eteen, tunne venytys etureidessä ja lonkassa. Vaihda 15 s kohdalla.</div>
-        <div class="station-levels">
-          <div class="station-level lvl-1"><div class="station-level-tag">Alkeet</div><div class="station-level-value">Pystyssä</div></div>
-          <div class="station-level lvl-2"><div class="station-level-tag">Keskitaso</div><div class="station-level-value">Kädet ylös</div></div>
-          <div class="station-level lvl-3"><div class="station-level-tag">Edistynyt</div><div class="station-level-value">+ taakse taivutus</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bookend">
-      <div class="bookend-title">▸ Loppuvenyttely · 7 min</div>
-      <div class="bookend-content">
-        Pidemmät staattiset venytykset: takareisi 45 s · etureisi 45 s · sisäreidet 45 s ·
-        lonkkakoukistajat 45 s · rangan kierto makuulla 45 s per puoli ·
-        rauhallinen lopetus 1 min.
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════ KATA-OPTIO ═══════════════════ -->
-  <div class="kata-section" id="katat">
+  <section class="kata-section" id="katat">
     <div class="kata-eyebrow">Lisäoptio</div>
-    <div class="kata-title">Kata-harjoittelu kuntopiirin lopuksi</div>
-    <div class="kata-intro">
-      Voit halutessasi täydentää piirin 10–15 minuutin kata-harjoituksella.
+    <h2 class="kata-title">Kata-harjoittelu kuntopiirin lopuksi</h2>
+    <p class="kata-intro">Voit halutessasi täydentää piirin 10–15 minuutin kata-harjoituksella.</p>
+    <div class="kata-box">
+      <p><strong>Valitse 1–2 kataa</strong> oman tasosi mukaan.</p>
+      <p>Tee kata ensin rauhallisesti tekniikkaan keskittyen, sitten normaalitempolla ja lopuksi halutessasi räjähtävästi täydellä voimalla. Yhteensä 3 toistoa per kata, lepoa 30–60 s toistojen välissä.</p>
     </div>
+  </section>
 
-    <div style="background:#f0ece6;border-radius:8px;padding:1.2rem 1.4rem;font-size:.88rem;color:#3a3a3a;line-height:1.75">
-      <p style="margin-bottom:.8rem"><strong style="color:#1a1a1a">Valitse 1–2 kataa</strong> oman tason mukaan.</p>
-      <p>Tee kata ensin <em>rauhallisesti tekniikkaan keskittyen</em> (1×), sitten
-      <em>normaalitempolla</em> (1×), lopuksi halutessaan <em>räjähtävästi maksimivoimalla</em> (1×).
-      Yhteensä 3 toistoa per kata. Lepo 30–60 s jokaisen välissä.</p>
-    </div>
+  <footer class="footer">Budo Akatemia ry · Kuopio · Kesäkausi</footer>
+</div>
+
+<noscript><p style="text-align:center;padding:1rem">Harjoitukset ja ajastin tarvitsevat JavaScriptin. Avaa sivu tavallisella selaimella.</p></noscript>
+
+<div class="timer" id="timer" role="dialog" aria-modal="true" aria-label="Kuntopiirin ajastin">
+  <div class="timer-top">
+    <span id="tRound"></span>
+    <span id="tStation"></span>
+    <button class="timer-close" id="tClose" type="button">✕ Lopeta</button>
   </div>
-
-  <div class="footer">
-    Budo Akatemia ry · Kuopio · Kesäkausi
+  <div class="timer-progress"><i id="tBar"></i></div>
+  <div class="timer-main" aria-live="polite">
+    <div class="timer-phase" id="tPhase"></div>
+    <div class="timer-count" id="tCount" aria-live="off"></div>
+    <div class="timer-station" id="tName"></div>
+    <div class="timer-levels" id="tLevels"></div>
+    <div class="timer-switch" id="tSwitch"></div>
+    <div class="timer-next" id="tNext"></div>
+  </div>
+  <div class="timer-controls">
+    <button type="button" id="tPrev" aria-label="Edellinen jakso">⏮</button>
+    <button type="button" id="tPause" class="primary">Tauko</button>
+    <button type="button" id="tSkip" aria-label="Seuraava jakso">⏭</button>
   </div>
 </div>
+<script>
+const WORKOUTS = [
+  {
+    id: "harjoitus1", title: "Voima ja stabiliteetti", icon: "💪",
+    tagline: "Ylävartalon ja keskivartalon perusta — pohja kaikille tekniikoille.",
+    color: "#1c6e8c", light: "#5ba8c4", focus: "Voima, keskivartalo",
+    warmup: { min: 10, text: "Hölkkä paikallaan tai varjo-ottelu 2 min, käsien pyöritykset 30 s, lantion pyöritykset 30 s, polvinostot 30 s, kantapotkut 30 s, 10 hidasta gyaku-zukia per käsi ja 10 hidasta mae-geriä per jalka." },
+    cooldown: { min: 5, text: "Lapaluiden venytys, rinnan venytys, alaselän rullaus ja sivulonkan venytys 30 s per jalka." },
+    stations: [
+      { name: "Punnerrukset", target: "Rinta, olkapäät, ojentajat", desc: "Täysi liikerata: rinta lähelle maata, käsivarret suoriksi.", levels: ["Polvilta", "Varpailta", "Taputuspunnerrus"] },
+      { name: "Linnunlento", target: "Selän takaketju, lapaluut", desc: "Vatsamakuulla: nosta rinta ja jalat irti maasta ja levitä kädet sivuille kuin siivet.", levels: ["Vain ylävartalo", "Ylä- ja alavartalo yhtä aikaa", "Pito 3 s ylhäällä"] },
+      { name: "Hidas mawashi-geri", target: "Lonkan tukilihakset, keskivartalo, tasapaino", desc: "Mahdollisimman hitaasti ja hallitusti: polven nosto, kierto, ojennus ja palautus. Tuki sallittu.", levels: ["Vyötärö, tuki", "Rinta, ilman tukea", "Pää, pito 3 s"], sides: true },
+      { name: "Lankku", target: "Keskivartalo, syvät vatsalihakset", desc: "Vartalo suorana kantapäistä päähän, lantio ei vajoa.", levels: ["Polvilta", "Varpailta", "Yhdellä kädellä"] },
+      { name: "Kapea punnerrus", target: "Ojentajat, olkapäät", desc: "Kädet kapeasti hartioiden alla, kyynärpäät vartalon vieressä.", levels: ["Polvilta", "Varpailta", "Timanttipunnerrus"] },
+      { name: "Vatsalihakset", target: "Suorat vatsalihakset", desc: "Polvet koukussa, kädet rinnalla. Nouse niin, että kyynärpäät koskettavat polvia.", levels: ["Puolikkaat", "Täydet", "V-istuminen"] },
+      { name: "Sivulankku", target: "Vinot vatsalihakset, keskivartalo", desc: "Vartalo suorana kyynärvarren varassa.", levels: ["Polvelta", "Varpailta", "Lantion lasku ja nosto"], sides: true },
+      { name: "Lantion nosto", target: "Pakarat, alaselkä", desc: "Selinmakuulla polvet koukussa: nosta lantio ylös ja purista pakaroita.", levels: ["Molemmat jalat", "Pito 3 s ylhäällä", "Yhdellä jalalla"] },
+      { name: "Vuorikiipeilijä", target: "Keskivartalo, syke", desc: "Punnerrusasennossa vuorojaloin polvi rintaan nopeassa tempossa. Viimeinen asema — anna kaikki!", levels: ["Rauhallinen", "Reipas", "Räjähtävä"] }
+    ]
+  },
+  {
+    id: "harjoitus2", title: "Räjähtävyys ja nopeus", icon: "⚡",
+    tagline: "Jalkojen voima ja nopea liikkuminen — potkujen ja siirtymien moottori.",
+    color: "#e76f51", light: "#f4a73c", focus: "Plyometriikka, nopeus",
+    warmup: { min: 10, text: "Reipas kävely tai hölkkä 3 min, kantapotkut 30 s, polvinostot 30 s, sivuaskellus 30 s, 10 dynaamista mae-geriä per jalka ja 10 rauhallista kyykkyä." },
+    cooldown: { min: 5, text: "Takareiden, etureiden ja pohkeen venytys, lonkkaa avaava kyykkyvenytys ja syvä hengitys 1 min." },
+    stations: [
+      { name: "Hyppykyykyt", target: "Reidet, pakarat, räjähtävyys", desc: "Polvet noin 90° kulmaan ja räjähtävä ojennus ylös. Laskeudu pehmeästi päkiöiden kautta koko jalalle.", levels: ["Tavallinen kyykky", "Hyppykyykky", "Hyppy 180° käännöksellä"] },
+      { name: "Sivuloikka", target: "Sivuttainen voima, tasapaino", desc: "Loikkaa sivulle yhdeltä jalalta toiselle ja pysäytä liike hallitusti.", levels: ["Astuen", "Pieni loikka", "Laaja loikka ja pito"] },
+      { name: "Askelkyykyt", target: "Reidet, pakarat, lonkka", desc: "Vuorojaloin syvä askelkyykky. Etupolvi osoittaa varpaiden suuntaan.", levels: ["Rauhalliset", "Nopea vaihto", "Hyppyvaihto"] },
+      { name: "Polvennostojuoksu tai 20 m vedot", target: "Lonkan koukistajat, syke", desc: "Paikallaan polvet vyötärön tasolle tai 20 m juoksuvetoja reippaalla tempolla.", levels: ["Rauhallinen", "Reipas", "Maksimitempo"] },
+      { name: "Vuoroloikat", target: "Räjähtävä jalkavoima", desc: "6–10 vuorojaloin tehtyä loikkaa eteenpäin. Pehmeät laskeutumiset ja tasapaino jokaisen jälkeen.", levels: ["6 lyhyttä", "8 pitkää", "10 maksimaalista"] },
+      { name: "Burpee", target: "Koko keho, syke", desc: "Kyykky, punnerrusasento, punnerrus ja hyppy ylös.", levels: ["Ilman punnerrusta", "Täysi", "Taputushyppy"] },
+      { name: "Räjähtävät varpaillenousut", target: "Pohkeet, alaraajojen räjähtävyys", desc: "Räjähtävä nousu varpaille, halutessasi pieni hyppy.", levels: ["Molemmat jalat", "Pieni hyppy", "Yhdellä jalalla"] },
+      { name: "Varjo-ottelu", target: "Liikkeen taloudellisuus, syke", desc: "Vapaata liikkumista, väistöjä, lyöntejä, torjuntoja ja potkuja sekä niiden yhdistelmiä.", levels: ["Yksittäiset tekniikat", "Yhdistelmät", "Räjähtävät vaihdot"] }
+    ]
+  },
+  {
+    id: "harjoitus3", title: "Liikkuvuus ja tasapaino", icon: "⚖️",
+    tagline: "Kevyempi, tekninen päivä — säilytä liikerata ja kehonhallinta.",
+    color: "#2a8a5a", light: "#6fc28a", focus: "Hallinta, liikerata",
+    warmup: { min: 8, text: "Kevyt hölkkä 2 min, lantion pyöritykset 30 s, selän pyöristys ja ojennus 6 toistoa, dynaamiset jalan heilautukset eteen ja sivulle 8 per jalka sekä 5 rauhallista shiko-dachi-kyykkyä." },
+    cooldown: { min: 7, text: "Pidemmät staattiset venytykset 45 s: takareisi, etureisi, sisäreidet, lonkan koukistajat ja rangan kierto makuulla per puoli. Rauhallinen lopetus 1 min." },
+    stations: [
+      { name: "Shiko-dachi-pito", target: "Reidet, pakarat", desc: "Leveä haara-asento, varpaat ulospäin, reidet kohti vaakatasoa.", levels: ["Puolikorkea", "Reidet vaakatasossa", "Pito ja käsitekniikat"] },
+      { name: "Yhdellä jalalla seisominen", target: "Staattinen tasapaino", desc: "Vapaa jalka ashi-uke-asennossa.", levels: ["Silmät auki", "Silmät kiinni", "Silmät kiinni ja pään liike"], sides: true },
+      { name: "Jalan heilautukset", target: "Lonkan dynaaminen liikkuvuus", desc: "Tue kädellä puuhun tai kaveriin ja heilauta jalkaa eteen ja taakse.", levels: ["Matala", "Vyötärön tasolle", "Pään tasolle, ilman tukea"], sides: true },
+      { name: "Syvä kyykky", target: "Lonkan ja nilkan liikkuvuus", desc: "Laskeudu syvään kyykkyyn, pysähdy 3 s ja nouse. Paino kantapäillä.", levels: ["Puolikyykky", "Täysi kyykky", "Syvä kyykky ja rangan kierto"] },
+      { name: "Yoko-geri-pidot", target: "Aktiivinen lonkan loitonnus", desc: "Nosta jalka sivulle, pidä 5–10 s ja laske. Tuki sallittu.", levels: ["Polvi koukussa", "Jalka ojennettuna", "Ilman tukea"], sides: true },
+      { name: "Selän pyöristys ja ristikkäinen ojennus", target: "Selkärangan liikkuvuus, keskivartalo", desc: "Konttausasennossa vuoroin selän pyöristys ja notko, sitten vastakkaisen käden ja jalan ojennus.", levels: ["Vain pyöristys ja notko", "Yhdistelmä", "Kyynärpää polveen ojennusten välissä"] },
+      { name: "Eteentaivutus rullaten", target: "Takaketju, alaselkä", desc: "Seisten: rullaa alas nikama kerrallaan, pysähdy ja rullaa ylös.", levels: ["Polvet koukussa", "Polvet suorina", "Kämmenet maahan"] },
+      { name: "Haara-asennon venytys", target: "Sisäreidet, lonkka", desc: "Istuen leveässä haara-asennossa varpaat ylöspäin. Venytä eteen ja molemmille sivuille.", levels: ["Kevyt", "Syvempi, pito 5 s", "Syvä ja rangan kierto"] },
+      { name: "Lonkan koukistajan venytys", target: "Lonkan koukistajat", desc: "Pitkä askelkyykky, takapolvi maassa. Työnnä lantiota eteen.", levels: ["Ylävartalo pystyssä", "Kädet ylös", "Kädet ylös ja taivutus taakse"], sides: true }
+    ]
+  }
+];
+
+// ─── ASETUKSET ───────────────────────────────────────────────────────────────
+const OPTIONS = {
+  rounds:    { label: "Kierroksia",        values: [1, 2, 3, 4],            fmt: v => String(v) },
+  work:      { label: "Työaika",           values: [20, 30, 40, 45, 60],    fmt: v => v + " s" },
+  rest:      { label: "Lepo asemien välissä", values: [10, 15, 20, 30, 45], fmt: v => v + " s" },
+  roundRest: { label: "Tauko kierrosten välissä", values: [60, 90, 120, 180], fmt: v => v % 60 ? (v / 60).toString().replace(".", ",") + " min" : v / 60 + " min" }
+};
+const PREP_SEC = 10;
+const SETTINGS_KEY = "budoakatemia-kuntopiiri-asetukset";
+const LEVEL_NAMES = ["Alkeet", "Keskitaso", "Edistynyt"];
+// Ajastimen taustavärit: tummemmat sävyt, jotta valkoinen teksti erottuu ulkona.
+const TIMER_COLORS = { harjoitus1: "#1c6e8c", harjoitus2: "#b9482a", harjoitus3: "#23774d" };
+
+let settings = { rounds: 2, work: 30, rest: 30, roundRest: 120, sound: true };
+try { Object.assign(settings, JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}")); } catch (e) {}
+function saveSettings() { try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {} }
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function circuitSeconds(n) {
+  const R = settings.rounds;
+  return R * n * settings.work + R * (n - 1) * settings.rest + (R - 1) * settings.roundRest;
+}
+const minutes = sec => Math.round(sec / 60);
+
+// ─── RENDER: asetukset, navigaatio, harjoitukset ─────────────────────────────
+function renderSettings() {
+  $("settings").innerHTML = Object.entries(OPTIONS).map(([key, o]) => `
+    <div class="setting" role="group" aria-labelledby="lbl-${key}">
+      <span class="setting-label" id="lbl-${key}">${o.label}</span>
+      <div class="chips">${o.values.map(v =>
+        `<button type="button" class="chip" data-key="${key}" data-val="${v}" aria-pressed="${settings[key] === v}">${o.fmt(v)}</button>`).join("")}</div>
+    </div>`).join("");
+  $("soundToggle").checked = settings.sound;
+  const lens = [...new Set(WORKOUTS.map(w => w.stations.length))].sort((a, b) => b - a);
+  $("settingsSummary").innerHTML = `Yksi piiri kestää ilman lämmittelyä ja loppuvenyttelyä ${
+    lens.map(n => `<strong>noin ${minutes(circuitSeconds(n))} min</strong> (${n} asemaa)`).join(" tai ")}.`;
+}
+
+function renderNav() {
+  $("nav").innerHTML = WORKOUTS.map((w, i) => `
+    <a href="#${w.id}" class="nav-card" style="--c:${w.color}">
+      <span class="nav-icon" aria-hidden="true">${w.icon}</span>
+      <div class="nav-label">Harjoitus ${i + 1}</div>
+      <div class="nav-name">${esc(w.title)}</div>
+    </a>`).join("");
+}
+
+function renderWorkouts() {
+  $("workouts").innerHTML = WORKOUTS.map((w, wi) => {
+    const n = w.stations.length;
+    const total = w.warmup.min + w.cooldown.min + minutes(circuitSeconds(n));
+    const stations = w.stations.map((s, i) => `
+      <div class="station">
+        <div class="station-number" aria-hidden="true">${i + 1}</div>
+        <div>
+          <h4 class="station-name">${esc(s.name)}</h4>
+          <div class="station-target">${esc(s.target)}</div>
+          <p class="station-desc">${esc(s.desc)}${s.sides ? ` <span class="side-note">Vaihda puolta puolivälissä</span>` : ""}</p>
+          <div class="station-levels">${s.levels.map((l, li) => `
+            <div class="station-level lvl-${li + 1}"><div class="station-level-tag">${LEVEL_NAMES[li]}</div><div class="station-level-value">${esc(l)}</div></div>`).join("")}
+          </div>
+        </div>
+      </div>`).join("");
+    return `
+    <section class="workout" id="${w.id}" style="--c:${w.color};--cl:${w.light}" aria-labelledby="t-${w.id}">
+      <div class="workout-header">
+        <div class="workout-number">Harjoitus ${wi + 1}</div>
+        <h2 class="workout-title" id="t-${w.id}">${esc(w.title)}</h2>
+        <p class="workout-tagline">${esc(w.tagline)}</p>
+      </div>
+      <div class="workout-meta">
+        <div class="meta-item"><span class="meta-icon" aria-hidden="true">⏱️</span><div><div class="meta-label">Kesto</div><div class="meta-value">noin ${total} min</div></div></div>
+        <div class="meta-item"><span class="meta-icon" aria-hidden="true">🔄</span><div><div class="meta-label">Kierroksia</div><div class="meta-value">${settings.rounds}</div></div></div>
+        <div class="meta-item"><span class="meta-icon" aria-hidden="true">${w.icon}</span><div><div class="meta-label">Painopiste</div><div class="meta-value">${esc(w.focus)}</div></div></div>
+      </div>
+      <div class="bookend"><div class="bookend-title">▸ Alkulämmittely · ${w.warmup.min} min</div><div class="bookend-content">${esc(w.warmup.text)}</div></div>
+      <button type="button" class="start-btn" data-start="${wi}">▶ Aloita ajastin</button>
+      <div class="stations-header">
+        <h3 class="stations-title">Asemat</h3>
+        <div class="stations-count">${n} asemaa · ${settings.work} s työ / ${settings.rest} s lepo</div>
+      </div>
+      ${stations}
+      <div class="bookend"><div class="bookend-title">▸ Loppuvenyttely · ${w.cooldown.min} min</div><div class="bookend-content">${esc(w.cooldown.text)}</div></div>
+    </section>`;
+  }).join("");
+}
+
+function renderAll() { renderSettings(); renderWorkouts(); }
+
+document.addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if (chip) { settings[chip.dataset.key] = Number(chip.dataset.val); saveSettings(); renderAll(); return; }
+  const start = e.target.closest("[data-start]");
+  if (start) startTimer(WORKOUTS[Number(start.dataset.start)]);
+});
+$("soundToggle").addEventListener("change", e => { settings.sound = e.target.checked; saveSettings(); });
+
+// ─── ÄÄNI, VÄRINÄ, NÄYTÖN HERÄTYS ────────────────────────────────────────────
+let audioCtx = null;
+function initAudio() {
+  // Äänikonteksti on luotava käyttäjän painalluksesta, muuten iPhone ei soita ääniä.
+  try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume(); } catch (e) { audioCtx = null; }
+}
+function beep(freq, ms, vol = 0.25) {
+  if (!settings.sound || !audioCtx) return;
+  const o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = audioCtx.currentTime;
+  o.frequency.value = freq; o.type = "sine";
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + ms / 1000);
+  o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t + ms / 1000 + 0.02);
+}
+const vibrate = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+
+let wakeLock = null;
+async function keepAwake() {
+  try { if ("wakeLock" in navigator && !wakeLock) { wakeLock = await navigator.wakeLock.request("screen"); wakeLock.addEventListener("release", () => { wakeLock = null; }); } } catch (e) {}
+}
+function releaseAwake() { try { wakeLock && wakeLock.release(); } catch (e) {} wakeLock = null; }
+
+// ─── AJASTIN ─────────────────────────────────────────────────────────────────
+// Aika lasketaan kellosta (Date.now) eikä sekuntilaskurista, joten ajastin pysyy
+// oikeassa, vaikka puhelin hidastaisi taustalla olevaa sivua.
+const T = { w: null, steps: [], i: 0, endAt: 0, left: 0, paused: false, lastSec: null, switched: false, timer: null };
+
+function buildSteps(w) {
+  const steps = [{ type: "prep", dur: PREP_SEC, st: 0, round: 1 }];
+  const n = w.stations.length;
+  for (let r = 1; r <= settings.rounds; r++) {
+    for (let i = 0; i < n; i++) {
+      steps.push({ type: "work", dur: settings.work, st: i, round: r });
+      if (i < n - 1) steps.push({ type: "rest", dur: settings.rest, st: i + 1, round: r });
+      else if (r < settings.rounds) steps.push({ type: "roundRest", dur: settings.roundRest, st: 0, round: r + 1 });
+    }
+  }
+  steps.push({ type: "done", dur: 0, st: n - 1, round: settings.rounds });
+  return steps;
+}
+
+const PHASES = {
+  prep:      { label: "Valmistaudu",    bg: () => "#0e4a63" },
+  work:      { label: "Työ",            bg: () => TIMER_COLORS[T.w.id] || T.w.color },
+  rest:      { label: "Lepo",           bg: () => "#2c3e4f" },
+  roundRest: { label: "Kierrostauko",   bg: () => "#0e4a63" },
+  done:      { label: "Valmis",         bg: () => "#23774d" }
+};
+
+function startTimer(w) {
+  initAudio();
+  T.w = w; T.steps = buildSteps(w);
+  $("timer").classList.add("open");
+  document.body.style.overflow = "hidden";
+  keepAwake();
+  enterStep(0);
+  clearInterval(T.timer);
+  T.timer = setInterval(tick, 100);
+  $("tPause").focus();
+}
+
+function stopTimer() {
+  clearInterval(T.timer); T.timer = null;
+  $("timer").classList.remove("open", "paused");
+  document.body.style.overflow = "";
+  releaseAwake();
+  const btn = document.querySelector(`[data-start="${WORKOUTS.indexOf(T.w)}"]`);
+  if (btn) btn.focus();
+}
+
+function enterStep(i, silent) {
+  T.i = Math.max(0, Math.min(i, T.steps.length - 1));
+  const s = T.steps[T.i];
+  T.endAt = Date.now() + s.dur * 1000;
+  T.paused = false; T.lastSec = null; T.switched = false;
+  $("timer").classList.remove("paused");
+  $("tPause").textContent = s.type === "done" ? "Sulje" : "Tauko";
+  renderStep();
+  if (silent) return;
+  if (s.type === "work") { beep(880, 450, 0.35); vibrate(300); }
+  else if (s.type === "done") { beep(660, 200); setTimeout(() => beep(880, 200), 220); setTimeout(() => beep(1175, 500), 440); vibrate([200, 100, 200]); }
+  else if (T.i > 0) { beep(520, 450); vibrate(150); }
+}
+
+function renderStep() {
+  const s = T.steps[T.i], w = T.w, st = w.stations[s.st], n = w.stations.length;
+  const ph = PHASES[s.type];
+  $("timer").style.setProperty("--phase-bg", ph.bg());
+  $("tPhase").textContent = ph.label;
+  $("tRound").textContent = `Kierros ${s.round} / ${settings.rounds}`;
+  $("tStation").textContent = s.type === "done" ? w.title : `Asema ${s.st + 1} / ${n}`;
+  $("tSwitch").textContent = "";
+
+  if (s.type === "done") {
+    $("tCount").textContent = "✓";
+    $("tName").textContent = "Hienoa työtä!";
+    $("tLevels").innerHTML = "";
+    $("tNext").textContent = `Seuraavaksi loppuvenyttely, ${w.cooldown.min} min.`;
+    $("tBar").style.width = "100%";
+    return;
+  }
+  const upcoming = s.type === "work" ? "" : "Seuraavaksi: ";
+  $("tName").textContent = upcoming + st.name;
+  $("tLevels").innerHTML = st.levels.map((l, li) => `<span><b>${li + 1}</b>${esc(l)}</span>`).join("");
+
+  let next = "";
+  if (s.type === "work") {
+    const ns = T.steps[T.i + 1];
+    if (ns.type === "rest") next = `Seuraavaksi ${settings.rest} s lepo, sitten ${w.stations[ns.st].name}`;
+    else if (ns.type === "roundRest") next = `Seuraavaksi kierrostauko ${OPTIONS.roundRest.fmt(settings.roundRest)}`;
+    else next = "Viimeinen asema!";
+    if (st.sides) next = "Vaihda puolta puolivälissä. " + next;
+  } else if (s.type === "roundRest") next = "Juo vettä ja palauttele.";
+  $("tNext").textContent = next;
+  updateCount(s.dur * 1000);
+}
+
+function updateCount(ms) {
+  const s = T.steps[T.i];
+  const sec = Math.max(0, Math.ceil(ms / 1000));
+  if (sec !== T.lastSec) {
+    T.lastSec = sec;
+    $("tCount").textContent = sec;
+    if (!T.paused && sec <= 3 && sec > 0 && s.dur > 3 && ms < s.dur * 1000 - 50) beep(660, 120);
+  }
+  const done = T.steps.slice(0, T.i).reduce((a, x) => a + x.dur, 0) + (s.dur - ms / 1000);
+  const total = T.steps.reduce((a, x) => a + x.dur, 0);
+  $("tBar").style.width = Math.min(100, done / total * 100) + "%";
+}
+
+function tick() {
+  if (T.paused) return;
+  let s = T.steps[T.i];
+  if (s.type === "done") return;
+  let ms = T.endAt - Date.now();
+  // Jos sivu on ollut taustalla, kuljetaan menetettyjen jaksojen yli äänettömästi.
+  let skipped = false;
+  while (ms <= 0 && s.type !== "done") {
+    const over = -ms;
+    const lastSkip = over < 1000;          // vain viimeisin vaihto soi
+    enterStep(T.i + 1, !lastSkip);
+    s = T.steps[T.i];
+    T.endAt -= over;
+    ms = T.endAt - Date.now();
+    skipped = true;
+  }
+  if (s.type === "done") return;
+  if (skipped) renderStep();
+  if (s.type === "work" && T.w.stations[s.st].sides && !T.switched && ms <= s.dur * 500) {
+    T.switched = true;
+    $("tSwitch").textContent = "⇄ Vaihda puolta!";
+    beep(990, 150); setTimeout(() => beep(990, 150), 200); vibrate([120, 80, 120]);
+  }
+  updateCount(ms);
+}
+
+function togglePause() {
+  const s = T.steps[T.i];
+  if (s.type === "done") { stopTimer(); return; }
+  if (T.paused) { T.endAt = Date.now() + T.left; T.paused = false; $("tPause").textContent = "Tauko"; }
+  else { T.left = T.endAt - Date.now(); T.paused = true; $("tPause").textContent = "Jatka"; }
+  $("timer").classList.toggle("paused", T.paused);
+}
+
+$("tPause").addEventListener("click", togglePause);
+$("tSkip").addEventListener("click", () => enterStep(T.i + 1));
+$("tPrev").addEventListener("click", () => {
+  const s = T.steps[T.i];
+  const elapsed = s.dur * 1000 - (T.paused ? T.left : T.endAt - Date.now());
+  enterStep(elapsed > 2000 ? T.i : T.i - 1);
+});
+$("tClose").addEventListener("click", stopTimer);
+document.addEventListener("keydown", e => {
+  if (!$("timer").classList.contains("open")) return;
+  if (e.key === "Escape") stopTimer();
+  else if (e.key === " " && e.target.tagName !== "BUTTON") { e.preventDefault(); togglePause(); }
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && $("timer").classList.contains("open")) { keepAwake(); tick(); }
+});
+
+renderNav();
+renderAll();
+</script>
 </body>
 </html>
