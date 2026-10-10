@@ -92,8 +92,7 @@ h1 { font-size: clamp(1.5rem, 5vw, 2.1rem); font-weight: 700; text-align: center
 .tips-box { background: #f8f6f2; border: 1px solid #e0d8ce; border-radius: 8px; padding: 1.1rem; margin-bottom: 1.2rem; }
 .tips-header { font-size: .7rem; font-weight: 700; letter-spacing: .14em; color: #888; text-transform: uppercase; margin-bottom: .75rem; }
 .tip-row { display: flex; gap: .65rem; margin-bottom: .6rem; font-size: .84rem; color: #3a3a3a; line-height: 1.6; }
-.intro-test-cat { margin-bottom: .9rem; }
-.intro-cat-label { display: flex; align-items: center; gap: .5rem; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .38rem; }
+.intro-test-num { flex-shrink: 0; width: 1.4rem; font-size: .8rem; font-weight: 700; color: #888; text-align: right; }
 .intro-test-item { display: flex; align-items: center; gap: .7rem; padding: .4rem .8rem; background: #f8f6f2; border-radius: 6px; margin-bottom: .22rem; border-left: 3px solid #e0d8ce; }
 .intro-test-item-name { font-size: .85rem; font-weight: 600; color: #1a1a1a; }
 .intro-test-item-sub { font-size: .65rem; color: #888; }
@@ -172,6 +171,30 @@ const CATEGORIES = [
 ];
 
 const TESTS = [
+  // Testien suoritusjärjestys (Eurofit/NSCA-periaate): ensin väsymykselle herkät
+  // tasapaino, liikkuvuus ja maksimiteho, sitten kestävyystestit niin, että
+  // lihasryhmät vuorottelevat. Tulosnäkymä ryhmittelee silti kategorioittain.
+  { id:"ashiukebalance", category:"tasapaino", name:"Ashi-uke -tasapaino silmät kiinni", subtitle:"Staattinen tasapaino", icon:"⚖️",
+    desc:"Seiso paljain jaloin yhdellä jalalla, vapaa jalka ashi-uke -asennossa (polvi nostettuna, jalkapöytä koskettaa tukijalan polvea tai säärtä). Kädet vyötäisillä. Sulje silmät ja aloita ajanotto. Testi päättyy kun: jalkapöytä irtoaa tukijalasta, tukijalka liikkuu, kädet irtoavat vyötäisiltä TAI silmät avautuvat. 2 yritystä per jalka, paras tulos.",
+    unit:"sek", source:"Springer ym. 2007: tasapaino heikkenee iän myötä, sukupuolella ei ole vaikutusta.",
+    scores:{ m:{ nuori:[30,20,12,6], keski:[22,14,9,4], masters:[15,10,6,3] },
+             n:{ nuori:[30,20,12,6], keski:[22,14,9,4], masters:[15,10,6,3] } } },
+  { id:"sitandreach", category:"liikkuvuus", name:"Eteentaivutus istuen", subtitle:"Takareisien ja alaselän liikkuvuus", icon:"🤸",
+    desc:"Istu lattialla, jalat suorina edessä, kantapäät yhdessä, jalkapohjat tasaisesti seinää tai laatikkoa vasten. Pidä polvet suorina koko liikkeen ajan. Kurkota molemmilla käsillä rauhallisesti eteenpäin niin pitkälle kuin pääset. Mittaa sormenpäiden kohta suhteessa varpaisiin: positiivinen = sormet ylittävät varpaat, negatiivinen = sormet jäävät varpaiden taakse.",
+    unit:"cm", allowNegative:true, source:"ACSM:n (CSEP) viitearvot muunnettuna varpaiden tasolle.",
+    scores:{ m:{ nuori:[14,8,4,-1],  keski:[11,5,0,-6], masters:[9,2,-2,-10] },
+             n:{ nuori:[15,11,7,2],  keski:[14,9,5,0], masters:[12,7,4,-1] } } },
+  { id:"yokogeripito", category:"liikkuvuus", name:"Yoko-geri -pito", subtitle:"Aktiivinen lonkan abduktio", icon:"🌀",
+    desc:"Nosta jalka yoko-geri -asentoon: lonkka kierrettynä, polvi ojennettuna sivulle. Pidä asento 3 sekuntia ilman tukea. Tukijalka pysyy paikallaan, vartalon kallistus alle 20°. Arvioi kuinka korkealle jalkapohja yltää suhteessa kehoon.",
+    unit:"taso", inputType:"level", levels:BODY_LEVELS, expert:true,
+    source:"Asiantuntija-arvio: lajikohtainen testi, tutkittua väestönormia ei ole.",
+    scores:{ m:{ nuori:[5,4,3,2], keski:[4,4,3,2], masters:[4,3,2,1] },
+             n:{ nuori:[5,4,3,2], keski:[5,4,3,2], masters:[4,3,3,2] } } },
+  { id:"pituushyppy", category:"rajahtavyys", name:"Vauhditon pituushyppy", subtitle:"Alaraajojen räjähtävä voima", icon:"🦘",
+    desc:"Jalat hartianlevyisessä asennossa. Kyykisty vapaasti, heilauta kädet ja hyppää mahdollisimman kauas eteenpäin. Ei vauhtia — lähtö paikaltaan. Mittaa kantapäästä lähimpään jälkeen. 2 yritystä, paras tulos.",
+    unit:"cm", expert:true, source:"Asiantuntija-arvio, tarkistettu nuorten normiaineistoja vasten: aikuisten väestönormeja on vähän.",
+    scores:{ m:{ nuori:[230,200,168,138], keski:[205,178,150,120], masters:[175,150,122,94] },
+             n:{ nuori:[175,155,130,105], keski:[158,138,115,90],  masters:[133,113,90,68] } } },
   { id:"punnerrukset", category:"voima", name:"Punnerrukset", subtitle:"Ylävartalon voima", icon:"🥊",
     desc:"Mahdollisimman monta yhtäjaksoista toistoa ilman taukoa. Täysi liikerata: rinta lähelle lattiaa, käsivarret täysin suoraksi. Miehet tekevät punnerrukset varpailta. Naiset valitsevat polvipunnerruksen, johon ACSM:n viitearvot perustuvat, tai punnerruksen varpailta.",
     unit:"kpl", inputOptions:["kpl (polvilta)","kpl (varpailta)"], altFor:"n",
@@ -179,6 +202,11 @@ const TESTS = [
     scores:{ m:{ nuori:[36,29,22,17], keski:[28,20,15,11], masters:[21,14,10,7] },
              n:{ nuori:[30,21,15,10], keski:[26,18,12,7],  masters:[21,12,8,3] } },
     altScores:{ n:{ nuori:[22,15,10,6], keski:[18,12,8,4], masters:[14,9,6,3] } } },
+  { id:"hyppykyykky", category:"rajahtavyys", name:"Hyppykyykyt 30 sek", subtitle:"Räjähtävä kestävyys", icon:"🔥",
+    desc:"Laske mahdollisimman monta hyppykyykkyä 30 sekunnissa. Polvet noin 90° kulmaan (reidet vaakatasoa kohti, mutta ei alle — räjähtävyys säilyy) ja räjähtävä hyppy ylös. Toisto lasketaan vain, jos polvet käyvät noin 90° kulmassa ja molemmat jalat irtoavat lattiasta polvet ja lonkat suorina. Laskeudu pehmeästi päkiöiden kautta koko jalalle.",
+    unit:"kpl / 30 sek", expert:true, source:"Asiantuntija-arvio: tutkittua väestönormia ei ole.",
+    scores:{ m:{ nuori:[24,18,13,8], keski:[20,15,10,6], masters:[15,11,7,4] },
+             n:{ nuori:[20,15,10,6], keski:[17,12,8,4],  masters:[12,8,5,2] } } },
   { id:"riipunta", category:"voima", name:"Riipunta / leuat", subtitle:"Ylävartalon kestävyysvoima", icon:"🏋️",
     desc:"Roiku tangosta myötäote, kädet hartianlevyisessä asennossa. Laske aika, jonka pysyt roikkumaan. Vaihtoehto: leuanvedot täydellä liikeradalla.",
     unit:"sek", inputOptions:["sek (roiku)","kpl (leuat)"], expert:true,
@@ -192,43 +220,20 @@ const TESTS = [
     unit:"kpl / 60 sek", source:"Julkaistut 60 sekunnin istumaannousun normitaulukot.",
     scores:{ m:{ nuori:[50,42,33,24], keski:[45,37,28,20], masters:[38,30,22,14] },
              n:{ nuori:[44,36,27,18], keski:[39,31,23,15], masters:[32,24,17,10] } } },
-  { id:"lankku", category:"keskivartalo", name:"Lankku (plank)", subtitle:"Keskivartalon stabiliteetti", icon:"🛡️",
-    desc:"Kyynärpäät lattiassa, vartalo suorassa linjasta kantapäistä niskaan. Pidä asento mahdollisimman kauan. Lantion vajoaminen tai kohoaminen lopettaa testin.",
-    unit:"sek", source:"16–29 v: Strand ym. 2014. Vanhemmat ikäryhmät: arvio, koska väestönormeja on vähän.",
-    scores:{ m:{ nuori:[180,130,90,60], keski:[155,110,75,50], masters:[125,90,65,40] },
-             n:{ nuori:[140,100,70,45], keski:[120,85,60,40],  masters:[100,70,50,30] } } },
   { id:"shikodachi", category:"jalkavoima", name:"Shiko-dachi -pito", subtitle:"Jalkalihasten staattinen voima", icon:"🏯",
     desc:"Asetu shiko-dachi -asentoon: jalat n. 2× hartioiden leveys, varpaat 45° ulospäin, polvet suoraan varpaiden suuntaan, reidet vaakatasossa tai alle. Kädet vyötäisillä tai ristissä rinnalla. Pidä asento niin kauan kuin mahdollista.",
     unit:"sek", expert:true, source:"Asiantuntija-arvio: lajikohtainen testi, tutkittua väestönormia ei ole.",
     scores:{ m:{ nuori:[120,90,60,30], keski:[100,72,48,24], masters:[75,55,35,15] },
              n:{ nuori:[100,75,50,25], keski:[82,60,40,20],  masters:[60,44,28,12] } } },
-  { id:"pituushyppy", category:"rajahtavyys", name:"Vauhditon pituushyppy", subtitle:"Alaraajojen räjähtävä voima", icon:"🦘",
-    desc:"Jalat hartianlevyisessä asennossa. Kyykisty vapaasti, heilauta kädet ja hyppää mahdollisimman kauas eteenpäin. Ei vauhtia — lähtö paikaltaan. Mittaa kantapäästä lähimpään jälkeen. 2 yritystä, paras tulos.",
-    unit:"cm", expert:true, source:"Asiantuntija-arvio, tarkistettu nuorten normiaineistoja vasten: aikuisten väestönormeja on vähän.",
-    scores:{ m:{ nuori:[230,200,168,138], keski:[205,178,150,120], masters:[175,150,122,94] },
-             n:{ nuori:[175,155,130,105], keski:[158,138,115,90],  masters:[133,113,90,68] } } },
-  { id:"hyppykyykky", category:"rajahtavyys", name:"Hyppykyykyt 30 sek", subtitle:"Räjähtävä kestävyys", icon:"🔥",
-    desc:"Laske mahdollisimman monta hyppykyykkyä 30 sekunnissa. Polvet noin 90° kulmaan (reidet vaakatasoa kohti, mutta ei alle — räjähtävyys säilyy), täysi ojennus räjähtävällä hypyllä ylös. Laskeudu pehmeästi kantapäille.",
-    unit:"kpl / 30 sek", expert:true, source:"Asiantuntija-arvio: tutkittua väestönormia ei ole.",
-    scores:{ m:{ nuori:[24,18,13,8], keski:[20,15,10,6], masters:[15,11,7,4] },
-             n:{ nuori:[20,15,10,6], keski:[17,12,8,4],  masters:[12,8,5,2] } } },
-  { id:"ashiukebalance", category:"tasapaino", name:"Ashi-uke -tasapaino silmät kiinni", subtitle:"Staattinen tasapaino", icon:"⚖️",
-    desc:"Seiso paljain jaloin yhdellä jalalla, vapaa jalka ashi-uke -asennossa (polvi nostettuna, jalkapöytä koskettaa tukijalan polvea tai säärtä). Kädet vyötäisillä. Sulje silmät ja aloita ajanotto. Testi päättyy kun: jalkapöytä irtoaa tukijalasta, tukijalka liikkuu, kädet irtoavat vyötäisiltä TAI silmät avautuvat. 2 yritystä per jalka, paras tulos.",
-    unit:"sek", source:"Springer ym. 2007: tasapaino heikkenee iän myötä, sukupuolella ei ole vaikutusta.",
-    scores:{ m:{ nuori:[30,20,12,6], keski:[22,14,9,4], masters:[15,10,6,3] },
-             n:{ nuori:[30,20,12,6], keski:[22,14,9,4], masters:[15,10,6,3] } } },
-  { id:"yokogeripito", category:"liikkuvuus", name:"Yoko-geri -pito", subtitle:"Aktiivinen lonkan abduktio", icon:"🌀",
-    desc:"Nosta jalka yoko-geri -asentoon: lonkka kierrettynä, polvi ojennettuna sivulle. Pidä asento 3 sekuntia ilman tukea. Tukijalka pysyy paikallaan, vartalon kallistus alle 20°. Arvioi kuinka korkealle jalkapohja yltää suhteessa kehoon.",
-    unit:"taso", inputType:"level", levels:BODY_LEVELS, expert:true,
-    source:"Asiantuntija-arvio: lajikohtainen testi, tutkittua väestönormia ei ole.",
-    scores:{ m:{ nuori:[5,4,3,2], keski:[4,4,3,2], masters:[4,3,2,1] },
-             n:{ nuori:[5,4,3,2], keski:[5,4,3,2], masters:[4,3,3,2] } } },
-  { id:"sitandreach", category:"liikkuvuus", name:"Eteentaivutus istuen", subtitle:"Takareisien ja alaselän liikkuvuus", icon:"🤸",
-    desc:"Istu lattialla, jalat suorina edessä, kantapäät yhdessä, jalkapohjat tasaisesti seinää tai laatikkoa vasten. Pidä polvet suorina koko liikkeen ajan. Kurkota molemmilla käsillä rauhallisesti eteenpäin niin pitkälle kuin pääset. Mittaa sormenpäiden kohta suhteessa varpaisiin: positiivinen = sormet ylittävät varpaat, negatiivinen = sormet jäävät varpaiden taakse.",
-    unit:"cm", allowNegative:true, source:"ACSM:n (CSEP) viitearvot muunnettuna varpaiden tasolle.",
-    scores:{ m:{ nuori:[14,8,4,-1],  keski:[11,5,0,-6], masters:[9,2,-2,-10] },
-             n:{ nuori:[15,11,7,2],  keski:[14,9,5,0], masters:[12,7,4,-1] } } },
+  { id:"lankku", category:"keskivartalo", name:"Lankku (plank)", subtitle:"Keskivartalon stabiliteetti", icon:"🛡️",
+    desc:"Kyynärpäät lattiassa, vartalo suorassa linjasta kantapäistä niskaan. Pidä asento mahdollisimman kauan. Lantion vajoaminen tai kohoaminen lopettaa testin.",
+    unit:"sek", source:"16–29 v: Strand ym. 2014. Vanhemmat ikäryhmät: arvio, koska väestönormeja on vähän.",
+    scores:{ m:{ nuori:[180,130,90,60], keski:[155,110,75,50], masters:[125,90,65,40] },
+             n:{ nuori:[140,100,70,45], keski:[120,85,60,40],  masters:[100,70,50,30] } } },
 ];
+
+// Tulosnäkymä ja jaettava teksti näyttävät testit kategorioittain, vaikka suoritusjärjestys on eri.
+const TESTS_BY_CAT = CATEGORIES.flatMap(c => TESTS.filter(t => t.category === c.id));
 
 const DEV_TIPS = {
   voima:["Loistava ylävartalon voimataso — ylläpidä monipuolisella voimaharjoittelulla.","Hyvä pohja — lisää progressiivista ylikuormitusta punnerruksissa ja leuoissa.","Kehitä ylävartalovoimaa: leuanveto, dipit, käsipainoharjoittelu 2–3×/vko.","Priorisoi ylävartalon perusvoimaharjoittelu — aloita polvilta punnerruksista.","Aloita perusvoimaharjoittelusta: polvilta punnerrukset, riippuminen tangosta."],
@@ -245,7 +250,7 @@ let state = { phase: "intro", gender: "m", ageGroup: "nuori", currentIdx: 0, res
 const PROGRESS_KEY = "budoakatemia-kuntotesti-kesken";
 const PROGRESS_MAX_AGE = 12 * 3600 * 1000;
 function saveProgress() {
-  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ t: Date.now(), gender: state.gender, ageGroup: state.ageGroup, currentIdx: state.currentIdx, results: state.results })); } catch (e) {}
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ t: Date.now(), gender: state.gender, ageGroup: state.ageGroup, results: state.results })); } catch (e) {}
 }
 function loadProgress() {
   try {
@@ -287,9 +292,9 @@ function deltaFor(test) {
 function resultsAsText() {
   const gLabel = state.gender === "m" ? "Miehet" : "Naiset";
   const aLabel = {nuori:"16–29 v", keski:"30–44 v", masters:"45–65 v"}[state.ageGroup];
-  const L = ["Budo Akatemia – karate-kuntotesti " + fmtDate(state.testDate), gName(gLabel, aLabel),
+  const L = ["Budo Akatemia – karate-kuntotesti " + fmtDate(state.testDate), gLabel + " · " + aLabel,
              "Kokonaisarvio: " + LEVEL_LABELS[overallIdx()], ""];
-  TESTS.forEach(t => {
+  TESTS_BY_CAT.forEach(t => {
     const r = state.results[t.id]; if (!r) return;
     const unit = displayUnit(t, r.useAlt);
     const dl = deltaFor(t);
@@ -299,8 +304,7 @@ function resultsAsText() {
   if (state.prev) { L.push(""); L.push("Parantuneet edellisestä testistä (" + fmtDate(state.prev.date) + "): " + (imp.length ? imp.join(", ") : "ei parantuneita tuloksia")); }
   return L.join("\n");
 }
-function gName(g, a) { return g + " · " + a; }
-function improvedTests() { return TESTS.filter(t => { const dl = deltaFor(t); return dl && dl.d > 0; }).map(t => t.name); }
+function improvedTests() { return TESTS_BY_CAT.filter(t => { const dl = deltaFor(t); return dl && dl.d > 0; }).map(t => t.name); }
 
 // Suoritustavan valinta voi koskea vain toista sukupuolta (punnerrukset: naiset).
 function optionsFor(test) {
@@ -375,10 +379,41 @@ function displayUnit(test, useAlt) {
 }
 
 // ─── DATA SUBMISSION ─────────────────────────────────────────────────────────
+// Jos salilla ei ole verkkoa, tulokset jäävät jonoon ja lähtevät, kun yhteys palaa
+// tai sivu avataan seuraavan kerran. Aikaleima on testin ajankohta, ei lähetyshetki.
+const PENDING_KEY = "budoakatemia-kuntotesti-lahettamatta";
+const PENDING_MAX = 5;
+const SUBMIT_TIMEOUT = 20000;
+function loadPending() {
+  try { const p = JSON.parse(localStorage.getItem(PENDING_KEY) || "[]"); return Array.isArray(p) ? p : []; }
+  catch (e) { return []; }
+}
+function savePending(p) {
+  try {
+    if (p.length) localStorage.setItem(PENDING_KEY, JSON.stringify(p.slice(-PENDING_MAX)));
+    else localStorage.removeItem(PENDING_KEY);
+    return true;
+  } catch (e) { return false; }
+}
+
+// no-cors: vastausta ei voi lukea, joten vain verkkovirhe tai aikakatkaisu tunnistetaan epäonnistumiseksi.
+function postPayload(payload) {
+  const ctrl = typeof AbortController === "function" ? new AbortController() : null;
+  const timer = ctrl ? setTimeout(() => ctrl.abort(), SUBMIT_TIMEOUT) : null;
+  const done = ok => { clearTimeout(timer); return ok; };
+  return fetch(SUBMIT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+    signal: ctrl ? ctrl.signal : undefined,
+  }).then(() => done(true), () => done(false));
+}
+
 function submitResults() {
   if (!SUBMIT_URL) return Promise.resolve({ ok:false, skip:true });
   const payload = {
-    timestamp: new Date().toISOString(),
+    timestamp: state.testDate,
     gender: state.gender,
     ageGroup: state.ageGroup,
     normVersion: NORM_VERSION,
@@ -386,39 +421,45 @@ function submitResults() {
   };
   TESTS.forEach(t => {
     const r = state.results[t.id];
-    if (r) {
-      payload.results[t.id] = {
-        value: r.value,
-        useAlt: r.useAlt || false,
-        scoreIdx: r.scoreIdx,
-      };
-    }
+    if (r) payload.results[t.id] = { value: r.value, useAlt: r.useAlt || false, scoreIdx: r.scoreIdx };
   });
-  return fetch(SUBMIT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(payload),
-  }).then(() => ({ ok: true })).catch(err => ({ ok: false, error: err.message }));
+  return postPayload(payload).then(ok => {
+    if (ok) return { ok: true };
+    const p = loadPending(); p.push(payload);
+    return { ok: false, queued: savePending(p) };
+  });
+}
+
+let resending = false;
+function resendPending() {
+  if (!SUBMIT_URL || resending || !loadPending().length) return;
+  resending = true;
+  const sent = new Set();
+  loadPending().reduce((chain, p) => chain.then(() => postPayload(p)).then(ok => { if (ok) sent.add(p.timestamp); }), Promise.resolve())
+    .then(() => {
+      savePending(loadPending().filter(p => !sent.has(p.timestamp)));
+      resending = false;
+      if (state.phase === "result" && state.submitState === "queued" && sent.has(state.testDate)) {
+        state.submitState = "success"; render();
+      }
+    });
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────────────
 
 function renderIntro() {
-  const testList = CATEGORIES.map(cat => {
-    const cc = CAT_COLORS[cat.id];
-    const items = TESTS.filter(t => t.category === cat.id).map(t =>
-      `<div class="intro-test-item" style="border-left-color:${cc.border}">
+  // Lista näytetään suoritusjärjestyksessä, koska järjestys vaikuttaa tuloksiin.
+  const testList = TESTS.map((t, i) => {
+    const cc = CAT_COLORS[t.category];
+    const cat = CATEGORIES.find(c => c.id === t.category);
+    return `<div class="intro-test-item" style="border-left-color:${cc.border}">
+        <span class="intro-test-num">${i + 1}.</span>
         <span style="font-size:1.1rem">${t.icon}</span>
         <div>
           <div class="intro-test-item-name">${t.name}</div>
-          <div class="intro-test-item-sub">${t.subtitle}${t.expert ? " · viitearvo: asiantuntija-arvio" : ""}</div>
+          <div class="intro-test-item-sub"><span style="color:${cc.text};font-weight:700">${cat.label}</span> · ${t.subtitle}${t.expert ? " · viitearvo: asiantuntija-arvio" : ""}</div>
         </div>
-      </div>`).join("");
-    return `<div class="intro-test-cat">
-      <div class="intro-cat-label" style="color:${cc.text}">${cat.icon} ${cat.label}</div>
-      ${items}
-    </div>`;
+      </div>`;
   }).join("");
 
   const privacyNote = SUBMIT_URL ? `
@@ -458,9 +499,10 @@ function renderIntro() {
       ${segBtn("keski","30–44 v",state.ageGroup==="keski","age")}
       ${segBtn("masters","45–65 v",state.ageGroup==="masters","age")}
     </div>
+    <span class="lbl">Testit suoritusjärjestyksessä</span>
     <div style="margin-bottom:1.4rem">${testList}</div>
     <div class="intro-info">
-      <strong>10 testiä &nbsp;·&nbsp; n. 35–45 min</strong>
+      <strong>${TESTS.length} testiä &nbsp;·&nbsp; n. 35–45 min</strong>
       Tarvitset: sekuntikello ja mittanauha. Tukikohta seinästä liikkuvuustesteille.<br>
       Tee 10 min alkulämmittely. Suorita testit järjestyksessä. Syötä tulos heti suorituksen jälkeen.
     </div>
@@ -475,7 +517,7 @@ function refRowsHtml(test) {
   const useAlt = test.inputType === "level" ? false : state.useAlt;
   const src = sourceFor(test, useAlt);
   const note = src ? `<div class="ref-source${isExpert(test, useAlt) ? " expert" : ""}">${isExpert(test, useAlt) ? "⚠ " : "📚 "}${src}</div>` : "";
-  return thresholdRows(test, state.gender, state.ageGroup, state.useAlt).map((r,i) =>
+  return thresholdRows(test, state.gender, state.ageGroup, useAlt).map((r,i) =>
     `<div class="threshold-row" style="background:${LEVEL_BG[i]};border:1px solid ${LEVEL_BORDER[i]}">
       <span class="threshold-lbl" style="color:${LEVEL_COLORS[i]}">${r.label}</span>
       <span class="threshold-val">${r.val}</span>
@@ -572,6 +614,7 @@ function renderResult() {
   if (SUBMIT_URL) {
     if (state.submitState === "sending") submitStatus = `<div class="submit-status sending">Lähetetään tuloksia seuran tilastoihin…</div>`;
     else if (state.submitState === "success") submitStatus = `<div class="submit-status success">✓ Tulokset lisätty seuran anonyymeihin tilastoihin</div>`;
+    else if (state.submitState === "queued") submitStatus = `<div class="submit-status sending">Lähetys ei onnistunut juuri nyt. Tulokset lähtevät tilastoihin automaattisesti, kun yhteys palaa tai avaat sivun seuraavan kerran.</div>`;
     else if (state.submitState === "error") submitStatus = `<div class="submit-status error">Tilastoihin lähetys epäonnistui (tulokset näkyvät silti sinulle)</div>`;
   }
 
@@ -587,7 +630,7 @@ function renderResult() {
     </div>`;
   }).join("");
 
-  const resultRows = TESTS.map(t => {
+  const resultRows = TESTS_BY_CAT.map(t => {
     const res = state.results[t.id];
     if (!res) return "";
     const si = res.scoreIdx;
@@ -722,7 +765,7 @@ function submitTest() {
   if (SUBMIT_URL) {
     state.submitState = "sending";
     submitResults().then(res => {
-      state.submitState = res.ok ? "success" : (res.skip ? "idle" : "error");
+      state.submitState = res.ok ? "success" : res.skip ? "idle" : res.queued ? "queued" : "error";
       if (state.phase === "result") render();
     });
   }
@@ -815,6 +858,8 @@ app.addEventListener("keydown", e => {
   if (last) { if (last.gender) state.gender = last.gender; if (last.ageGroup) state.ageGroup = last.ageGroup; }
 })();
 render();
+resendPending();
+window.addEventListener("online", resendPending);
 </script>
 </body>
 </html>
